@@ -37,7 +37,7 @@
             }
 		</style>
 	</head>
-	<body class="hold-transition sidebar-mini text-sm" onload="InitializeCellsList()">
+	<body class="hold-transition sidebar-mini text-sm" onload="$('#givename').modal('show');">
 		<div class="wrapper">
 			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
 				<ul class="navbar-nav">
@@ -132,6 +132,28 @@
 			</footer>
 		</div>
 
+        <div class="modal fade" id="givename" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">Syngrafias</h4>
+                    </div>
+                    <div class="modal-body">
+						<p class="normelem">
+							Syngrafias is a free and open-source synchronized authorship web-application for seamlessly collaborating on documents using intuitive cells.
+						</p>
+                        <input type="text" id="username" placeholder="Enter your username" class="form-control normelem">
+                        <br/>
+                        <input type="text" id="roomiden" placeholder="Enter your chatroom key" class="form-control normelem disabled">
+                    </div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+                        <button type="button" class="btn btn-default" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
+                        <button type="button" class="btn btn-default" onclick="SaveUserName()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 		<div class="modal fade" id="sockfail" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -158,10 +180,34 @@
 	<script>
 		let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
 		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
-		function InitializeCellsList()
+		function RandomStringGenerator()
 		{
-			sessionStorage.setItem("listcell","");
-			InsertCell();
+			let randstng = "";
+			let lent = 8; let list = "0123456789abcdef";
+			for (let indx = lent; indx > 0; indx--)
+			{
+				randstng += list[Math.floor(Math.random() * list.length)];
+			}
+			return randstng;
+		}
+		function SaveUserName() {
+			let username = document.getElementById("username").value;
+			let roomiden = document.getElementById("roomiden").value;
+			if (username != "" && roomiden != "")
+			{
+				if (!(/\s/.test(username) || /\s/.test(roomiden)))
+				{
+					if (roomiden.match(/^[a-f0-9]{8}$/i))
+					{
+						sessionStorage.setItem("username", username); sessionStorage.setItem("roomiden", roomiden);
+						$('#givename').modal('hide');
+						//document.getElementById("username").value = ""; document.getElementById("roomiden").value = ""; document.getElementById("password").value = "";
+						//document.getElementById("userhead").innerText = username; document.getElementById("idenhead").innerText = roomiden; document.getElementById("passhead").innerText = password;
+						sessionStorage.setItem("listcell","");
+						InsertCell();
+					}
+				}
+			}
 		}
 	  	function InsertCell()
 		{
@@ -171,11 +217,7 @@
 			}
 			else
 			{
-				let celliden = ""; let lent = 8; let list = "0123456789abcdef";
-				for (let indx = lent; indx > 0; indx--)
-				{
-					celliden += list[Math.floor(Math.random() * list.length)];
-				}
+				let celliden = RandomStringGenerator();
 				let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 					"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
 					"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
@@ -198,7 +240,7 @@
 				listcell = listcell + celliden + ", ";
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Inserted a cell : " + listcell);
-				webesock.send(JSON.stringify({username: "t0xic0der", roomiden: "deadcafe", textmesg:"/make "+celliden}));
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/make "+celliden}));
 			}
 		}
 		function DeleteCell(celliden)
@@ -214,7 +256,7 @@
 				listcell = listcell.replace(celliden + ", ", "");
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Deleted a cell : " + listcell);
-				webesock.send(JSON.stringify({username: "t0xic0der", roomiden: "deadcafe", textmesg:"/wipe "+celliden}));
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/wipe "+celliden}));
 			}
 		}
 	</script>
