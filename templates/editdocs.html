@@ -4,13 +4,20 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Syngrafias | Collaborator</title>
-		<link rel="stylesheet" href="{{ url_for("static", filename="css3/fontsome.css") }}" />
-        <link rel="stylesheet" href="{{ url_for("static", filename="css3/adminlte.css") }}" />
-		<script src="{{ url_for("static", filename="jscn/jquery.min.js") }}"></script>
-    	<script src="{{ url_for("static", filename="jscn/bootstrap.bundle.js") }}"></script>
-    	<script src="{{ url_for("static", filename="jscn/adminlte.js") }}"></script>
-		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css3/fontsome.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/adminlte.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/jquery-ui.css') }}" />
+		<script src="{{ url_for('static', filename='jscn/jquery.min.js') }}"></script>
+    	<script src="{{ url_for('static', filename='jscn/bootstrap.bundle.js') }}"></script>
+    	<script src="{{ url_for('static', filename='jscn/adminlte.js') }}"></script>
+		<script src="{{ url_for('static', filename='jscn/jquery-ui.js') }}"></script>
+		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+		<style>
+		  	#s0rtable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	 	 	#s0rtable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+		  	#s0rtable li span { position: absolute; margin-left: -1.3em; }
+		</style>
 		<style>
             .normelem{
                 font-family: "Inter", sans-serif;
@@ -30,7 +37,7 @@
             }
 		</style>
 	</head>
-	<body class="hold-transition sidebar-mini text-sm">
+	<body class="hold-transition sidebar-mini text-sm" onload="InitializeCellsList()">
 		<div class="wrapper">
 			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
 				<ul class="navbar-nav">
@@ -110,33 +117,72 @@
 				<div class="content">
 					<div class="container-fluid">
 						<br/>
-						<input class="form-control form-control-lg normelem" type="ttletext" placeholder="Enter the document title here">
+						<input class="form-control normelem" type="ttletext" placeholder="Enter the document title here">
 						<br/>
-						<div id="conttext"></div>
+						<div>
+							<ul id="sortable" style="list-style-type: none; margin: 0; padding: 0; width: 100%;"></ul>
+							<button type="submit" class="btn bg-lightblue" onclick="InsertCell()">Add cell</button>
+						</div>
 					</div>
 				</div>
 			</div>
-
 			<footer class="main-footer">
 				<div class="float-right d-none d-sm-inline">
-				    Created with <i class="fas fa-heart text-lightblue"></i> by <span class="headelem text-lightblue" onclick="window.location.href = 'https://github.com/t0xic0der/'">t0xic0der</span>
+					Created with <i class="fas fa-heart text-lightblue"></i> by <span class="headelem text-lightblue" onclick="window.location.href = 'https://github.com/t0xic0der/'">t0xic0der</span>
 				</div>
 				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute</span> here.
 			</footer>
 		</div>
     </body>
+  	<script>
+		$(function() {
+    		$("#sortable").sortable();
+    		//$("#sortable").disableSelection();
+  		});
+	</script>
 	<script>
-	  	$("#conttext").summernote({
-			tabsize: 4,
-			height: "74vh",
-			toolbar: [
-				["style", ["bold", "italic", "underline", "clear"]],
-				["font", ["strikethrough", "superscript", "subscript"]],
-				["fontsize", ["fontsize"]],
-				["color", ["color"]],
-				["para", ["ul", "ol", "paragraph"]],
-				["height", ["height"]]
-			]
-	  	});
+		function InitializeCellsList()
+		{
+			sessionStorage.setItem("listcell","");
+			InsertCell();
+		}
+	  	function InsertCell()
+		{
+			let celliden = ""; let lent = 8; let list = "0123456789abcdef";
+			for (let indx = lent; indx > 0; indx--)
+			{
+				celliden += list[Math.floor(Math.random() * list.length)];
+			}
+			let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
+				"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
+				"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
+				"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
+				"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
+			$("#sortable").append(modifdom);
+			$("#conttext-"+celliden).summernote({
+				tabsize: 4,
+				height: "100",
+				toolbar: [
+					["style", ["bold", "italic", "underline", "clear"]],
+					["font", ["strikethrough", "superscript", "subscript"]],
+					["fontsize", ["fontsize"]],
+					["color", ["color"]],
+					["para", ["ul", "ol", "paragraph"]],
+					["height", ["height"]]
+				]
+			});
+			let listcell = sessionStorage.getItem("listcell");
+			listcell = listcell + celliden + ", ";
+			sessionStorage.setItem("listcell", listcell);
+			console.log("Inserted a cell : " + listcell);
+		}
+		function DeleteCell(celliden)
+		{
+			document.getElementById(celliden).remove();
+			let listcell = sessionStorage.getItem("listcell");
+			listcell = listcell.replace(celliden + ", ", "");
+			sessionStorage.setItem("listcell", listcell);
+			console.log("Deleted a cell : " + listcell);
+		}
 	</script>
 </html>
