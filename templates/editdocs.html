@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Syngrafias | Collaborator</title>
+		<link rel="stylesheet" href="{{ url_for("static", filename="css3/fontsome.css") }}" />
+        <link rel="stylesheet" href="{{ url_for("static", filename="css3/adminlte.css") }}" />
+		<script src="{{ url_for("static", filename="jscn/jquery.min.js") }}"></script>
+    	<script src="{{ url_for("static", filename="jscn/bootstrap.bundle.js") }}"></script>
+    	<script src="{{ url_for("static", filename="jscn/adminlte.js") }}"></script>
+		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+		<style>
+            .normelem{
+                font-family: "Inter", sans-serif;
+                font-weight: 400;
+            }
+            .headelem {
+                font-family: "Inter", sans-serif;
+                font-weight: 700;
+            }
+			body {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+		</style>
+	</head>
+	<body class="hold-transition sidebar-mini text-sm">
+		<div class="wrapper">
+			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+					</li>
+					<li class="nav-item d-none d-sm-inline-block">
+						<a href="index3.html" class="nav-link normelem">Home</a>
+					</li>
+				</ul>
+
+				<form class="form-inline ml-3">
+					<div class="input-group input-group-sm">
+						<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+					</div>
+				</form>
+
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="#">
+							<i class="far fa-comments"></i>
+						</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="#">
+							<i class="far fa-bell"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">
+							<i class="fas fa-th-large"></i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<aside class="main-sidebar sidebar-light-lightblue elevation-4">
+				<a href="#" class="brand-link bg-lightblue">
+					<!--<img src="{{ url_for("static", filename="imgs/datalogo.svg") }}" alt="ProvingGround Logo" class="fas fa-tachometer brand-image img-circle elevation-3">-->
+					<i alt="ProvingGround Logo" class="fas fa-tachometer"></i>
+					<span class="brand-text headelem">Syngrafias</span>
+				</a>
+
+				<div class="sidebar">
+					<nav class="mt-2">
+						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+							<li class="nav-item">
+								<a href="#" class="nav-link normelem">
+									<i class="fas fa-tachometer-alt nav-icon"></i>
+									<p>Dashboard</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link normelem active">
+									<i class="fas fa-plus-circle nav-icon"></i>
+									<p>Build</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link normelem">
+									<i class="fas fa-cog nav-icon"></i>
+									<p>Settings</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link normelem">
+									<i class="fas fa-sign-out-alt nav-icon"></i>
+									<p>Logout</p>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</aside>
+
+			<div class="content-wrapper">
+				<div class="content">
+					<div class="container-fluid">
+						<br/>
+						<input class="form-control form-control-lg normelem" type="ttletext" placeholder="Enter the document title here">
+						<br/>
+						<div id="conttext"></div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="main-footer">
+				<div class="float-right d-none d-sm-inline">
+				    Created with <i class="fas fa-heart text-lightblue"></i> by <span class="headelem text-lightblue" onclick="window.location.href = 'https://github.com/t0xic0der/'">t0xic0der</span>
+				</div>
+				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute</span> here.
+			</footer>
+		</div>
+    </body>
+	<script>
+	  	$("#conttext").summernote({
+			tabsize: 4,
+			height: "74vh",
+			toolbar: [
+				["style", ["bold", "italic", "underline", "clear"]],
+				["font", ["strikethrough", "superscript", "subscript"]],
+				["fontsize", ["fontsize"]],
+				["color", ["color"]],
+				["para", ["ul", "ol", "paragraph"]],
+				["height", ["height"]]
+			]
+	  	});
+	</script>
+</html>
