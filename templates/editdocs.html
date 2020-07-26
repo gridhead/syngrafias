@@ -119,10 +119,8 @@
 						<br/>
 						<input class="form-control normelem" type="ttletext" placeholder="Enter the document title here">
 						<br/>
-						<div>
-							<ul id="sortable" style="list-style-type: none; margin: 0; padding: 0; width: 100%;"></ul>
-							<button type="submit" class="btn bg-lightblue" onclick="InsertCell()">Add cell</button>
-						</div>
+						<ul id="sortable" style="list-style-type: none; margin: 0; padding: 0; width: 100%;"></ul>
+						<button type="submit" class="btn bg-lightblue" style="margin-bottom: 15px;" onclick="InsertCell()">Add cell</button>
 					</div>
 				</div>
 			</div>
@@ -141,7 +139,7 @@
                         <h4 class="modal-title headelem">Connection failed</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="normelem text-justify" style="margin-bottom: 5px;">A connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
+                        <p class="normelem text-justify" style="margin-bottom: 5px;">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
                     </div>
                     <div class="modal-footer justify-content-between bg-lightblue">
                         <button type="button" class="btn btn-default" onclick="location.reload();">Refresh</button>
@@ -205,11 +203,19 @@
 		}
 		function DeleteCell(celliden)
 		{
-			document.getElementById(celliden).remove();
-			let listcell = sessionStorage.getItem("listcell");
-			listcell = listcell.replace(celliden + ", ", "");
-			sessionStorage.setItem("listcell", listcell);
-			console.log("Deleted a cell : " + listcell);
+			if (webesock.readyState == 3)
+			{
+				$("#sockfail").modal("show");
+			}
+			else
+			{
+				document.getElementById(celliden).remove();
+				let listcell = sessionStorage.getItem("listcell");
+				listcell = listcell.replace(celliden + ", ", "");
+				sessionStorage.setItem("listcell", listcell);
+				console.log("Deleted a cell : " + listcell);
+				webesock.send(JSON.stringify({username: "t0xic0der", roomiden: "deadcafe", textmesg:"/wipe "+celliden}));
+			}
 		}
 	</script>
 </html>

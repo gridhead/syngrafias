@@ -6,7 +6,7 @@ servchat = Flask(__name__)
 
 
 @servchat.route("/")
-def chatroom():
+def editdocs():
     return render_template("editdocs.html", sockport=sockp0rt)
 
 
@@ -19,7 +19,7 @@ def colabnow(netpdata, servport):
 @click.option("-c", "--sockport", "sockport", help="Set the port value for WebSockets [0-65536]", required=True)
 @click.option("-6", "--ipprotv6", "netprotc", flag_value="ipprotv6", help="Start the server on an IPv6 address", required=True)
 @click.option("-4", "--ipprotv4", "netprotc", flag_value="ipprotv4", help="Start the server on an IPv4 address", required=True)
-@click.version_option(version="22072020", prog_name="Syngrafias by t0xic0der")
+@click.version_option(version="27072020", prog_name="Syngrafias by t0xic0der")
 def mainfunc(servport, sockport, netprotc):
     global sockp0rt
     sockp0rt = sockport
