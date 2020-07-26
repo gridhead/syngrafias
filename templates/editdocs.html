@@ -7,10 +7,12 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='css3/fontsome.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/adminlte.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/jquery-ui.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
 		<script src="{{ url_for('static', filename='jscn/jquery.min.js') }}"></script>
     	<script src="{{ url_for('static', filename='jscn/bootstrap.bundle.js') }}"></script>
     	<script src="{{ url_for('static', filename='jscn/adminlte.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/jquery-ui.js') }}"></script>
+		<script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
 		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 		<style>
@@ -239,7 +241,8 @@
 				listcell = listcell + celliden + ", ";
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Inserted a cell : " + listcell);
-				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/make "+celliden}));
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/make " + celliden}));
+				toastr.success("A cell named <span class='headelem'>" + celliden + "</span> was successfully created from your end and conveyed to all collaborators.");
 			}
 		}
 		function DeleteCell(celliden)
@@ -255,7 +258,8 @@
 				listcell = listcell.replace(celliden + ", ", "");
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Deleted a cell : " + listcell);
-				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/wipe "+celliden}));
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/wipe " + celliden}));
+				toastr.error("A cell named <span class='headelem'>" + celliden + "</span> was successfully deleted from your end and conveyed to all collaborators.");
 			}
 		}
 		webesock.onmessage = function (event)
@@ -289,7 +293,18 @@
 						let listcell = sessionStorage.getItem("listcell");
 						listcell = listcell + celliden + ", ";
 						sessionStorage.setItem("listcell", listcell);
-						console.log("Received a cell : " + listcell);
+						console.log("Received a cell creation call : " + listcell);
+						toastr.success("The creation of a cell named <span class='headelem'>" + celliden + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
+					}
+					else if (data.textmesg.split(" ")[0] == "/wipe")
+					{
+						let celliden = data.textmesg.split(" ")[1];
+						document.getElementById(celliden).remove();
+						let listcell = sessionStorage.getItem("listcell");
+						listcell = listcell.replace(celliden + ", ", "");
+						sessionStorage.setItem("listcell", listcell);
+						console.log("Received a cell deletion call : " + listcell);
+						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
 					}
 				}
 			}
