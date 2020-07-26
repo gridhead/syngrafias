@@ -133,6 +133,23 @@
 				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute</span> here.
 			</footer>
 		</div>
+
+		<div class="modal fade" id="sockfail" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">Connection failed</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="normelem text-justify" style="margin-bottom: 5px;">A connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
+                    </div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+                        <button type="button" class="btn btn-default" onclick="location.reload();">Refresh</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	
     </body>
   	<script>
 		$(function() {
@@ -141,6 +158,8 @@
   		});
 	</script>
 	<script>
+		let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
+		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
 		function InitializeCellsList()
 		{
 			sessionStorage.setItem("listcell","");
@@ -148,33 +167,41 @@
 		}
 	  	function InsertCell()
 		{
-			let celliden = ""; let lent = 8; let list = "0123456789abcdef";
-			for (let indx = lent; indx > 0; indx--)
+			if (webesock.readyState == 3)
 			{
-				celliden += list[Math.floor(Math.random() * list.length)];
+				$("#sockfail").modal("show");
 			}
-			let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
-				"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-				"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
-				"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
-				"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
-			$("#sortable").append(modifdom);
-			$("#conttext-"+celliden).summernote({
-				tabsize: 4,
-				height: "100",
-				toolbar: [
-					["style", ["bold", "italic", "underline", "clear"]],
-					["font", ["strikethrough", "superscript", "subscript"]],
-					["fontsize", ["fontsize"]],
-					["color", ["color"]],
-					["para", ["ul", "ol", "paragraph"]],
-					["height", ["height"]]
-				]
-			});
-			let listcell = sessionStorage.getItem("listcell");
-			listcell = listcell + celliden + ", ";
-			sessionStorage.setItem("listcell", listcell);
-			console.log("Inserted a cell : " + listcell);
+			else
+			{
+				let celliden = ""; let lent = 8; let list = "0123456789abcdef";
+				for (let indx = lent; indx > 0; indx--)
+				{
+					celliden += list[Math.floor(Math.random() * list.length)];
+				}
+				let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
+					"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
+					"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
+					"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
+					"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
+				$("#sortable").append(modifdom);
+				$("#conttext-"+celliden).summernote({
+					tabsize: 4,
+					height: "100",
+					toolbar: [
+						["style", ["bold", "italic", "underline", "clear"]],
+						["font", ["strikethrough", "superscript", "subscript"]],
+						["fontsize", ["fontsize"]],
+						["color", ["color"]],
+						["para", ["ul", "ol", "paragraph"]],
+						["height", ["height"]]
+					]
+				});
+				let listcell = sessionStorage.getItem("listcell");
+				listcell = listcell + celliden + ", ";
+				sessionStorage.setItem("listcell", listcell);
+				console.log("Inserted a cell : " + listcell);
+				webesock.send(JSON.stringify({username: "t0xic0der", roomiden: "deadcafe", textmesg:"/make "+celliden}));
+			}
 		}
 		function DeleteCell(celliden)
 		{
