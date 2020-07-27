@@ -16,11 +16,6 @@
 		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 		<style>
-		  	#s0rtable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-	 	 	#s0rtable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
-		  	#s0rtable li span { position: absolute; margin-left: -1.3em; }
-		</style>
-		<style>
             .normelem{
                 font-family: "Inter", sans-serif;
                 font-weight: 400;
@@ -39,15 +34,12 @@
             }
 		</style>
 	</head>
-	<body class="hold-transition sidebar-mini text-sm layout-navbar-fixed" onload="$('#givename').modal('show'); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; StartRunningTime();">
+	<body class="hold-transition sidebar-mini text-sm layout-navbar-fixed" onload="$('#givename').modal('show'); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; document.getElementById('ttletext').value = ''; StartRunningTime();">
 		<div class="wrapper">
 			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
 				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-					</li>
-					<li class="nav-item d-none d-sm-inline-block"><a href="index3.html" class="nav-link normelem">Home</a></li>
-					<li class="nav-item d-none d-sm-inline-block"><a class="nav-link normelem"><i class="fas fa-clock"></i>&nbsp;<span id="timehead"></span></a></li>
+					<li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a></li>
+					<li class="nav-item d-none d-sm-inline-block"><a class="nav-link normelem"><i class="fas fa-clock"></i>&nbsp;<span id="timehead">TIMEHEAD</span></a></li>
 				</ul>
 
 				<form class="form-inline ml-3">
@@ -57,20 +49,15 @@
 				</form>
 
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item dropdown">
-						<a class="nav-link" href="#">
-							<i class="far fa-comments"></i>
-						</a>
-					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link" href="#">
-							<i class="far fa-bell"></i>
-						</a>
+					<li class="nav-item">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;">
+							<span class="text-lightblue"><i class="fas fa-question"></i>&nbsp;&nbsp;Help</span>
+						</button>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">
-							<i class="fas fa-th-large"></i>
-						</a>
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="InsertCell();">
+							<span class="text-lightblue"><i class="fas fa-plus"></i>&nbsp;&nbsp;Insert</span>
+						</button>
 					</li>
 				</ul>
 			</nav>
@@ -95,10 +82,7 @@
                         <hr style="margin-top: 10px; margin-bottom: 10px;" />
 						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 							<li class="nav-item">
-								<a href="#" class="nav-link normelem"><i class="fas fa-tachometer-alt nav-icon"></i><p>Dashboard</p></a>
-							</li>
-							<li class="nav-item">
-								<a href="#" class="nav-link normelem active"><i class="fas fa-plus-circle nav-icon"></i><p>Build</p></a>
+								<a href="#" class="nav-link normelem active"><i class="fas fa-tools nav-icon"></i><p>Build</p></a>
 							</li>
 							<li class="nav-item">
 								<a onclick="$('#actimode').modal('show');" class="nav-link normelem"><i class="fas fa-clock nav-icon"></i><p>Activities</p></a>
@@ -107,7 +91,7 @@
 								<a href="#" class="nav-link normelem"><i class="fas fa-cog nav-icon"></i><p>Settings</p></a>
 							</li>
 							<li class="nav-item">
-								<a href="#" class="nav-link normelem"><i class="fas fa-sign-out-alt nav-icon"></i><p>Logout</p></a>
+								<a onclick="location.reload();" class="nav-link normelem"><i class="fas fa-sign-out-alt nav-icon"></i><p>Logout</p></a>
 							</li>
 						</ul>
                         <hr style="margin-top: 10px; margin-bottom: 10px;" />
@@ -119,10 +103,9 @@
 				<div class="content">
 					<div class="container-fluid">
 						<br/>
-						<input class="form-control normelem" type="ttletext" placeholder="Enter the document title here">
+						<input class="form-control normelem" type="text" id="ttletext" placeholder="Enter the document title here">
 						<br/>
 						<ul id="sortable" style="list-style-type: none; margin: 0; padding: 0; width: 100%;"></ul>
-						<button type="submit" class="btn bg-lightblue" style="margin-bottom: 15px;" onclick="InsertCell()">Add cell</button>
 					</div>
 				</div>
 			</div>
@@ -209,7 +192,6 @@
 	<script>
 		let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
 		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
-		toastr.options.preventDuplicates = true;
 		function StartRunningTime()
 		{
 			let curtdate = new Date();
@@ -327,7 +309,7 @@
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Inserted a cell : " + listcell);
 				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/make " + celliden}));
-				toastr.success("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully created from your end and conveyed to all collaborators.");
+				toastr.success("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully created from your end and conveyed to all collaborators.","",{"positionClass": "toast-bottom-right"});
 			}
 		}
 		function DeleteCell(celliden)
@@ -350,7 +332,7 @@
 					"<td><span class='headelem'>You</span> removed a cell.</td></tr>";
 				$("#activity").append(modifdom);
 				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/wipe " + celliden}));
-				toastr.error("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully deleted from your end and conveyed to all collaborators.");
+				toastr.error("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully deleted from your end and conveyed to all collaborators.","",{"positionClass": "toast-bottom-right"});
 			}
 		}
 		webesock.onmessage = function (event)
@@ -426,7 +408,7 @@
 						listcell = listcell + celliden + ", ";
 						sessionStorage.setItem("listcell", listcell);
 						console.log("Received a cell creation call : " + listcell);
-						toastr.success("The creation of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
+						toastr.success("The creation of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.","",{"positionClass": "toast-bottom-right"});
 					}
 					else if (data.textmesg.split(" ")[0] == "/wipe")
 					{
@@ -442,7 +424,7 @@
 							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
 							"<td><span class='headelem'>" + data.username + "</span> removed a cell.</td></tr>";
                         $("#activity").append(modifdom);
-						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
+						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.","",{"positionClass": "toast-bottom-right"});
 					}
 					else if (data.textmesg.split(" ")[0] == "/note")
                     {
