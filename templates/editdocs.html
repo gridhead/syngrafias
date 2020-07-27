@@ -39,7 +39,7 @@
             }
 		</style>
 	</head>
-	<body class="sidebar-mini text-sm layout-navbar-fixed layout-footer-fixed" onload="$('#givename').modal('show'); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; StartRunningTime();">
+	<body class="hold-transition sidebar-mini text-sm layout-navbar-fixed" onload="$('#givename').modal('show'); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; StartRunningTime();">
 		<div class="wrapper">
 			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
 				<ul class="navbar-nav">
@@ -76,7 +76,7 @@
 				</ul>
 			</nav>
 
-			<aside class="main-sidebar sidebar-dark-lightblue elevation-4">
+			<aside class="main-sidebar sidebar-dark-lightblue elevation-4" style="bottom: 0px;">
 				<a href="#" class="brand-link bg-lightblue">
 					<!--<img src="{{ url_for("static", filename="imgs/datalogo.svg") }}" alt="Syngrafias Logo" class="fas fa-tachometer brand-image img-circle elevation-3">-->
 					<i alt="Syngrafias Logo" class="fas fa-tachometer"></i>
@@ -102,6 +102,9 @@
 								<a href="#" class="nav-link normelem active"><i class="fas fa-plus-circle nav-icon"></i><p>Build</p></a>
 							</li>
 							<li class="nav-item">
+								<a onclick="$('#actimode').modal('show');" class="nav-link normelem"><i class="fas fa-clock nav-icon"></i><p>Activities</p></a>
+							</li>
+							<li class="nav-item">
 								<a href="#" class="nav-link normelem"><i class="fas fa-cog nav-icon"></i><p>Settings</p></a>
 							</li>
 							<li class="nav-item">
@@ -109,8 +112,6 @@
 							</li>
 						</ul>
                         <hr style="margin-top: 10px; margin-bottom: 10px;" />
-						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="activity">
-						</ul>
 					</nav>
 				</div>
 			</aside>
@@ -134,12 +135,14 @@
                 </div>
             </aside>
 
+			<!--
 			<footer class="main-footer">
 				<div class="float-right d-none d-sm-block">
 					Created with <i class="fas fa-heart text-lightblue"></i> by <span class="headelem text-lightblue" onclick="window.location.href = 'https://github.com/t0xic0der/'">t0xic0der</span>
 				</div>
-				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute</span> here.
+				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute here.</span>
 			</footer>
+			-->
 		</div>
 
         <div class="modal fade" id="givename" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -179,7 +182,39 @@
                 </div>
             </div>
         </div>
-	
+
+		<div class="modal fade" id="actimode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">Activities</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="normelem text-justify">These are the activities done so far.</p>
+						<!--<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" id="activity"></ul>-->
+						<div class="table-responsive p-0" style="height: 450px;">
+							<table id="proclist" class="table table-head-fixed text-nowrap table-sm">
+								<thead>
+									<tr class="headelem">
+										<th>#</th>
+										<th>Identity</th>
+										<th>Timestamp</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody id="activity">
+									<!--<tr class="normelem"><td>@</td><td>Timestamp</td><td>Action</td></tr>-->
+							  	</tbody>
+							</table>
+						</div>
+                    </div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+                        <button type="button" class="btn btn-default" onclick="$('#actimode').modal('hide');">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
   	<script>
 		$(function() {
@@ -250,12 +285,10 @@
 					"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 					"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 				$("#sortable").append(modifdom);
-				modifdom = "<li class='nav-item'>" +
-                    "<a href='#' class='nav-link'>" +
-                    "<i class='fas fa-plus nav-icon text-success'></i>" +
-                    "<p class='headelem'>" + celliden.toUpperCase() + "&nbsp;<span class='normelem'>[" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "]</span></p>" +
-                    "</a>" +
-                    "</li>";
+				modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-plus text-success'></i></td>" +
+					"<td><code class='text-success'>" + celliden.toUpperCase() + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> created a cell.</td></tr>";
 				$("#activity").append(modifdom);
 				$("#conttext-"+celliden).summernote({
 					tabsize: 4,
@@ -272,17 +305,35 @@
 						onKeydown: function (e) {
 							let contents = $("#conttext-"+celliden).summernote("code");
 							let writings = "/note " + celliden + " " + contents;
+							let curtdate = new Date;
 							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+                        	$("#activity").append(modifdom);
 						},
 						onKeyup: function (e) {
 							let contents = $("#conttext-"+celliden).summernote("code");
 							let writings = "/note " + celliden + " " + contents;
+							let curtdate = new Date;
 							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+                        	$("#activity").append(modifdom);
 						},
 						onPaste: function (e) {
 							let contents = $("#conttext-"+celliden).summernote("code");
 							let writings = "/note " + celliden + " " + contents;
+							let curtdate = new Date;
 							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+                        	$("#activity").append(modifdom);
 						}
 					}
 				});
@@ -309,12 +360,10 @@
 				sessionStorage.setItem("listcell", listcell);
 				console.log("Deleted a cell : " + listcell);
 				let curtdate = new Date;
-                let modifdom = "<li class='nav-item'>" +
-                    "<a href='#' class='nav-link normelem'>" +
-                    "<i class='fas fa-times nav-icon text-danger'></i>" +
-                    "<p class='headelem'>" + celliden.toUpperCase() + "&nbsp;<span class='normelem'>[" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "]</span></p>" +
-                    "</a>" +
-                    "</li>";
+				let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-times text-danger'></i></td>" +
+					"<td><code class='text-danger'>" + celliden.toUpperCase() + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> removed a cell.</td></tr>";
 				$("#activity").append(modifdom);
 				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg:"/wipe " + celliden}));
 				toastr.error("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully deleted from your end and conveyed to all collaborators.");
@@ -337,12 +386,10 @@
 							"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 							"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 						$("#sortable").append(modifdom);
-                        modifdom = "<li class='nav-item'>" +
-                            "<a href='#' class='nav-link'>" +
-                            "<i class='fas fa-plus-circle nav-icon text-success'></i>" +
-                            "<p class='headelem'>" + celliden.toUpperCase() + "&nbsp;<span class='normelem'>[" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "]</span></p>" +
-                            "</a>" +
-                            "</li>";
+						modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-plus-circle text-success'></i></td>" +
+							"<td><code class='text-success'>" + celliden.toUpperCase() + "</code></td>" +
+							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+							"<td><span class='headelem'>" + data.username + "</span> created a cell.</td></tr>";
                         $("#activity").append(modifdom);
 						$("#conttext-"+celliden).summernote({
 							tabsize: 4,
@@ -359,17 +406,35 @@
                                 onKeydown: function (e) {
                                 	let contents = $("#conttext-"+celliden).summernote("code");
                                     let writings = "/note " + celliden + " " + contents;
+                                    let curtdate = new Date;
                                     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
                                 },
                                 onKeyup: function (e) {
                                 	let contents = $("#conttext-"+celliden).summernote("code");
                                     let writings = "/note " + celliden + " " + contents;
+                                    let curtdate = new Date;
                                     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
                                 },
                                 onPaste: function (e) {
                                 	let contents = $("#conttext-"+celliden).summernote("code");
                                     let writings = "/note " + celliden + " " + contents;
+                                    let curtdate = new Date;
                                     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
                                 }
                             }
 						});
@@ -388,12 +453,10 @@
 						sessionStorage.setItem("listcell", listcell);
 						console.log("Received a cell deletion call : " + listcell);
                         let curtdate = new Date;
-                        let modifdom = "<li class='nav-item'>" +
-                            "<a href='#' class='nav-link normelem'>" +
-                            "<i class='fas fa-times-circle nav-icon text-danger'></i>" +
-                            "<p class='headelem'>" + celliden.toUpperCase() + "&nbsp;<span class='normelem'>[" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "]</span></p>" +
-                            "</a>" +
-                            "</li>";
+                        let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-times-circle text-danger'></i></td>" +
+							"<td><code class='text-danger'>" + celliden.toUpperCase() + "</code></td>" +
+							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+							"<td><span class='headelem'>" + data.username + "</span> removed a cell.</td></tr>";
                         $("#activity").append(modifdom);
 						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
 					}
@@ -404,7 +467,13 @@
                         textmesg = textmesg.replace("/note", "");
                         textmesg = textmesg.trim();
                         //console.log(textmesg);
+						let curtdate = new Date;
                         $("#conttext-"+celliden).summernote("code", textmesg);
+						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
+							"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+							"<td><span class='headelem'>" + data.username + "</span> wrote to a cell.</td></tr>";
+                        $("#activity").append(modifdom);
                     }
 				}
 			}
