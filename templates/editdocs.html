@@ -279,8 +279,25 @@
 						["fontsize", ["fontsize"]],
 						["color", ["color"]],
 						["para", ["ul", "ol", "paragraph"]],
-						["height", ["height"]]
-					]
+						["height", ["height"]],
+                    ],
+					callbacks: {
+						onKeydown: function (e) {
+							let contents = $("#conttext-"+celliden).summernote("code");
+							let writings = "/note " + celliden + " " + contents;
+							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+						},
+						onKeyup: function (e) {
+							let contents = $("#conttext-"+celliden).summernote("code");
+							let writings = "/note " + celliden + " " + contents;
+							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+						},
+						onPaste: function (e) {
+							let contents = $("#conttext-"+celliden).summernote("code");
+							let writings = "/note " + celliden + " " + contents;
+							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+						}
+					}
 				});
 				let listcell = sessionStorage.getItem("listcell");
 				listcell = listcell + celliden + ", ";
@@ -349,7 +366,24 @@
 								["color", ["color"]],
 								["para", ["ul", "ol", "paragraph"]],
 								["height", ["height"]]
-							]
+							],
+                            callbacks: {
+                                onKeydown: function (e) {
+                                	let contents = $("#conttext-"+celliden).summernote("code");
+                                    let writings = "/note " + celliden + " " + contents;
+                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+                                },
+                                onKeyup: function (e) {
+                                	let contents = $("#conttext-"+celliden).summernote("code");
+                                    let writings = "/note " + celliden + " " + contents;
+                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+                                },
+                                onPaste: function (e) {
+                                	let contents = $("#conttext-"+celliden).summernote("code");
+                                    let writings = "/note " + celliden + " " + contents;
+                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+                                }
+                            }
 						});
 						let listcell = sessionStorage.getItem("listcell");
 						listcell = listcell + celliden + ", ";
@@ -375,6 +409,15 @@
                         $("#activity").append(modifdom);
 						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.");
 					}
+					else if (data.textmesg.split(" ")[0] == "/note")
+                    {
+                        let celliden = data.textmesg.split(" ")[1];
+                        let textmesg = data.textmesg.replace(celliden, "");
+                        textmesg = textmesg.replace("/note", "");
+                        textmesg = textmesg.trim();
+                        //console.log(textmesg);
+                        $("#conttext-"+celliden).summernote("code", textmesg);
+                    }
 				}
 			}
 		}
