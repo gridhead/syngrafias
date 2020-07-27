@@ -23,11 +23,11 @@ def colabnow(netpdata, servport):
 def mainfunc(servport, sockport, netprotc):
     global sockp0rt
     sockp0rt = sockport
-    print(" * Starting Sanctuary...")
+    print(" * Starting Syngrafias...")
     if servport == sockport:
         print(" * [FAILMESG] The port values for Syngrafias server and WebSocket server cannot be the same!")
     else:
-        print(" * Chatroom server started on port " + str(servport) + ".")
+        print(" * Collaborator server started on port " + str(servport) + ".")
         print(" * WebSocket server started on port " + str(sockport) + ".")
         netpdata = ""
         if netprotc == "ipprotv6":

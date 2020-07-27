@@ -1,2 +1,2 @@
 # syngrafias
-A free and open-source WYSIWYG authorship web application with speedy protection
+A free and open-source synchronized authorship web-application for seamlessly collaborating on documents using intuitive cells
