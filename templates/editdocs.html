@@ -50,8 +50,13 @@
 
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#abotmode').modal('show');">
+							<span class="text-lightblue"><i class="fas fa-question"></i>&nbsp;&nbsp;About</span>
+						</button>
+					</li>
+					<li class="nav-item">
 						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;">
-							<span class="text-lightblue"><i class="fas fa-question"></i>&nbsp;&nbsp;Help</span>
+							<span class="text-lightblue"><i class="fas fa-wheelchair"></i>&nbsp;&nbsp;Help</span>
 						</button>
 					</li>
 					<li class="nav-item">
@@ -142,6 +147,54 @@
             </div>
         </div>
 
+		<div class="modal fade" id="abotmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">About</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="normelem text-justify">Thank you for using Syngrafias!</p>
+						<p class="normelem text-justify">
+							Syngrafias was born to address the need of a perfect document editing platform which could be collaborative,
+							synchronous and non-intrusive at the same time. So we picked the best features of available technologies (like
+							Jupyter Notebook and Google Docs) and put them together to build this beauty.
+						</p>
+						<p>The following are the contributors to this project.</p>
+                    	<ul class="users-list clearfix">
+							<li>
+								<img src="https://avatars0.githubusercontent.com/u/49605954?s=460&u=bd798cf7788f056e3c1a1a5bd2de5f4f5ae84eb9&v=4" alt="User Image">
+								<a class="users-list-name" onclick="window.open('https://github.com/t0xic0der/', '_blank');">Akashdeep Dhar</a>
+								<span class="users-list-date">t0xic0der</span>
+							</li>
+						</ul>
+						<p>The following are the advisors to this project.</p>
+						<ul class="users-list clearfix">
+							<li>
+								<img src="https://avatars0.githubusercontent.com/u/39235382?s=400&u=eeb07efa692bac0fcb441e4b054f80e66e73836b&v=4" alt="User Image">
+								<a class="users-list-name" onclick="window.open('https://github.com/s-katte/', '_blank');">Shubham Katte</a>
+								<span class="users-list-date">s-katte</span>
+							</li>
+							<li>
+								<img src="https://avatars3.githubusercontent.com/u/32795689?s=460&u=2f970533be1f419b2804eaff81f02038626554aa&v=4" alt="User Image">
+								<a class="users-list-name" onclick="window.open('https://github.com/VaibhavSaini19/', '_blank');">Vaibhav Saini</a>
+								<span class="users-list-date">VaibhavSaini19</span>
+							</li>
+							<li>
+								<img src="https://avatars2.githubusercontent.com/u/46623131?s=460&v=4" alt="User Image">
+								<a class="users-list-name" onclick="window.open('https://github.com/mohitgurav/', '_blank');">Mohit Gurav</a>
+								<span class="users-list-date">mohitgurav</span>
+							</li>
+                    	</ul>
+					</div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+						<button type="button" class="btn btn-default" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">Fork</button>
+                        <button type="button" class="btn btn-default" onclick="$('#abotmode').modal('hide');">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 		<div class="modal fade" id="sockfail" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -174,8 +227,8 @@
 						</div>
                     </div>
                     <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="$('#actimode').modal('hide');">Exit</button>
 						<button type="button" class="btn btn-default" onclick="$('tr.acticell').remove();">Wipe</button>
+                        <button type="button" class="btn btn-default" onclick="$('#actimode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -432,7 +485,6 @@
                         let textmesg = data.textmesg.replace(celliden, "");
                         textmesg = textmesg.replace("/note", "");
                         textmesg = textmesg.trim();
-                        //console.log(textmesg);
 						let curtdate = new Date;
                         $("#conttext-"+celliden).summernote("code", textmesg);
 						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
