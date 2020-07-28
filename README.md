@@ -23,15 +23,15 @@
 - Support for exporting workspace documents to widely used formats like PDF, DOCX and ODF is coming soon
 - Easy and flexible activity logging to keep track of changes made by connected peers in document
 - Ultralight implementation of workspace server with slimmed requests - Approx. 2MB over Python runtime
-- Decoupled websockets server to facilitate better system utilization and functional parallelism
-- Accessible across internet with both IPv4 and IPv6 access modes for workspace and websockets servers
+- Decoupled WebSockets server to facilitate better system utilization and functional parallelism
+- Accessible across the internet with both IPv4 and IPv6 access modes for workspace and WebSockets servers
 - State-of-the-art session management with workable responsiveness for relatively smaller displays
 
 ## Usage
 COMING SOON
 
 ## Screenshots
-COMING SOON
+[Head over to this page](https://github.com/t0xic0der/syngrafias/wiki/Screenshots)
 
 ## Contribute
 <p align="justify">You may request for the addition of new features in the <a href="https://github.com/t0xic0der/syngrafias/issues">issues</a> page but as the project is singlehandedly maintained - it might take time to develop on them. Please consider forking the repository and contributing to its development. :heart:</p>
