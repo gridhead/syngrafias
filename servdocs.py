@@ -17,13 +17,13 @@ def savedocs():
         workspec = request.args.get("workspec", "0", type=str)
         docsname = request.args.get("docsname", "0", type=str)
         document = request.args.get("document", "0", type=str)
-        curttime = str(time.time())
-        filename = username+"_"+workspec+"_"+curttime+".swd"
+        curttime = time.time()
+        filename = username + "_" + workspec + "_" + str(curttime) + ".swd"
         docsdict = {
             "username": username,
             "workspec": workspec,
             "docsname": docsname,
-            "maketime": curttime,
+            "maketime": time.ctime(curttime),
             "document": json.loads(document),
         }
         with open("static/docs/"+filename, "w") as jsonfile:
