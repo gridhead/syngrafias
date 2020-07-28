@@ -13,6 +13,7 @@
     	<script src="{{ url_for('static', filename='jscn/adminlte.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/jquery-ui.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='jscn/bs-custom-file-input.js') }}"></script>
 		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 		<style>
@@ -34,7 +35,7 @@
             }
 		</style>
 	</head>
-	<body class="hold-transition sidebar-mini text-sm layout-navbar-fixed" onload="$('#givename').modal('show'); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; document.getElementById('ttletext').value = ''; StartRunningTime();">
+	<body class="hold-transition sidebar-mini text-sm layout-navbar-fixed layout-footer-fixed" onload="$('#givename').modal('show'); StartRunningTime(); document.getElementById('username').value = ''; document.getElementById('roomiden').value = ''; document.getElementById('ttletext').value = ''; $('#openfild').val(null); sessionStorage.setItem('username',''); sessionStorage.setItem('roomiden',''); sessionStorage.setItem('listcell','');">
 		<div class="wrapper">
 			<nav class="main-header navbar navbar-expand navbar-lightblue navbar-dark">
 				<ul class="navbar-nav">
@@ -50,6 +51,11 @@
 
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#openfild').val(null); $('#openmode').modal('show');">
+							<span class="text-lightblue"><i class="fas fa-pen-nib"></i></span>
+						</button>
+					</li>
+					<li class="nav-item">
 						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="SaveDocument();">
 							<span class="text-lightblue"><i class="fas fa-save"></i></span>
 						</button>
@@ -60,7 +66,7 @@
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#colbmode').modal('show');">
 							<span class="text-lightblue"><i class="fas fa-wheelchair"></i></span>
 						</button>
 					</li>
@@ -120,14 +126,12 @@
 				</div>
 			</div>
 
-			<!--
 			<footer class="main-footer">
 				<div class="float-right d-none d-sm-block">
 					Created with <i class="fas fa-heart text-lightblue"></i> by <span class="headelem text-lightblue" onclick="window.location.href = 'https://github.com/t0xic0der/'">t0xic0der</span>
 				</div>
 				<span class="headelem text-lightblue">Syngrafias v26072020. </span><span onclick="window.location.href = 'https://github.com/t0xic0der/syngrafias/'" class="normelem">Contribute here.</span>
 			</footer>
-			-->
 		</div>
 
         <div class="modal fade" id="givename" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -140,13 +144,44 @@
 						<p class="normelem">
 							Syngrafias is a free and open-source synchronized authorship web-application for seamlessly collaborating on documents using intuitive cells.
 						</p>
-                        <input type="text" id="username" placeholder="Enter your username" class="form-control normelem">
+					 	<input type="text" id="username" placeholder="Enter your username" class="form-control normelem">
                         <br/>
-                        <input type="text" id="roomiden" placeholder="Enter your chatroom key" class="form-control normelem disabled">
+                        <input type="text" id="roomiden" placeholder="Enter your workspace key" class="form-control normelem disabled">
                     </div>
                     <div class="modal-footer justify-content-between bg-lightblue">
                         <button type="button" class="btn btn-default" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
                         <button type="button" class="btn btn-default" onclick="SaveUserName()">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="openmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">Open an existing document</h4>
+                    </div>
+                    <div class="modal-body">
+						<p class="normelem text-justify">
+							The document that you open must be in the proper Syngrafias Workspace Document format. Also, keep in mind that opening a new document would replace the document that you are currently editing.
+						</p>
+						<p class="normelem text-justify">
+							Browse for the file you want and then select it. Then, click on Open to load up the file. Once the file is parsed, you would be given an option to continue with the loaded document up for editing.
+						</p>
+						<div class="input-group">
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="openfild" name="openfild">
+								<label class="custom-file-label" for="openfild">Select a document to open</label>
+							</div>
+							<div class="input-group-append">
+								<span class="input-group-text btn bg-lightblue" id="upldbutn">Open</span>
+							</div>
+						</div>
+						<div id="readotpt"></div>
+                    </div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+						<button type="button" class="btn btn-default" onclick="if (document.getElementById('fileinfo')) {document.getElementById('fileinfo').remove();} $('#openmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -239,9 +274,60 @@
             </div>
         </div>
 
+		<div class="modal fade" id="colbmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-lightblue">
+                        <h4 class="modal-title headelem">Instructions</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="headelem text-justify">For smooth and hassle-free collaboration while creating documents, you would want to follow the given instructions.</p>
+						<ul style="padding-left: 15px;">
+							<li class="normelem text-justify">You would want to begin making changes to the document only afer all collaborators have joined. Any change made in their absence (That is if you edit the document before all the collaborators join or continue editing after they leave), those changes would not be made in their copies.</li>
+							<li class="normelem text-justify">Your fellow collaborators can join only when they open up a copy of the same document at their end too. So be doubly sure to save your work at all the ends before logging out of the workspace because they will be opening up the very same file at their ends when editing again together.</li>
+							<li class="normelem text-justify">Be sure to stay connected at all the times while making changes to keep them synchronized at all the ends. You would automatically be thrown an error should you get disconnected from the WebSocket server and you would not be able to make any changes until you refresh the page.</li>
+							<li class="normelem text-justify">Your session details are limited only to your current tab so closing the tab or refreshing the page would automatically log you out from your current workspace. Be sure to log back into the same workspace and open your copy of the file to continue editing collaboratively.</li>
+							<li class="normelem text-justify">Even if you are not actively collaborating in the edits, you can keep up with the changes made so far by simply staying connected to the workspace while the changes are made (active sync) or by taking a copy from one of the fellow contributors after changes are complete (passive sync).</li>
+						</ul>
+                    </div>
+                    <div class="modal-footer justify-content-between bg-lightblue">
+                        <button type="button" class="btn btn-default" onclick="$('#colbmode').modal('hide');">Exit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </body>
 
-  	<script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			bsCustomFileInput.init();
+		});
+		let fileinpt = $("#openfild");
+		let upldbutn = $("#upldbutn");
+		upldbutn.on("click", function () {
+			if (!window.FileReader)
+			{
+				toastr.error("The file could not be read due to unavailability of file reader API.", "", {"positionClass": "toast-bottom-right"});
+			}
+			else
+			{
+				let textinpt = fileinpt.get(0);
+				let readobjc = new FileReader();
+				if (textinpt.files.length)
+				{
+					let textfile = textinpt.files[0];
+					readobjc.readAsText(textfile);
+					$(readobjc).on("load", ProcessFile);
+				}
+				else
+				{
+					toastr.error("Please upload a file before continuing to open it.", "", {"positionClass": "toast-bottom-right"});
+				}
+			}
+		});
+	</script>
+	<script type="text/javascript">
 		$(function() {
     		$("#sortable").sortable();
     		//$("#sortable").disableSelection();
@@ -275,7 +361,7 @@
 			{
 				if (!(/\s/.test(username) || /\s/.test(roomiden)))
 				{
-					if (roomiden.match(/^[a-f0-9]{8}$/i))
+					if (roomiden.match(/^[a-f0-9]{8}$/) && username.match(/^[a-z0-9]+$/))
 					{
 						sessionStorage.setItem("username", username); sessionStorage.setItem("roomiden", roomiden);
 						$('#givename').modal('hide');
@@ -283,6 +369,14 @@
 						document.getElementById("userhead").innerText = username; document.getElementById("idenhead").innerText = roomiden;
 						sessionStorage.setItem("listcell","");
 					}
+					else
+					{
+						toastr.error("Please rectify your input in either username or workspace key fields before continuing.","",{"positionClass": "toast-bottom-right"});
+					}
+				}
+				else
+				{
+					toastr.error("Please rectify your input in either username or workspace key fields before continuing.","",{"positionClass": "toast-bottom-right"});
 				}
 			}
 		}
@@ -308,7 +402,7 @@
 						let arryelem = {
 							celliden: listcell[indx],
 							cellname: document.getElementById("cellname-"+listcell[indx]).value,
-							document: $("#conttext-"+listcell[indx]).summernote("code")
+							conttext: $("#conttext-"+listcell[indx]).summernote("code")
 						};
 						printarr.push(arryelem);
 					}
@@ -336,8 +430,135 @@
 			}
 			else
 			{
-				toastr.error("The document could not be saved as it is empty","",{"positionClass": "toast-bottom-right"});
+				toastr.error("The document could not be saved as it is empty.","",{"positionClass": "toast-bottom-right"});
 			}
+		}
+		function ProcessFile(e)
+		{
+			let actifile = e.target.result;
+			if (actifile && actifile.length) {
+				//console.log(actifile);
+				try {
+					let document = JSON.parse(actifile);
+					let modifdom = "<div id='fileinfo'>" + "<br/>" + "<dl class='row'>" +
+						"<dt class='col-sm-4'>Workspace ID</dt>" +
+						"<dd class='col-sm-8'>" + document["workspec"] + "</dd>" +
+						"<dt class='col-sm-4'>Created by</dt>" +
+						"<dd class='col-sm-8'>" + document["username"] + "</dd>" +
+						"<dt class='col-sm-4'>Last modified on</dt>" +
+						"<dd class='col-sm-8'>" + document["maketime"] + "</dd>" +
+						"</dl>" + "<button type='button' class='btn bg-lightblue' onclick=' OpenDocument(" + actifile + ");'>Continue with this document</button>" + "</div>";
+					$("#readotpt").html(modifdom);
+				}
+				catch (e) {
+					toastr.error("The file could not be opened as the format is unrecognizable.","",{"positionClass": "toast-bottom-right"});
+					if (document.getElementById("fileinfo"))
+					{
+						document.getElementById("fileinfo").remove();
+					}
+				}
+			}
+		}
+		function OpenDocument(actifile)
+		{
+			if (document.getElementById("fileinfo"))
+			{
+				document.getElementById("fileinfo").remove();
+			}
+			$("#openmode").modal("hide");
+			$("#colbmode").modal("show");
+			console.log(actifile);
+			let listcell = sessionStorage.getItem("listcell").split(", ");
+			for (let indx = 0; indx < listcell.length; indx++)
+			{
+				let celliden = listcell[indx];
+				if (celliden != "")
+				{
+					document.getElementById(celliden).remove();
+					let listcell = sessionStorage.getItem("listcell");
+					listcell = listcell.replace(celliden + ", ", "");
+					sessionStorage.setItem("listcell", listcell);
+					console.log("Deleted a cell : " + listcell);
+					let curtdate = new Date;
+				}
+			}
+			toastr.error("All cells of the document were removed in order to open up a new document.","",{"positionClass": "toast-bottom-right"});
+			console.log(sessionStorage.getItem("listcell"));
+			listcell = "";
+			for (let indx = 0; indx < actifile["document"].length; indx++)
+			{
+				listcell = listcell + actifile["document"][indx]["celliden"] + ", ";
+			}
+			sessionStorage.setItem("listcell",listcell);
+
+			/*
+			console.log(sessionStorage.getItem("listcell"));
+			console.log(sessionStorage.getItem("listcell"));
+			*/
+			listcell = sessionStorage.getItem("listcell").split(", ");
+			for (let indx = 0; indx < listcell.length; indx++)
+			{
+				let celliden = listcell[indx];
+				if (celliden != "")
+				{
+					let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
+						"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
+						"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+						"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
+						"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
+					$("#sortable").append(modifdom);
+					document.getElementById("cellname-"+celliden).value = actifile["document"][indx]["cellname"];
+					$("#conttext-"+celliden).summernote({
+						tabsize: 4,
+						height: "100",
+						toolbar: [
+							["style", ["bold", "italic", "underline", "clear"]],
+							["font", ["strikethrough", "superscript", "subscript"]],
+							["fontsize", ["fontsize"]],
+							["color", ["color"]],
+							["para", ["ul", "ol", "paragraph"]],
+							["height", ["height"]],
+						],
+						callbacks: {
+							onKeydown: function (e) {
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							},
+							onKeyup: function (e) {
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							},
+							onPaste: function (e) {
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
+						}
+					});
+					$("#conttext-"+celliden).summernote("code", actifile["document"][indx]["conttext"]);
+				}
+			}
+			toastr.success("All cells were successfully loaded from the opened file.","",{"positionClass": "toast-bottom-right"});
 		}
 	  	function InsertCell()
 		{
@@ -517,18 +738,25 @@
 					else if (data.textmesg.split(" ")[0] == "/wipe")
 					{
 						let celliden = data.textmesg.split(" ")[1];
-						document.getElementById(celliden).remove();
-						let listcell = sessionStorage.getItem("listcell");
-						listcell = listcell.replace(celliden + ", ", "");
-						sessionStorage.setItem("listcell", listcell);
-						console.log("Received a cell deletion call : " + listcell);
-                        let curtdate = new Date;
-                        let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-times-circle text-danger'></i></td>" +
-							"<td><code class='text-danger'>" + celliden.toUpperCase() + "</code></td>" +
-							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-							"<td><span class='headelem'>" + data.username + "</span> removed a cell.</td></tr>";
-                        $("#activity").append(modifdom);
-						toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.","",{"positionClass": "toast-bottom-right"});
+						if (sessionStorage.getItem("listcell").includes(celliden) == true)
+						{
+							document.getElementById(celliden).remove();
+							let listcell = sessionStorage.getItem("listcell");
+							listcell = listcell.replace(celliden + ", ", "");
+							sessionStorage.setItem("listcell", listcell);
+							console.log("Received a cell deletion call : " + listcell);
+							let curtdate = new Date;
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-times-circle text-danger'></i></td>" +
+								"<td><code class='text-danger'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>" + data.username + "</span> removed a cell.</td></tr>";
+							$("#activity").append(modifdom);
+							toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.","",{"positionClass": "toast-bottom-right"});
+						}
+						else
+						{
+							toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>. The instruction could not be followed as the cell does not exist at your end.","",{"positionClass": "toast-bottom-right"});
+						}
 					}
 					else if (data.textmesg.split(" ")[0] == "/note")
                     {
