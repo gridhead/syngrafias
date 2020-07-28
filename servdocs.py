@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-import click
+from flask import Flask, render_template, request, jsonify
+import click, time, json
 
 
 servchat = Flask(__name__)
@@ -8,6 +8,29 @@ servchat = Flask(__name__)
 @servchat.route("/")
 def editdocs():
     return render_template("editdocs.html", sockport=sockp0rt)
+
+
+@servchat.route("/savedocs/")
+def savedocs():
+    try:
+        username = request.args.get("username", "0", type=str)
+        workspec = request.args.get("workspec", "0", type=str)
+        docsname = request.args.get("docsname", "0", type=str)
+        document = request.args.get("document", "0", type=str)
+        curttime = time.time()
+        filename = username + "_" + workspec + "_" + str(curttime) + ".swd"
+        docsdict = {
+            "username": username,
+            "workspec": workspec,
+            "docsname": docsname,
+            "maketime": time.ctime(curttime),
+            "document": json.loads(document),
+        }
+        with open("static/docs/"+filename, "w") as jsonfile:
+            json.dump(docsdict, jsonfile)
+        return jsonify(result=filename)
+    except:
+        return jsonify(result="fail")
 
 
 def colabnow(netpdata, servport):
