@@ -50,18 +50,23 @@
 
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="SaveDocument();">
+							<span class="text-lightblue"><i class="fas fa-save"></i></span>
+						</button>
+					</li>
+					<li class="nav-item">
 						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#abotmode').modal('show');">
-							<span class="text-lightblue"><i class="fas fa-question"></i>&nbsp;&nbsp;About</span>
+							<span class="text-lightblue"><i class="fas fa-question"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
 						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;">
-							<span class="text-lightblue"><i class="fas fa-wheelchair"></i>&nbsp;&nbsp;Help</span>
+							<span class="text-lightblue"><i class="fas fa-wheelchair"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
 						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="InsertCell();">
-							<span class="text-lightblue"><i class="fas fa-plus"></i>&nbsp;&nbsp;Insert</span>
+							<span class="text-lightblue"><i class="fas fa-plus"></i></span>
 						</button>
 					</li>
 				</ul>
@@ -288,6 +293,52 @@
             else
                 return chekqant;
         }
+        function SaveDocument()
+		{
+			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+			if (sessionStorage.getItem("listcell").trim() != "")
+			{
+				let listcell = sessionStorage.getItem("listcell").split(", ");
+				let printarr = [];
+				for (let indx = 0; indx < listcell.length; indx++)
+				{
+					if (listcell[indx] != "")
+					{
+						console.log(listcell[indx]);
+						let arryelem = {
+							celliden: listcell[indx],
+							cellname: document.getElementById("cellname-"+listcell[indx]).value,
+							document: $("#conttext-"+listcell[indx]).summernote("code")
+						};
+						printarr.push(arryelem);
+					}
+				}
+				console.log(printarr);
+				printstr = JSON.stringify(printarr);
+				$.getJSON($SCRIPT_ROOT + "/savedocs/", {
+						username: sessionStorage.getItem("username"),
+						workspec: sessionStorage.getItem("roomiden"),
+						docsname: document.getElementById("ttletext").value,
+						document: printstr
+					}, function(data) {
+						console.log(data.result);
+						if (data.result == "fail")
+						{
+							toastr.error("The document could not be saved due to an internal server error.","",{"positionClass": "toast-bottom-right"});
+						}
+						else
+						{
+							toastr.success("The document was saved successfully.","",{"positionClass": "toast-bottom-right"});
+							window.open("static/docs/"+data.result.toString(), "_blank");
+						}
+					}
+				);
+			}
+			else
+			{
+				toastr.error("The document could not be saved as it is empty","",{"positionClass": "toast-bottom-right"});
+			}
+		}
 	  	function InsertCell()
 		{
 			if (webesock.readyState == 3)
@@ -300,7 +351,7 @@
 				let celliden = RandomStringGenerator();
 				let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 					"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-					"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
+					"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
 					"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 					"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 				$("#sortable").append(modifdom);
@@ -320,6 +371,7 @@
 						["para", ["ul", "ol", "paragraph"]],
 						["height", ["height"]],
                     ],
+					focus: true,
 					callbacks: {
 						onKeydown: function (e) {
 							let contents = $("#conttext-"+celliden).summernote("code");
@@ -356,7 +408,6 @@
 						}
 					}
 				});
-				$("#conttext-"+celliden).summernote("focus");
 				let listcell = sessionStorage.getItem("listcell");
 				listcell = listcell + celliden + ", ";
 				sessionStorage.setItem("listcell", listcell);
@@ -401,7 +452,7 @@
 						let celliden = data.textmesg.split(" ")[1];
 						let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 							"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-							"</div>" + "<input type='text' class='form-control' placeholder='Enter the cell name here'>" +
+							"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
 							"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 							"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 						$("#sortable").append(modifdom);
