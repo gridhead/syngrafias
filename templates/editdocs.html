@@ -525,37 +525,58 @@
 						],
 						callbacks: {
 							onKeydown: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							},
 							onKeyup: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							},
 							onPaste: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							}
 						}
 					});
@@ -603,37 +624,58 @@
 					focus: true,
 					callbacks: {
 						onKeydown: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						},
 						onKeyup: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						},
 						onPaste: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						}
 					}
 				});
@@ -670,7 +712,7 @@
 		}
 		function RenameCell(celliden)
 		{
-			if (webesock.readyState == 3)
+			if (webesock.readyState === 3)
 			{
 				$("#sockfail").modal("show");
 			}
@@ -722,37 +764,58 @@
 							],
                             callbacks: {
                                 onKeydown: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+                                    	let writings = "/note " + celliden + " " + contents;
+                                    	let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 },
                                 onKeyup: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+										let writings = "/note " + celliden + " " + contents;
+										let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 },
                                 onPaste: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+										let writings = "/note " + celliden + " " + contents;
+										let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 }
                             }
 						});
