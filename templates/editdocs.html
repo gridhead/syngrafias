@@ -328,8 +328,6 @@
 				}
 			}
 		});
-	</script>
-	<script type="text/javascript">
 		$(function() {
     		$("#sortable").sortable();
     		//$("#sortable").disableSelection();
@@ -363,7 +361,7 @@
 			{
 				if (!(/\s/.test(username) || /\s/.test(roomiden)))
 				{
-					if (roomiden.match(/^[a-f0-9]{8}$/) && username.match(/^[a-z0-9]+$/))
+					if (roomiden.match(/^[a-f0-9]{8}$/) && username.match(/^[a-z0-9]+$/i))
 					{
 						sessionStorage.setItem("username", username); sessionStorage.setItem("roomiden", roomiden);
 						$('#givename').modal('hide');
@@ -439,7 +437,6 @@
 		{
 			let actifile = e.target.result;
 			if (actifile && actifile.length) {
-				//console.log(actifile);
 				try {
 					let document = JSON.parse(actifile);
 					let modifdom = "<div id='fileinfo'>" + "<br/>" + "<dl class='row'>" +
@@ -492,11 +489,6 @@
 				listcell = listcell + actifile["document"][indx]["celliden"] + ", ";
 			}
 			sessionStorage.setItem("listcell",listcell);
-
-			/*
-			console.log(sessionStorage.getItem("listcell"));
-			console.log(sessionStorage.getItem("listcell"));
-			*/
 			listcell = sessionStorage.getItem("listcell").split(", ");
 			for (let indx = 0; indx < listcell.length; indx++)
 			{
