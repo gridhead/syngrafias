@@ -118,7 +118,7 @@
 			<div class="content-wrapper text-sm" style="background-color: #ffffff;">
 				<section class="content-header">
 				  	<div class="container-fluid">
-						<input class="form-control normelem" type="text" id="ttletext" placeholder="Enter the document title here">
+						<input class="form-control normelem" type="text" id="ttletext" onkeyup="SendChangedTitle();" onkeydown="SendChangedTitle();" placeholder="Enter the document title here">
 				  	</div>
 				</section>
 				<section class="content">
@@ -336,6 +336,17 @@
 	<script>
 		let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
 		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
+		function SendChangedTitle()
+		{
+			let writings = "/ttle " + document.getElementById("ttletext").value;
+			webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+			let curtdate = new Date;
+			let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check text-fuchsia'></i></td>" +
+				"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
+				"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+				"<td><span class='headelem'>You</span> changed the document title.</td></tr>";
+			$("#activity").append(modifdom);
+		}
 		function StartRunningTime()
 		{
 			let curtdate = new Date();
@@ -478,7 +489,6 @@
 					listcell = listcell.replace(celliden + ", ", "");
 					sessionStorage.setItem("listcell", listcell);
 					console.log("Deleted a cell : " + listcell);
-					let curtdate = new Date;
 				}
 			}
 			toastr.error("All cells of the document were removed in order to open up a new document.","",{"positionClass": "toast-bottom-right"});
@@ -497,7 +507,7 @@
 				{
 					let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 						"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-						"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+						"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 						"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 						"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 					$("#sortable").append(modifdom);
@@ -570,7 +580,7 @@
 				let celliden = RandomStringGenerator();
 				let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 					"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-					"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+					"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 					"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 					"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 				$("#sortable").append(modifdom);
@@ -658,6 +668,25 @@
 				toastr.error("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully deleted from your end and conveyed to all collaborators.","",{"positionClass": "toast-bottom-right"});
 			}
 		}
+		function RenameCell(celliden)
+		{
+			if (webesock.readyState == 3)
+			{
+				$("#sockfail").modal("show");
+			}
+			else
+			{
+				let cellname = document.getElementById("cellname-"+celliden).value;
+				let writings = "/rncl" + " " + celliden + " " + cellname;
+				let curtdate = new Date;
+				let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-info text-purple'></i></td>" +
+					"<td><code class='text-purple'>" + celliden.toUpperCase() + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> renamed a cell.</td></tr>";
+				$("#activity").append(modifdom);
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+			}
+		}
 		webesock.onmessage = function (event)
 		{
 			let data = JSON.parse(event.data);
@@ -671,7 +700,7 @@
 						let celliden = data.textmesg.split(" ")[1];
 						let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 							"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-							"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+							"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 							"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 							"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 						$("#sortable").append(modifdom);
@@ -756,20 +785,49 @@
 							toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>. The instruction could not be followed as the cell does not exist at your end.","",{"positionClass": "toast-bottom-right"});
 						}
 					}
+					else if (data.textmesg.split(" ")[0] === "/rncl")
+					{
+						let celliden = data.textmesg.split(" ")[1];
+						if (sessionStorage.getItem("listcell").includes(celliden) === true)
+						{
+							let textmesg = data.textmesg.replace(celliden, "");
+							textmesg = textmesg.replace("/rncl", "");
+							textmesg = textmesg.trim();
+							document.getElementById("cellname-"+celliden).value = textmesg;
+							let curtdate = new Date;
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-info-circle text-purple'></i></td>" +
+								"<td><code class='text-purple'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>" + data.username + "</span> renamed a cell.</td></tr>";
+							$("#activity").append(modifdom);
+						}
+					}
 					else if (data.textmesg.split(" ")[0] === "/note")
                     {
                         let celliden = data.textmesg.split(" ")[1];
                         let textmesg = data.textmesg.replace(celliden, "");
                         textmesg = textmesg.replace("/note", "");
                         textmesg = textmesg.trim();
-						let curtdate = new Date;
-                        $("#conttext-"+celliden).summernote("code", textmesg);
-						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
+						$("#conttext-"+celliden).summernote("code", textmesg);
+                        let curtdate = new Date;
+                        let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
 							"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
 							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
 							"<td><span class='headelem'>" + data.username + "</span> wrote to a cell.</td></tr>";
                         $("#activity").append(modifdom);
                     }
+					else if (data.textmesg.split(" ")[0] === "/ttle")
+					{
+						let textmesg = data.textmesg.replace("/ttle","");
+						textmesg = textmesg.trim();
+						document.getElementById("ttletext").value = textmesg;
+						let curtdate = new Date;
+						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check-circle text-fuchsia'></i></td>" +
+							"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
+							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+							"<td><span class='headelem'>" + data.username + "</span> changed the document title.</td></tr>";
+                        $("#activity").append(modifdom);
+					}
 				}
 			}
 		}
