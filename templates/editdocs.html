@@ -8,14 +8,14 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/adminlte.css') }}" />
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/jquery-ui.css') }}" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css3/summernote-lite.css') }}" />
 		<script src="{{ url_for('static', filename='jscn/jquery.min.js') }}"></script>
     	<script src="{{ url_for('static', filename='jscn/bootstrap.bundle.js') }}"></script>
     	<script src="{{ url_for('static', filename='jscn/adminlte.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/jquery-ui.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='jscn/bs-custom-file-input.js') }}"></script>
-		<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet" />
-		<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+		<script src="{{ url_for('static', filename='jscn/summernote-lite.js') }}"></script>
 		<style>
             .normelem{
                 font-family: "Inter", sans-serif;
@@ -51,32 +51,32 @@
 
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#openfild').val(null); $('#openmode').modal('show');">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {$('#openfild').val(null); $('#openmode').modal('show');} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-pen-nib"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="SaveDocument();">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {SaveDocument();} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-save"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-bug"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#abotmode').modal('show');">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {$('#abotmode').modal('show');} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-question"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="$('#colbmode').modal('show');">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {$('#colbmode').modal('show');} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-wheelchair"></i></span>
 						</button>
 					</li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="InsertCell();">
+						<button class="btn btn-sm btn-light" style="margin-left: 5px; margin-right: 5px;" onclick="if (sessionStorage.getItem('username') !== '') {InsertCell();} else {ThrowForbiddenError();}">
 							<span class="text-lightblue"><i class="fas fa-plus"></i></span>
 						</button>
 					</li>
@@ -362,7 +362,7 @@
 		function SaveUserName() {
 			let username = document.getElementById("username").value;
 			let roomiden = document.getElementById("roomiden").value;
-			if (username != "" && roomiden != "")
+			if (username !== "" && roomiden !== "")
 			{
 				if (!(/\s/.test(username) || /\s/.test(roomiden)))
 				{
@@ -395,13 +395,13 @@
         function SaveDocument()
 		{
 			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-			if (sessionStorage.getItem("listcell").trim() != "")
+			if (sessionStorage.getItem("listcell").trim() !== "")
 			{
 				let listcell = sessionStorage.getItem("listcell").split(", ");
 				let printarr = [];
 				for (let indx = 0; indx < listcell.length; indx++)
 				{
-					if (listcell[indx] != "")
+					if (listcell[indx] !== "")
 					{
 						console.log(listcell[indx]);
 						let arryelem = {
@@ -421,7 +421,7 @@
 						document: printstr
 					}, function(data) {
 						console.log(data.result);
-						if (data.result == "fail")
+						if (data.result === "fail")
 						{
 							toastr.error("The document could not be saved due to an internal server error.","",{"positionClass": "toast-bottom-right"});
 						}
@@ -477,7 +477,7 @@
 			for (let indx = 0; indx < listcell.length; indx++)
 			{
 				let celliden = listcell[indx];
-				if (celliden != "")
+				if (celliden !== "")
 				{
 					document.getElementById(celliden).remove();
 					let listcell = sessionStorage.getItem("listcell");
@@ -504,7 +504,7 @@
 			for (let indx = 0; indx < listcell.length; indx++)
 			{
 				let celliden = listcell[indx];
-				if (celliden != "")
+				if (celliden !== "")
 				{
 					let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 						"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
@@ -565,9 +565,13 @@
 			}
 			toastr.success("All cells were successfully loaded from the opened file.","",{"positionClass": "toast-bottom-right"});
 		}
+		function ThrowForbiddenError()
+		{
+			toastr.error("Please login to a workspace before continuing to use this action.","",{"positionClass": "toast-bottom-right"});
+		}
 	  	function InsertCell()
 		{
-			if (webesock.readyState == 3)
+			if (webesock.readyState === 3)
 			{
 				$("#sockfail").modal("show");
 			}
@@ -644,7 +648,7 @@
 		}
 		function DeleteCell(celliden)
 		{
-			if (webesock.readyState == 3)
+			if (webesock.readyState === 3)
 			{
 				$("#sockfail").modal("show");
 			}
@@ -668,11 +672,11 @@
 		webesock.onmessage = function (event)
 		{
 			let data = JSON.parse(event.data);
-			if (!(data.username == sessionStorage.getItem("username")))
+			if (!(data.username === sessionStorage.getItem("username")))
 			{
-				if (data.roomiden == sessionStorage.getItem("roomiden"))
+				if (data.roomiden === sessionStorage.getItem("roomiden"))
 				{
-					if (data.textmesg.split(" ")[0] == "/make")
+					if (data.textmesg.split(" ")[0] === "/make")
 					{
 					    let curtdate = new Date;
 						let celliden = data.textmesg.split(" ")[1];
@@ -740,10 +744,10 @@
 						console.log("Received a cell creation call : " + listcell);
 						toastr.success("The creation of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>.","",{"positionClass": "toast-bottom-right"});
 					}
-					else if (data.textmesg.split(" ")[0] == "/wipe")
+					else if (data.textmesg.split(" ")[0] === "/wipe")
 					{
 						let celliden = data.textmesg.split(" ")[1];
-						if (sessionStorage.getItem("listcell").includes(celliden) == true)
+						if (sessionStorage.getItem("listcell").includes(celliden) === true)
 						{
 							document.getElementById(celliden).remove();
 							let listcell = sessionStorage.getItem("listcell");
@@ -763,7 +767,7 @@
 							toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>. The instruction could not be followed as the cell does not exist at your end.","",{"positionClass": "toast-bottom-right"});
 						}
 					}
-					else if (data.textmesg.split(" ")[0] == "/note")
+					else if (data.textmesg.split(" ")[0] === "/note")
                     {
                         let celliden = data.textmesg.split(" ")[1];
                         let textmesg = data.textmesg.replace(celliden, "");
