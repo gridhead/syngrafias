@@ -99,7 +99,6 @@
 								<a href="#" class="nav-link normelem"><i class="fas fa-tag nav-icon"></i><p id="idenhead">DEADCAFE</p></a>
 							</li>
 						</ul>
-                        <hr style="margin-top: 10px; margin-bottom: 10px;" />
 						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 							<li class="nav-item">
 								<a href="#" class="nav-link normelem active"><i class="fas fa-tools nav-icon"></i><p>Build</p></a>
@@ -119,7 +118,7 @@
 			<div class="content-wrapper text-sm" style="background-color: #ffffff;">
 				<section class="content-header">
 				  	<div class="container-fluid">
-						<input class="form-control normelem" type="text" id="ttletext" placeholder="Enter the document title here">
+						<input class="form-control normelem" type="text" id="ttletext" onkeyup="SendChangedTitle();" onkeydown="SendChangedTitle();" placeholder="Enter the document title here">
 				  	</div>
 				</section>
 				<section class="content">
@@ -140,20 +139,20 @@
         <div class="modal fade text-sm" id="givename" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Syngrafias</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Welcome</h4>
                     </div>
                     <div class="modal-body">
-						<p class="normelem">
+						<p class="normelem text-justify">
 							Syngrafias is a free and open-source synchronized authorship web-application for seamlessly collaborating on documents using intuitive cells.
 						</p>
 					 	<input type="text" id="username" placeholder="Enter your username" class="form-control normelem">
                         <br/>
                         <input type="text" id="roomiden" placeholder="Enter your workspace key" class="form-control normelem disabled">
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
-                        <button type="button" class="btn btn-default" onclick="SaveUserName()">Continue</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
+                        <button type="button" class="btn bg-lightblue" onclick="SaveUserName()">Continue</button>
                     </div>
                 </div>
             </div>
@@ -162,8 +161,8 @@
         <div class="modal fade text-sm" id="openmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Open an existing document</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Open an existing document</h4>
                     </div>
                     <div class="modal-body">
 						<p class="normelem text-justify">
@@ -183,8 +182,8 @@
 						</div>
 						<div id="readotpt"></div>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="if (document.getElementById('fileinfo')) {document.getElementById('fileinfo').remove();} $('#openmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="if (document.getElementById('fileinfo')) {document.getElementById('fileinfo').remove();} $('#openmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -193,8 +192,8 @@
 		<div class="modal fade text-sm" id="abotmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">About</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">About</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify">Thank you for using Syngrafias!</p>
@@ -208,7 +207,7 @@
 							<li>
 								<img src="https://avatars0.githubusercontent.com/u/49605954?s=460&u=bd798cf7788f056e3c1a1a5bd2de5f4f5ae84eb9&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/t0xic0der/', '_blank');">Akashdeep Dhar</a>
-								<span class="users-list-date">t0xic0der</span>
+								<span class="users-list-date headelem text-lightblue">t0xic0der</span>
 							</li>
 						</ul>
 						<p>The following are the advisors to this project.</p>
@@ -216,23 +215,23 @@
 							<li>
 								<img src="https://avatars0.githubusercontent.com/u/39235382?s=400&u=eeb07efa692bac0fcb441e4b054f80e66e73836b&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/s-katte/', '_blank');">Shubham Katte</a>
-								<span class="users-list-date">s-katte</span>
+								<span class="users-list-date headelem text-lightblue">s-katte</span>
 							</li>
 							<li>
 								<img src="https://avatars3.githubusercontent.com/u/32795689?s=460&u=2f970533be1f419b2804eaff81f02038626554aa&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/VaibhavSaini19/', '_blank');">Vaibhav Saini</a>
-								<span class="users-list-date">VaibhavSaini19</span>
+								<span class="users-list-date headelem text-lightblue">VaibhavSaini19</span>
 							</li>
 							<li>
 								<img src="https://avatars2.githubusercontent.com/u/46623131?s=460&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/mohitgurav/', '_blank');">Mohit Gurav</a>
-								<span class="users-list-date">mohitgurav</span>
+								<span class="users-list-date headelem text-lightblue">mohitgurav</span>
 							</li>
                     	</ul>
 					</div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">Fork</button>
-                        <button type="button" class="btn btn-default" onclick="$('#abotmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">Fork</button>
+                        <button type="button" class="btn bg-lightblue" onclick="$('#abotmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -241,14 +240,14 @@
 		<div class="modal fade text-sm" id="sockfail" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Connection failed</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Connection failed</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify" style="margin-bottom: 5px;">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="location.reload();">Refresh</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="location.reload();">Refresh</button>
                     </div>
                 </div>
             </div>
@@ -257,31 +256,31 @@
 		<div class="modal fade text-sm" id="actimode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Activities</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Activities</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify">These are the activities done so far.</p>
 						<div class="table-responsive p-0" style="height: 450px;">
 							<table id="proclist" class="table table-head-fixed text-nowrap table-sm">
-								<thead><tr class="headelem"><th>#</th><th>Identity</th><th>Timestamp</th><th>Action</th></tr></thead>
+								<thead class="text-lightblue"><tr class="headelem"><th>#</th><th>Identity</th><th>Timestamp</th><th>Action</th></tr></thead>
 								<tbody id="activity"></tbody>
 							</table>
 						</div>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="$('tr.acticell').remove();">Wipe</button>
-                        <button type="button" class="btn btn-default" onclick="$('#actimode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="$('tr.acticell').remove();">Wipe</button>
+                        <button type="button" class="btn bg-lightblue" onclick="$('#actimode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
         </div>
 
 		<div class="modal fade text-sm" id="colbmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Instructions</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Instructions</h4>
                     </div>
                     <div class="modal-body">
                         <p class="headelem text-justify">For smooth and hassle-free collaboration while creating documents, you would want to follow the given instructions.</p>
@@ -293,8 +292,8 @@
 							<li class="normelem text-justify">Even if you are not actively collaborating in the edits, you can keep up with the changes made so far by simply staying connected to the workspace while the changes are made (active sync) or by taking a copy from one of the fellow contributors after changes are complete (passive sync).</li>
 						</ul>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="$('#colbmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="$('#colbmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -329,8 +328,6 @@
 				}
 			}
 		});
-	</script>
-	<script type="text/javascript">
 		$(function() {
     		$("#sortable").sortable();
     		//$("#sortable").disableSelection();
@@ -339,6 +336,24 @@
 	<script>
 		let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
 		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
+		function SendChangedTitle()
+		{
+			if (webesock.readyState === 3)
+			{
+				$("#sockfail").modal("show");
+			}
+			else
+			{
+				let writings = "/ttle " + document.getElementById("ttletext").value;
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+				let curtdate = new Date;
+				let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check text-fuchsia'></i></td>" +
+					"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> changed the document title.</td></tr>";
+				$("#activity").append(modifdom);
+			}
+		}
 		function StartRunningTime()
 		{
 			let curtdate = new Date();
@@ -364,7 +379,7 @@
 			{
 				if (!(/\s/.test(username) || /\s/.test(roomiden)))
 				{
-					if (roomiden.match(/^[a-f0-9]{8}$/) && username.match(/^[a-z0-9]+$/))
+					if (roomiden.match(/^[a-f0-9]{8}$/) && username.match(/^[a-z0-9]+$/i))
 					{
 						sessionStorage.setItem("username", username); sessionStorage.setItem("roomiden", roomiden);
 						$('#givename').modal('hide');
@@ -440,7 +455,6 @@
 		{
 			let actifile = e.target.result;
 			if (actifile && actifile.length) {
-				//console.log(actifile);
 				try {
 					let document = JSON.parse(actifile);
 					let modifdom = "<div id='fileinfo'>" + "<br/>" + "<dl class='row'>" +
@@ -482,7 +496,6 @@
 					listcell = listcell.replace(celliden + ", ", "");
 					sessionStorage.setItem("listcell", listcell);
 					console.log("Deleted a cell : " + listcell);
-					let curtdate = new Date;
 				}
 			}
 			toastr.error("All cells of the document were removed in order to open up a new document.","",{"positionClass": "toast-bottom-right"});
@@ -493,11 +506,6 @@
 				listcell = listcell + actifile["document"][indx]["celliden"] + ", ";
 			}
 			sessionStorage.setItem("listcell",listcell);
-
-			/*
-			console.log(sessionStorage.getItem("listcell"));
-			console.log(sessionStorage.getItem("listcell"));
-			*/
 			listcell = sessionStorage.getItem("listcell").split(", ");
 			for (let indx = 0; indx < listcell.length; indx++)
 			{
@@ -506,7 +514,7 @@
 				{
 					let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 						"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-						"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+						"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 						"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 						"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 					$("#sortable").append(modifdom);
@@ -524,37 +532,58 @@
 						],
 						callbacks: {
 							onKeydown: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							},
 							onKeyup: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							},
 							onPaste: function (e) {
-								let contents = $("#conttext-"+celliden).summernote("code");
-								let writings = "/note " + celliden + " " + contents;
-								let curtdate = new Date;
-								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-								$("#activity").append(modifdom);
+								if (webesock.readyState === 3)
+								{
+									$("#sockfail").modal("show");
+								}
+								else
+								{
+									let contents = $("#conttext-"+celliden).summernote("code");
+									let writings = "/note " + celliden + " " + contents;
+									let curtdate = new Date;
+									webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+									$("#activity").append(modifdom);
+								}
 							}
 						}
 					});
@@ -579,7 +608,7 @@
 				let celliden = RandomStringGenerator();
 				let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 					"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-					"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+					"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 					"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 					"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 				$("#sortable").append(modifdom);
@@ -602,37 +631,58 @@
 					focus: true,
 					callbacks: {
 						onKeydown: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						},
 						onKeyup: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						},
 						onPaste: function (e) {
-							let contents = $("#conttext-"+celliden).summernote("code");
-							let writings = "/note " + celliden + " " + contents;
-							let curtdate = new Date;
-							webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-								"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-								"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-                        	$("#activity").append(modifdom);
+							if (webesock.readyState === 3)
+							{
+								$("#sockfail").modal("show");
+							}
+							else
+							{
+								let contents = $("#conttext-"+celliden).summernote("code");
+								let writings = "/note " + celliden + " " + contents;
+								let curtdate = new Date;
+								webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+								let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+									"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+									"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+									"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+								$("#activity").append(modifdom);
+							}
 						}
 					}
 				});
@@ -667,6 +717,25 @@
 				toastr.error("A cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was successfully deleted from your end and conveyed to all collaborators.","",{"positionClass": "toast-bottom-right"});
 			}
 		}
+		function RenameCell(celliden)
+		{
+			if (webesock.readyState === 3)
+			{
+				$("#sockfail").modal("show");
+			}
+			else
+			{
+				let cellname = document.getElementById("cellname-"+celliden).value;
+				let writings = "/rncl" + " " + celliden + " " + cellname;
+				let curtdate = new Date;
+				let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-info text-purple'></i></td>" +
+					"<td><code class='text-purple'>" + celliden.toUpperCase() + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> renamed a cell.</td></tr>";
+				$("#activity").append(modifdom);
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+			}
+		}
 		webesock.onmessage = function (event)
 		{
 			let data = JSON.parse(event.data);
@@ -680,7 +749,7 @@
 						let celliden = data.textmesg.split(" ")[1];
 						let modifdom = "<li class='' id='" + celliden + "'>" + "<div class='callout callout-info'>" + "<div class='input-group mb-3'>" +
 							"<div class='input-group-prepend'>" + "<span class='input-group-text bg-lightblue' id='celliden-" + celliden + "' >" + celliden.toUpperCase() + "</span>" +
-							"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' placeholder='Enter the cell name here'>" +
+							"</div>" + "<input type='text' class='form-control' id='cellname-" + celliden + "' onkeydown='RenameCell(\"" + celliden + "\")' onkeyup='RenameCell(\"" + celliden + "\")' placeholder='Enter the cell name here'>" +
 							"<div class='input-group-append'>" + "<span class='input-group-text bg-danger' onclick='DeleteCell(\"" + celliden + "\")'><i class='fas fa-times'></i></span>" +
 							"</div>" + "</div>" + "<div id='conttext-" + celliden + "'></div>" + "</div>" + "</li>";
 						$("#sortable").append(modifdom);
@@ -702,37 +771,58 @@
 							],
                             callbacks: {
                                 onKeydown: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+                                    	let writings = "/note " + celliden + " " + contents;
+                                    	let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 },
                                 onKeyup: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+										let writings = "/note " + celliden + " " + contents;
+										let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 },
                                 onPaste: function (e) {
-                                	let contents = $("#conttext-"+celliden).summernote("code");
-                                    let writings = "/note " + celliden + " " + contents;
-                                    let curtdate = new Date;
-                                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-									let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
-										"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
-										"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-										"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
-									$("#activity").append(modifdom);
+									if (webesock.readyState === 3)
+									{
+										$("#sockfail").modal("show");
+									}
+									else
+									{
+										let contents = $("#conttext-"+celliden).summernote("code");
+										let writings = "/note " + celliden + " " + contents;
+										let curtdate = new Date;
+										webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+										let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus text-info'></i></td>" +
+											"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
+											"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+											"<td><span class='headelem'>You</span> wrote to a cell.</td></tr>";
+										$("#activity").append(modifdom);
+									}
                                 }
                             }
 						});
@@ -765,20 +855,49 @@
 							toastr.error("The deletion of a cell named <span class='headelem'>" + celliden.toUpperCase() + "</span> was conveyed to all collaborators by <span class='headelem'>" + data.username + "</span>. The instruction could not be followed as the cell does not exist at your end.","",{"positionClass": "toast-bottom-right"});
 						}
 					}
+					else if (data.textmesg.split(" ")[0] === "/rncl")
+					{
+						let celliden = data.textmesg.split(" ")[1];
+						if (sessionStorage.getItem("listcell").includes(celliden) === true)
+						{
+							let textmesg = data.textmesg.replace(celliden, "");
+							textmesg = textmesg.replace("/rncl", "");
+							textmesg = textmesg.trim();
+							document.getElementById("cellname-"+celliden).value = textmesg;
+							let curtdate = new Date;
+							let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-info-circle text-purple'></i></td>" +
+								"<td><code class='text-purple'>" + celliden.toUpperCase() + "</code></td>" +
+								"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+								"<td><span class='headelem'>" + data.username + "</span> renamed a cell.</td></tr>";
+							$("#activity").append(modifdom);
+						}
+					}
 					else if (data.textmesg.split(" ")[0] === "/note")
                     {
                         let celliden = data.textmesg.split(" ")[1];
                         let textmesg = data.textmesg.replace(celliden, "");
                         textmesg = textmesg.replace("/note", "");
                         textmesg = textmesg.trim();
-						let curtdate = new Date;
-                        $("#conttext-"+celliden).summernote("code", textmesg);
-						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
+						$("#conttext-"+celliden).summernote("code", textmesg);
+                        let curtdate = new Date;
+                        let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-minus-circle text-info'></i></td>" +
 							"<td><code class='text-info'>" + celliden.toUpperCase() + "</code></td>" +
 							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
 							"<td><span class='headelem'>" + data.username + "</span> wrote to a cell.</td></tr>";
                         $("#activity").append(modifdom);
                     }
+					else if (data.textmesg.split(" ")[0] === "/ttle")
+					{
+						let textmesg = data.textmesg.replace("/ttle","");
+						textmesg = textmesg.trim();
+						document.getElementById("ttletext").value = textmesg;
+						let curtdate = new Date;
+						let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check-circle text-fuchsia'></i></td>" +
+							"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
+							"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+							"<td><span class='headelem'>" + data.username + "</span> changed the document title.</td></tr>";
+                        $("#activity").append(modifdom);
+					}
 				}
 			}
 		}
