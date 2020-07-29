@@ -99,7 +99,6 @@
 								<a href="#" class="nav-link normelem"><i class="fas fa-tag nav-icon"></i><p id="idenhead">DEADCAFE</p></a>
 							</li>
 						</ul>
-                        <hr style="margin-top: 10px; margin-bottom: 10px;" />
 						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 							<li class="nav-item">
 								<a href="#" class="nav-link normelem active"><i class="fas fa-tools nav-icon"></i><p>Build</p></a>
@@ -140,20 +139,20 @@
         <div class="modal fade text-sm" id="givename" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Syngrafias</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Welcome</h4>
                     </div>
                     <div class="modal-body">
-						<p class="normelem">
+						<p class="normelem text-justify">
 							Syngrafias is a free and open-source synchronized authorship web-application for seamlessly collaborating on documents using intuitive cells.
 						</p>
 					 	<input type="text" id="username" placeholder="Enter your username" class="form-control normelem">
                         <br/>
                         <input type="text" id="roomiden" placeholder="Enter your workspace key" class="form-control normelem disabled">
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
-                        <button type="button" class="btn btn-default" onclick="SaveUserName()">Continue</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="document.getElementById('roomiden').value = RandomStringGenerator();">Generate</button>
+                        <button type="button" class="btn bg-lightblue" onclick="SaveUserName()">Continue</button>
                     </div>
                 </div>
             </div>
@@ -162,8 +161,8 @@
         <div class="modal fade text-sm" id="openmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Open an existing document</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Open an existing document</h4>
                     </div>
                     <div class="modal-body">
 						<p class="normelem text-justify">
@@ -183,8 +182,8 @@
 						</div>
 						<div id="readotpt"></div>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="if (document.getElementById('fileinfo')) {document.getElementById('fileinfo').remove();} $('#openmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="if (document.getElementById('fileinfo')) {document.getElementById('fileinfo').remove();} $('#openmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -193,8 +192,8 @@
 		<div class="modal fade text-sm" id="abotmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">About</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">About</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify">Thank you for using Syngrafias!</p>
@@ -208,7 +207,7 @@
 							<li>
 								<img src="https://avatars0.githubusercontent.com/u/49605954?s=460&u=bd798cf7788f056e3c1a1a5bd2de5f4f5ae84eb9&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/t0xic0der/', '_blank');">Akashdeep Dhar</a>
-								<span class="users-list-date">t0xic0der</span>
+								<span class="users-list-date headelem text-lightblue">t0xic0der</span>
 							</li>
 						</ul>
 						<p>The following are the advisors to this project.</p>
@@ -216,23 +215,23 @@
 							<li>
 								<img src="https://avatars0.githubusercontent.com/u/39235382?s=400&u=eeb07efa692bac0fcb441e4b054f80e66e73836b&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/s-katte/', '_blank');">Shubham Katte</a>
-								<span class="users-list-date">s-katte</span>
+								<span class="users-list-date headelem text-lightblue">s-katte</span>
 							</li>
 							<li>
 								<img src="https://avatars3.githubusercontent.com/u/32795689?s=460&u=2f970533be1f419b2804eaff81f02038626554aa&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/VaibhavSaini19/', '_blank');">Vaibhav Saini</a>
-								<span class="users-list-date">VaibhavSaini19</span>
+								<span class="users-list-date headelem text-lightblue">VaibhavSaini19</span>
 							</li>
 							<li>
 								<img src="https://avatars2.githubusercontent.com/u/46623131?s=460&v=4" alt="User Image">
 								<a class="users-list-name" onclick="window.open('https://github.com/mohitgurav/', '_blank');">Mohit Gurav</a>
-								<span class="users-list-date">mohitgurav</span>
+								<span class="users-list-date headelem text-lightblue">mohitgurav</span>
 							</li>
                     	</ul>
 					</div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">Fork</button>
-                        <button type="button" class="btn btn-default" onclick="$('#abotmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">Fork</button>
+                        <button type="button" class="btn bg-lightblue" onclick="$('#abotmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
@@ -241,14 +240,14 @@
 		<div class="modal fade text-sm" id="sockfail" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Connection failed</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Connection failed</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify" style="margin-bottom: 5px;">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="location.reload();">Refresh</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="location.reload();">Refresh</button>
                     </div>
                 </div>
             </div>
@@ -257,31 +256,31 @@
 		<div class="modal fade text-sm" id="actimode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Activities</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Activities</h4>
                     </div>
                     <div class="modal-body">
                         <p class="normelem text-justify">These are the activities done so far.</p>
 						<div class="table-responsive p-0" style="height: 450px;">
 							<table id="proclist" class="table table-head-fixed text-nowrap table-sm">
-								<thead><tr class="headelem"><th>#</th><th>Identity</th><th>Timestamp</th><th>Action</th></tr></thead>
+								<thead class="text-lightblue"><tr class="headelem"><th>#</th><th>Identity</th><th>Timestamp</th><th>Action</th></tr></thead>
 								<tbody id="activity"></tbody>
 							</table>
 						</div>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-						<button type="button" class="btn btn-default" onclick="$('tr.acticell').remove();">Wipe</button>
-                        <button type="button" class="btn btn-default" onclick="$('#actimode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+						<button type="button" class="btn bg-lightblue" onclick="$('tr.acticell').remove();">Wipe</button>
+                        <button type="button" class="btn bg-lightblue" onclick="$('#actimode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
         </div>
 
 		<div class="modal fade text-sm" id="colbmode" style="display: none;" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <div class="modal-header bg-lightblue">
-                        <h4 class="modal-title headelem">Instructions</h4>
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title headelem text-lightblue">Instructions</h4>
                     </div>
                     <div class="modal-body">
                         <p class="headelem text-justify">For smooth and hassle-free collaboration while creating documents, you would want to follow the given instructions.</p>
@@ -293,8 +292,8 @@
 							<li class="normelem text-justify">Even if you are not actively collaborating in the edits, you can keep up with the changes made so far by simply staying connected to the workspace while the changes are made (active sync) or by taking a copy from one of the fellow contributors after changes are complete (passive sync).</li>
 						</ul>
                     </div>
-                    <div class="modal-footer justify-content-between bg-lightblue">
-                        <button type="button" class="btn btn-default" onclick="$('#colbmode').modal('hide');">Exit</button>
+                    <div class="modal-footer justify-content-between bg-light">
+                        <button type="button" class="btn bg-lightblue" onclick="$('#colbmode').modal('hide');">Exit</button>
                     </div>
                 </div>
             </div>
