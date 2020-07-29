@@ -338,14 +338,21 @@
 		console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
 		function SendChangedTitle()
 		{
-			let writings = "/ttle " + document.getElementById("ttletext").value;
-			webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
-			let curtdate = new Date;
-			let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check text-fuchsia'></i></td>" +
-				"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
-				"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
-				"<td><span class='headelem'>You</span> changed the document title.</td></tr>";
-			$("#activity").append(modifdom);
+			if (webesock.readyState === 3)
+			{
+				$("#sockfail").modal("show");
+			}
+			else
+			{
+				let writings = "/ttle " + document.getElementById("ttletext").value;
+				webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), roomiden: sessionStorage.getItem("roomiden"), textmesg: writings}));
+				let curtdate = new Date;
+				let modifdom = "<tr class='normelem acticell'>" + "<td><i class='fas fa-check text-fuchsia'></i></td>" +
+					"<td><code class='text-fuchsia'>" + "TTLETEXT" + "</code></td>" +
+					"<td>" + CheckTiming(curtdate.getHours()) + ":" + CheckTiming(curtdate.getMinutes()) + ":" + CheckTiming(curtdate.getSeconds()) + "</td>" +
+					"<td><span class='headelem'>You</span> changed the document title.</td></tr>";
+				$("#activity").append(modifdom);
+			}
 		}
 		function StartRunningTime()
 		{
