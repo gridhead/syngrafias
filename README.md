@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/github/license/t0xic0der/syngrafias?style=flat-square&logo=appveyor&color=teal">
 </p>
 
-![](pictures/masterpc.png)
+![](pictures/collabnt.png)
 
 ## Introduction
 <p align="justify">

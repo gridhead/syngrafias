@@ -5,9 +5,9 @@ import click, time, json
 servchat = Flask(__name__)
 
 
-@servchat.route("/")
-def editdocs():
-    return render_template("editdocs.html", sockport=sockp0rt)
+@servchat.route("/<themcolr>/")
+def themable(themcolr):
+    return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
 
 
 @servchat.route("/savedocs/")
@@ -46,6 +46,8 @@ def colabnow(netpdata, servport):
 def mainfunc(servport, sockport, netprotc):
     global sockp0rt
     sockp0rt = sockport
+    global servp0rt
+    servp0rt = servport
     print(" * Starting Syngrafias...")
     if servport == sockport:
         print(" * [FAILMESG] The port values for Syngrafias server and WebSocket server cannot be the same!")
