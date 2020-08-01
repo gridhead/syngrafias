@@ -27,11 +27,10 @@
 - Accessible across the internet with both IPv4 and IPv6 access modes for workspace and WebSockets servers
 - State-of-the-art session management with workable responsiveness for relatively smaller displays
 
-## Usage
-COMING SOON
-
-## Screenshots
-[Head over to this page](https://github.com/t0xic0der/syngrafias/wiki/Screenshots)
+## Contents
+1. [Home](https://github.com/t0xic0der/syngrafias/wiki/Home)
+2. [Usage](https://github.com/t0xic0der/syngrafias/wiki/Usage)
+3. [Screenshots](https://github.com/t0xic0der/syngrafias/wiki/Screenshots)
 
 ## Contribute
 <p align="justify">You may request for the addition of new features in the <a href="https://github.com/t0xic0der/syngrafias/issues">issues</a> page but as the project is singlehandedly maintained - it might take time to develop on them. Please consider forking the repository and contributing to its development. :heart:</p>
