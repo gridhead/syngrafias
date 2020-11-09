@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Syngrafias</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
+    <script src="{{ url_for('static', filename='jscn/asciidoctor.js') }}"></script>
+    <style>
+        .textbase {
+            font-family: 'IBM Plex Sans', sans-serif !important;
+        }
+        .monotext {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui attached stackable menu">
+        <a class="item textbase">Syngrafias</a>
+        <a class="item"><div data-tooltip="Open a saved file" data-position="bottom center"><i class="file icon"></i></div></a>
+        <a class="item"><div data-tooltip="Save your current file" data-position="bottom center"><i class="save icon"></i></div></a>
+        <a class="item"><div data-tooltip="Report an issue" data-position="bottom center"><i class="bug icon"></i></div></a>
+        <a class="item"><div data-tooltip="Change your preferences" data-position="bottom center"><i class="cog icon"></i></div></a>
+        <a class="item"><div data-tooltip="Leave the current workspace" data-position="bottom center"><i class="power off icon"></i></div></a>
+        <a class="item"><div data-tooltip="See the help topics" data-position="bottom center"><i class="wheelchair icon"></i></div></a>
+        <a class="item"><div data-tooltip="View the activity log" data-position="bottom center"><i class="clock icon"></i></div></a>
+        <a class="item"><div data-tooltip="Learn about contributors" data-position="bottom center"><i class="info circle icon"></i></div></a>
+        <a class="item"><div data-tooltip="Add a text cell" data-position="bottom center"><i class="plus circle icon"></i></div></a>
+        <div class="right item">
+            <div class="ui textbase">Hello</div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="ui input"><input type="text" placeholder="Go to cell"></div>
+        </div>
+    </div>
+    <div class="ui teal card" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%;">
+        <div class="content">
+            <div class="header">
+                <form class="ui form">
+                    <div class="field">
+                        <input class="monotext" type="text" name="first-name" placeholder="First Name">
+                    </div>
+                </form>
+            </div>
+            <br/>
+            <div class="meta textbase">2 days ago<span class="float right">ssds</span></div>
+            <div class="description">
+                <div class="ui grid">
+                    <div class="eight wide column">
+                        <form class="ui form">
+                            <div class="field">
+                                <textarea rows="2" id="textdata" class="monotext" style="height: 100%;" onchange="autoconv();"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="eight wide column" style="border-width: 2px; border-radius: 2px;">
+                        <div class="ui form textbase" style="border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1.5%;" id="otptdata">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <script>
+        function autoconv() {
+            let textdata = document.getElementById("textdata").value;
+            let htmldata = Asciidoctor().convert(textdata);
+            document.getElementById("otptdata").innerHTML = htmldata;
+        }
+    </script>
+</body>
+</html>
