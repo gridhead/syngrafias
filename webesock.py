@@ -5,13 +5,13 @@ import asyncio, json, websockets, sys, click, time
 USERS = set()
 
 
-def mesej_event(username, roomiden, textmesg):
-    return json.dumps({"username": username, "roomiden": roomiden, "textmesg": textmesg})
+def mesej_event(username, sessiden, textmesg):
+    return json.dumps({"username": username, "sessiden": sessiden, "textmesg": textmesg})
 
 
-async def notify_mesej(username, roomiden, textmesg):
+async def notify_mesej(username, sessiden, textmesg):
     if USERS:
-        message = mesej_event(username, roomiden, textmesg)
+        message = mesej_event(username, sessiden, textmesg)
         await asyncio.wait([user.send(message) for user in USERS])
 
 
@@ -32,8 +32,8 @@ async def syncmate(websocket, path):
         async for message in websocket:
             data = json.loads(message)
             print(data)
-            print(" > [" + str(time.ctime()) + "] [" + str(data["roomiden"]) + "] User '" + str(data["username"]) + "' made actions.")
-            await notify_mesej(data["username"], data["roomiden"], data["textmesg"])
+            print(" > [" + str(time.ctime()) + "] [" + str(data["sessiden"]) + "] User '" + str(data["username"]) + "' made actions.")
+            await notify_mesej(data["username"], data["sessiden"], data["textmesg"])
     finally:
         await unregister(websocket)
 
