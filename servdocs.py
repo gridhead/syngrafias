@@ -5,6 +5,11 @@ import click, time, json
 servchat = Flask(__name__)
 
 
+@servchat.route("/")
+def asciidoc():
+    return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
+
+
 @servchat.route("/<themcolr>/")
 def themable(themcolr):
     return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
@@ -34,6 +39,7 @@ def savedocs():
 
 
 def colabnow(netpdata, servport):
+    servchat.config["TEMPLATES_AUTO_RELOAD"] = True
     servchat.run(host=netpdata, port=servport)
 
 
