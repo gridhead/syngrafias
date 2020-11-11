@@ -13,6 +13,12 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
         <script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
         <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
         </style>
@@ -33,27 +39,27 @@
                 <a class="item"><i class="power off icon"></i></a>
             </div>
         </div>
-        <div class="ui card" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%;">
-            <div class="content">
-                <div class="ui tiny labeled input" style="width: 100%;">
+        <!-- <div  class="container"> -->
+            <div class="content text-center">
+                <div class="ui tiny labeled input" style="width: 94vw; margin: 1vh 3vw 1vh 3vw;">
                     <div class="ui label monotext" id="docuiden">00000000</div>
                     <input type="text" class="textbase" placeholder="Enter the document name here">
                 </div>
-                <br/><br/>
-                <div class="description">
-                    <div class="ui grid">
+                <div class="description" style="width: 94vw; margin: 1em 3vw 1em 3vw; height: 88vh; position: relative;">
+                    <div class="ui grid" style="height: 100%;">
                         <div class="eight wide column">
-                            <div class="ui tiny form field">
-                                <textarea style="height: 81vh;" rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
+                            <div class="ui tiny form field" style="height: 100%;">
+                                <textarea style="height: 100%;" rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
                             </div>
                         </div>
-                        <div class="eight wide column" style="border-width: 2px; border-radius: 2px;">
-                            <div class="ui form textbase" style="overflow-y: scroll; height:81vh; border: 1px solid #dedede; border-radius: 5px; padding: 1%;" id="otptdata"></div>
+                        <div class="eight wide column">
+                            <div class="ui form textbase" style="overflow-y: scroll; height:100%; border: 1px solid #dedede; border-radius: 5px; padding: 1%;" id="otptdata"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    <!-- </div> -->
         <br/>
         <script>
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
