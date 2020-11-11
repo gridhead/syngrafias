@@ -17,7 +17,7 @@
                 padding: 0;
                 margin: 0;
                 box-sizing: border-box;
-                overflow: hidden;
+                /* overflow: hidden; */
             }
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
@@ -41,19 +41,19 @@
         </div>
         <!-- <div  class="container"> -->
             <div class="content text-center">
-                <div class="ui tiny labeled input" style="width: 94vw; margin: 1vh 3vw 1vh 3vw;">
+                <div class="ui tiny labeled input" style="width: 94vw; margin: .5vh 3vw .5vh 3vw;">
                     <div class="ui label monotext" id="docuiden">00000000</div>
                     <input type="text" class="textbase" placeholder="Enter the document name here">
                 </div>
-                <div class="description" style="width: 94vw; margin: 1em 3vw 1em 3vw; height: 88vh; position: relative;">
+                <div class="description" style="width: 94vw; margin: .5vh 3vw .5vh 3vw; height: 88vh; position: relative;">
                     <div class="ui grid" style="height: 100%;">
                         <div class="eight wide column">
                             <div class="ui tiny form field" style="height: 100%;">
-                                <textarea style="height: 100%;" rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
+                                <textarea style="height: 100%; resize: none;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
                             </div>
                         </div>
                         <div class="eight wide column">
-                            <div class="ui form textbase" style="overflow-y: scroll; height:100%; border: 1px solid #dedede; border-radius: 5px; padding: 1%;" id="otptdata"></div>
+                            <div class="ui form textbase" style="overflow-y: scroll; height:87vh; border: 1px solid #dedede; border-radius: 5px; padding: 1%;" id="otptdata"></div>
                         </div>
                     </div>
                 </div>
