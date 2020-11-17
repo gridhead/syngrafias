@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
         <script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/syngrafias.js') }}"></script>
+        <script src="{{ url_for('static', filename='jscn/usagetips.js') }}"></script>
         <style>
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
@@ -33,7 +34,7 @@
                     <a class="item" onclick=""><i class="clock icon"></i>Track activities</a>
                     <a class="item" onclick=""><i class="cog icon"></i>Change preferences</a>
                     <a class="item" onclick=""><i class="info circle icon"></i>About the app</a>
-                    <a class="item" onclick=""><i class="power off icon"></i>Reset workspace</a>
+                    <a class="item" onclick="$('#restwarn').modal('show');"><i class="power off icon"></i>Reset workspace</a>
                 </div>
             </div>
             <a class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span></a>
@@ -41,6 +42,11 @@
                 <div class="ui item monotext" id="timehead">00:00:00</div>
             </div>
         </div>
+        <div class="ui tiny message textbase" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%;" onclick="randtips();">
+            <i class="close icon"></i><div class="header textbase">Usage tip - <span id="tipshead" class="textbase">Welcome to Syngrafias!</span></div>
+            <span id="tipscont">Keep clicking on this panel to read more tips or click on the close icon on the top right corner to close this.</span><br/>
+        </div>
+        <div id="domelist"></div>
         <script>
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
             console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
@@ -62,6 +68,7 @@
                     }
                 }
             }
+            $('.message .close').on('click', function() {$(this).closest('.message').transition('fade');});
         </script>
         <div class="ui basic modal" id="givename">
             <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
@@ -96,6 +103,20 @@
             <div class="actions" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button textbase" onclick="" id="rmovbutn">
                     <span style="color: red;">Remove</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="restwarn">
+            <div class="header textbase" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Reset workspace</div>
+            <div class="content" style="padding: 2.5%;">
+                <p class="textbase" style="line-height: 1.25; text-align: justify;">Any unsaved progress made on the workspace would be lost from your end. Are you sure you wish to reset the workspace?</p>
+            </div>
+            <div class="actions" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
+                    <span style="color: green;">Cancel</span>
+                </div>
+                <div class="ui mini button textbase" onclick="location.reload();">
+                    <span style="color: red;">Reset</span>
                 </div>
             </div>
         </div>

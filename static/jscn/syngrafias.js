@@ -48,11 +48,22 @@ function randgene()
     return randstng;
 }
 
-function sendtext(celliden)
+function sendnote(celliden)
 {
     let contents = document.getElementById("textdata-"+celliden).value;
     let writings = JSON.stringify({"taskcomm": "/note", "celliden": celliden, "contents": contents});
     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+}
+
+function recvnote(celliden, contents, noteauth)
+{
+    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+    if (celliden in celllist) {
+        document.getElementById("textdata-" + celliden).value = contents;
+        autoconv(celliden);
+    } else {
+        toastr.error("<span class='textbase' style='font-size: 14px;'>Out-of-sync cell contents<br/><strong>" + celliden + "</strong> (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    }
 }
 
 function sendttle(celliden)
@@ -60,6 +71,16 @@ function sendttle(celliden)
     let contents = document.getElementById("cellname-"+celliden).value;
     let writings = JSON.stringify({"taskcomm": "/ttle", "celliden": celliden, "contents": contents});
     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+}
+
+function recvttle(celliden, contents, ttleauth)
+{
+    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+    if (celliden in celllist) {
+        document.getElementById("cellname-" + celliden).value = contents;
+    } else {
+        toastr.error("<span class='textbase' style='font-size: 14px;'>Out-of-sync cell title<br/><strong>" + celliden + "</strong> (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    }
 }
 
 function askusdat()
@@ -119,14 +140,14 @@ function recvpush(celliden, username)
 
 function makecell(celliden)
 {
-    $("body").append(
+    $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
         "<div class='content'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
         "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div class='eight wide column'>" +
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
-        "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendtext(\"" + celliden + "\");'></textarea>" +
+        "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
         "</div>" + "</div>" + "<div class='eight wide column' style='border-width: 2px; border-radius: 2px;'>" +
         "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
@@ -166,25 +187,4 @@ function cellinfo(celliden)
     document.getElementById("modework").innerText = sessionStorage.getItem("sessiden");
     document.getElementById("rmovbutn").setAttribute("onclick", "sendpull('" + celliden + "')");
     $("#infomode").modal("show");
-}
-
-function recvnote(celliden, contents, noteauth)
-{
-    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    if (celliden in celllist) {
-        document.getElementById("textdata-" + celliden).value = contents;
-        autoconv(celliden);
-    } else {
-        toastr.error("<span class='textbase' style='font-size: 14px;'>Out-of-sync cell contents<br/><strong>" + celliden + "</strong> (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    }
-}
-
-function recvttle(celliden, contents, ttleauth)
-{
-    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    if (celliden in celllist) {
-        document.getElementById("cellname-" + celliden).value = contents;
-    } else {
-        toastr.error("<span class='textbase' style='font-size: 14px;'>Out-of-sync cell title<br/><strong>" + celliden + "</strong> (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    }
 }
