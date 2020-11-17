@@ -25,7 +25,7 @@
                 <span style="font-weight: bold;">Syngrafias</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" onclick="sendcell();"><i class="plus circle icon"></i>Append cell</a>
+                    <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
                     <a class="item" onclick=""><i class="file icon"></i>Open document</a>
                     <a class="item" onclick=""><i class="save icon"></i>Save document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
@@ -41,31 +41,23 @@
                 <div class="ui item monotext" id="timehead">00:00:00</div>
             </div>
         </div>
-        <br/>
         <script>
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
             console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
             webesock.onmessage = function (event)
             {
-                console.log(event.data);
                 let data = JSON.parse(event.data);
-                if (!(data.username === sessionStorage.getItem("username")))
-			    {
-				    if (data.sessiden === sessionStorage.getItem("sessiden"))
-                    {
+                if (!(data.username === sessionStorage.getItem("username"))) {
+				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
                         let textmesg = JSON.parse(data.textmesg);
-                        if (textmesg["taskcomm"] === "/note")
-                        {
-                            let celliden = textmesg["celliden"];
-                            let contents = textmesg["contents"];
-                            document.getElementById("textdata-"+celliden).value = contents;
-                            autoconv(celliden);
-                        }
-                        else if (textmesg["taskcomm"] === "/make")
-                        {
-                            let celliden = textmesg["celliden"];
-                            let cellauth = data.username;
-                            recvcell(celliden, cellauth);
+                        if (textmesg["taskcomm"] === "/note") {
+                            recvnote(textmesg["celliden"], textmesg["contents"], data.username);
+                        } else if (textmesg["taskcomm"] === "/push") {
+                            recvpush(textmesg["celliden"], data.username);
+                        } else if (textmesg["taskcomm"] === "/pull") {
+                            recvpull(textmesg["celliden"], data.username);
+                        } else if (textmesg["taskcomm"] === "/ttle") {
+                            recvttle(textmesg["celliden"], textmesg["contents"], data.username);
                         }
                     }
                 }
@@ -81,8 +73,30 @@
                 </div>
             </div>
             <div class="actions" style="text-align: center;">
-                <div class="ui tiny inverted button monotext" onclick="wkeybild();" style="background-color: #0B57A4;"><i class="refresh icon"></i>Build</div>
-                <div class="ui tiny inverted button monotext" onclick="makesess();" style="background-color: #0B57A4;"><i class="checkmark icon"></i>Login</div>
+                <div class="ui tiny inverted button monotext" onclick="wkeybild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
+                <div class="ui tiny inverted button monotext" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="infomode">
+            <div class="header textbase" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Cell information</div>
+            <div class="content" style="padding: 2.5%;">
+                <div class="ui header monotext" id="modeiden">00000000</div>
+                <div class="ui list">
+                    <div class="item">
+                        <div class="header monotext" id="modeauth"></div><span class="textbase">Author</span>
+                    </div>
+                    <div class="item">
+                        <div class="header monotext" id="modetime"></div><span class="textbase">Time</span>
+                    </div>
+                    <div class="item">
+                        <div class="header monotext" id="modework"></div><span class="textbase">Workspace</span>
+                    </div>
+                </div>
+            </div>
+            <div class="actions" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button textbase" onclick="" id="rmovbutn">
+                    <span style="color: red;">Remove</span>
+                </div>
             </div>
         </div>
     </body>
