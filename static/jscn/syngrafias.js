@@ -50,10 +50,16 @@ function randgene()
 
 function sendnote(celliden)
 {
-    let contents = document.getElementById("textdata-"+celliden).value;
-    let writings = JSON.stringify({"taskcomm": "/note", "celliden": celliden, "contents": contents});
-    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-    makelogs(celliden, "/note", sessionStorage.getItem("username"));
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let contents = document.getElementById("textdata-" + celliden).value;
+        let writings = JSON.stringify({"taskcomm": "/note", "celliden": celliden, "contents": contents});
+        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        makelogs(celliden, "/note", sessionStorage.getItem("username"));
+    }
 }
 
 function recvnote(celliden, contents, noteauth)
@@ -62,18 +68,25 @@ function recvnote(celliden, contents, noteauth)
     if (celliden in celllist) {
         document.getElementById("textdata-" + celliden).value = contents;
         autoconv(celliden);
+        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Out-of-sync cell contents<br/><strong>" + celliden + "</strong> (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell contents</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
     makelogs(celliden, "/note", noteauth);
 }
 
 function sendttle(celliden)
 {
-    let contents = document.getElementById("cellname-"+celliden).value;
-    let writings = JSON.stringify({"taskcomm": "/ttle", "celliden": celliden, "contents": contents});
-    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-    makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be renamed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let contents = document.getElementById("cellname-"+celliden).value;
+        let writings = JSON.stringify({"taskcomm": "/ttle", "celliden": celliden, "contents": contents});
+        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
+    }
 }
 
 function recvttle(celliden, contents, ttleauth)
@@ -81,15 +94,16 @@ function recvttle(celliden, contents, ttleauth)
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (celliden in celllist) {
         document.getElementById("cellname-" + celliden).value = contents;
+        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Out-of-sync cell title<br/><strong>" + celliden + "</strong> (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell title</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
     makelogs(celliden, "/ttle", ttleauth);
 }
 
 function askusdat()
 {
-    $("#givename").modal('setting', 'closable', false).modal("show");
+    $("#givename").modal("setting", "closable", false).modal("show");
 }
 
 function makesess() {
@@ -105,6 +119,7 @@ function makesess() {
                 $('#givename').modal('hide');
                 document.getElementById("headuser").innerText = username;
                 document.getElementById("headroom").innerText = sessiden;
+                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
                 toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             }
@@ -118,21 +133,26 @@ function makesess() {
 
 function wkeybild()
 {
-    document.getElementById('sessiden').value = randgene();
+    document.getElementById("sessiden").value = randgene();
     toastr.success("<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
 }
 
 function sendpush()
 {
-    let celliden = randgene();
-    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    celllist[celliden] = {"cellauth": sessionStorage.getItem("username"), "maketime": Date.now()};
-    sessionStorage.setItem("celllist", JSON.stringify(celllist));
-    makecell(celliden);
-    let writings = JSON.stringify({"taskcomm": "/push", "celliden": celliden});
-    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-    toastr.success("<span class='textbase' style='font-size: 15px;'>Created <strong>" + celliden + "</strong> (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    makelogs(celliden, "/push", sessionStorage.getItem("username"));
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let celliden = randgene();
+        let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+        celllist[celliden] = {"cellauth": sessionStorage.getItem("username"), "maketime": Date.now()};
+        sessionStorage.setItem("celllist", JSON.stringify(celllist));
+        makecell(celliden);
+        let writings = JSON.stringify({"taskcomm": "/push", "celliden": celliden});
+        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        makelogs(celliden, "/push", sessionStorage.getItem("username"));
+    }
 }
 
 function recvpush(celliden, username)
@@ -141,7 +161,7 @@ function recvpush(celliden, username)
     celllist[celliden] = {"cellauth": username, "maketime": Date.now()};
     sessionStorage.setItem("celllist", JSON.stringify(celllist));
     makecell(celliden);
-    toastr.success("<span class='textbase' style='font-size: 15px;'>Created <strong>" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>₹" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     makelogs(celliden, "/push", username);
 }
 
@@ -162,15 +182,20 @@ function makecell(celliden)
 
 function sendpull(celliden)
 {
-    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    delete celllist[celliden];
-    sessionStorage.setItem("celllist", JSON.stringify(celllist));
-    document.getElementById("cardiden-"+celliden).remove();
-    $("#infomode").modal("hide");
-    let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
-    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-    toastr.error("<span class='textbase' style='font-size: 15px;'>Removed <strong>" + celliden + "</strong> (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    makelogs(celliden, "/pull", sessionStorage.getItem("username"));
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be removed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+        delete celllist[celliden];
+        sessionStorage.setItem("celllist", JSON.stringify(celllist));
+        document.getElementById("cardiden-"+celliden).remove();
+        $("#infomode").modal("hide");
+        let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
+        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        makelogs(celliden, "/pull", sessionStorage.getItem("username"));
+    }
 }
 
 function recvpull(celliden, username)
@@ -180,9 +205,9 @@ function recvpull(celliden, username)
         delete celllist[celliden];
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         document.getElementById("cardiden-"+celliden).remove();
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Removed <strong>" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Removal failed<br/><strong>" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
     makelogs(celliden, "/pull", username);
 }
@@ -232,9 +257,9 @@ function viewlogs()
 function rmovhist()
 {
     if (sessionStorage.getItem("actilogs") === "[]") {
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Activity history is empty</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     } else {
         sessionStorage.setItem("actilogs", "[]");
-        toastr.success("<span class='textbase' style='font-size: 15px;'>Cleared activity history</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
 }
