@@ -20,7 +20,7 @@
         </style>
     </head>
     <body onload="askusdat(); timeqant(); randgene(); sessionStorage.clear()">
-        <div class="ui tiny attached stackable menu inverted textbase" style="background-color: #294172;">
+        <div class="ui tiny attached stackable menu inverted textbase" id="colr0001" style="background-color: #294172;">
             <div class="ui simple dropdown item">
                 <span style="font-weight: bold;">Syngrafias</span>
                 <i class="dropdown icon"></i>
@@ -31,7 +31,7 @@
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick=""><i class="wheelchair icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
-                    <a class="item" onclick=""><i class="cog icon"></i>Change preferences</a>
+                    <a class="item" onclick="$('#colrmode').modal('show');"><i class="cog icon"></i>Change preferences</a>
                     <a class="item" onclick=""><i class="info circle icon"></i>About the app</a>
                     <a class="item" onclick="$('#restwarn').modal('show');"><i class="power off icon"></i>Reset workspace</a>
                 </div>
@@ -78,8 +78,8 @@
                 </div>
             </div>
             <div class="actions" style="text-align: center;">
-                <div class="ui tiny inverted button monotext" onclick="wkeybild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
-                <div class="ui tiny inverted button monotext" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</div>
+                <div class="ui tiny inverted button monotext" id="colr0002" onclick="wkeybild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
+                <div class="ui tiny inverted button monotext" id="colr0003" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</div>
             </div>
         </div>
         <div class="ui basic modal" id="sockfail">
@@ -88,11 +88,11 @@
                 <p style="text-align: center; font-size: 15px;" class="textbase">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p>
             </div>
             <div class="actions" style="text-align: center;">
-                <div class="ui tiny inverted button monotext" onclick="location.reload();" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div>
+                <div class="ui tiny inverted button monotext" onclick="location.reload();" id="colr0004" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div>
             </div>
         </div>
         <div class="ui mini modal" id="infomode">
-            <div class="header textbase" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Cell information</div>
+            <div class="header textbase" id="colr0005" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Cell information</div>
             <div class="content" style="padding: 2.5%;">
                 <div class="ui header monotext" id="modeiden">00000000</div>
                 <div class="ui list">
@@ -107,18 +107,18 @@
                     </div>
                 </div>
             </div>
-            <div class="actions" style="padding: 2.5%; background-color: #294172;">
+            <div class="actions" id="colr0006" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button textbase" onclick="" id="rmovbutn">
                     <span style="color: red;">Remove</span>
                 </div>
             </div>
         </div>
         <div class="ui mini modal" id="restwarn">
-            <div class="header textbase" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Reset workspace</div>
+            <div class="header textbase" id="colr0007" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Reset workspace</div>
             <div class="content" style="padding: 2.5%;">
                 <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Any unsaved progress made on the workspace would be lost from your end. Are you sure you wish to reset the workspace?</p>
             </div>
-            <div class="actions" style="padding: 2.5%; background-color: #294172;">
+            <div class="actions" id="colr0008" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
                     <span style="color: green;">Cancel</span>
                 </div>
@@ -128,13 +128,35 @@
             </div>
         </div>
         <div class="ui mini modal" id="actilogs">
-            <div class="header textbase" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Track activities</div>
+            <div class="header textbase" id="colr0009" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Track activities</div>
             <div id="actijuxt" class="scrolling content" style="padding: 2.5%;">
                 <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">All activities including cell creation, editing, renaming and removal would show up here - unless you wipe the history clean.</p>
             </div>
-            <div class="actions" style="padding: 2.5%; background-color: #294172;">
+            <div class="actions" id="colr0010" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button deny textbase" onclick="rmovhist();">
                     <span style="color: red;">Clear</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="colrmode">
+            <div class="header textbase" id="colr0011" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Change preferences</div>
+            <div class="scrolling content" style="padding: 2.5%;">
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Switch to the theme of your choice. Be sure to save your progress before doing so as this would reload the application and any unsaved changes will be lost.</p>
+                <div class="ui relaxed divided list">
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Discord Purple</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#7289DA');" style="background-color: #7289DA; color: #FFFFFF;">#7289DA</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">AMD Red</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#ED1C24');" style="background-color: #ED1C24; color: #FFFFFF;">#ED1C24</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">t0xic0der Teal</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#008080');" style="background-color: #008080; color: #FFFFFF;">#008080</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Fedora Blue</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#294172');" style="background-color: #294172; color: #FFFFFF;">#294172</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Mahindra Red</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#720000');" style="background-color: #720000; color: #FFFFFF;">#720000</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Spotify Green</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#1DB954');" style="background-color: #1DB954; color: #FFFFFF;">#1DB954</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Mastercard Orange</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#FF5F00');" style="background-color: #FF5F00; color: #FFFFFF;">#FF5F00</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">Jio Blue</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#005AAC');" style="background-color: #005AAC; color: #FFFFFF;">#005AAC</span></div></div></div>
+                    <div class="item"><div class="content"><div class="header"><span class="textbase">T-Mobile Pink</span><span class="ui float right horizontal label monotext" onclick="chngcolr('#EA08AE');" style="background-color: #EA08AE; color: #FFFFFF;">#EA08AE</span></div></div></div>
+                </div>
+            </div>
+            <div class="actions" id="colr0012" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button deny textbase" onclick="$('#colrmode').modal('hide');">
+                    <span style="color: red;">Back</span>
                 </div>
             </div>
         </div>

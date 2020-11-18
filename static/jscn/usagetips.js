@@ -72,14 +72,47 @@ let tipslist = [
         "head": "Whoops, that didn't work!",
         "body": "Please let us know about any issues, bugs or suggestions that you have on our issues page."
     }, {
+        "head": "Color monotonicity is boring",
+        "body": "We agree to that and hence, Syngrafias provides a collection of nine vibrant themes to choose from."
+    }, {
         "head": "",
         "body": ""
     }
 ]
 
+colrjson = {
+    "#7289DA": "Discord Purple",
+    "#ED1C24": "AMD Red",
+    "#008080": "t0xic0der Teal",
+    "#294172": "Fedora Blue",
+    "#720000": "Mahindra Red",
+    "#1DB954": "Spotify Green",
+    "#FF5F00": "Mastercard Orange",
+    "#005AAC": "Jio Blue",
+    "#EA08AE": "T-Mobile Pink"
+}
+
 function randtips()
 {
-    let tipsobjc = tipslist[Math.floor(Math.random() * 24)];
+    let tipsobjc = tipslist[Math.floor(Math.random() * 25)];
     document.getElementById("tipshead").innerText = tipsobjc["head"];
     document.getElementById("tipscont").innerText = tipsobjc["body"];
+}
+
+function chngcolr(colriden)
+{
+    document.getElementById("colr0001").style.backgroundColor =
+    document.getElementById("colr0002").style.backgroundColor =
+    document.getElementById("colr0003").style.backgroundColor =
+    document.getElementById("colr0004").style.backgroundColor =
+    document.getElementById("colr0005").style.backgroundColor =
+    document.getElementById("colr0006").style.backgroundColor =
+    document.getElementById("colr0007").style.backgroundColor =
+    document.getElementById("colr0008").style.backgroundColor =
+    document.getElementById("colr0009").style.backgroundColor =
+    document.getElementById("colr0010").style.backgroundColor =
+    document.getElementById("colr0011").style.backgroundColor =
+    document.getElementById("colr0012").style.backgroundColor = colriden;
+    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Theme changed</strong><br/>" + colrjson[colriden] + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    $("#colrmode").modal("hide");
 }
