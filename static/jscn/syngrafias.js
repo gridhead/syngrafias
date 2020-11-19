@@ -23,14 +23,12 @@ function autoconv(celliden) {
     document.getElementById("otptdata-" + celliden).innerHTML = htmldata;
 }
 
-function chektime(chekqant)
-{
+function chektime(chekqant) {
     if (chekqant < 10)  return "0" + chekqant;
     else                return chekqant;
 }
 
-function timeqant()
-{
+function timeqant() {
     let curtdate = new Date();
     let hour = curtdate.getHours(); let mint = curtdate.getMinutes(); let secs = curtdate.getSeconds();
     hour = chektime(hour); mint = chektime(mint); secs = chektime(secs);
@@ -38,8 +36,7 @@ function timeqant()
     let time = setTimeout(timeqant, 500);
 }
 
-function randgene()
-{
+function randgene() {
     let randstng = "";
     let lent = 8; let list = "0123456789ABCDEF";
     for (let indx = lent; indx > 0; indx--) {
@@ -48,8 +45,7 @@ function randgene()
     return randstng;
 }
 
-function sendnote(celliden)
-{
+function sendnote(celliden) {
     if (webesock.readyState === 3) {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
@@ -62,8 +58,7 @@ function sendnote(celliden)
     }
 }
 
-function recvnote(celliden, contents, noteauth)
-{
+function recvnote(celliden, contents, noteauth) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (celliden in celllist) {
         document.getElementById("textdata-" + celliden).value = contents;
@@ -75,8 +70,7 @@ function recvnote(celliden, contents, noteauth)
     makelogs(celliden, "/note", noteauth);
 }
 
-function sendttle(celliden)
-{
+function sendttle(celliden) {
     if (webesock.readyState === 3) {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be renamed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
@@ -89,8 +83,7 @@ function sendttle(celliden)
     }
 }
 
-function recvttle(celliden, contents, ttleauth)
-{
+function recvttle(celliden, contents, ttleauth) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (celliden in celllist) {
         document.getElementById("cellname-" + celliden).value = contents;
@@ -101,8 +94,7 @@ function recvttle(celliden, contents, ttleauth)
     makelogs(celliden, "/ttle", ttleauth);
 }
 
-function askusdat()
-{
+function askusdat() {
     $("#givename").modal("setting", "closable", false).modal("show");
 }
 
@@ -116,6 +108,7 @@ function makesess() {
                 sessionStorage.setItem("sessiden", sessiden);
                 sessionStorage.setItem("celllist", "{}");
                 sessionStorage.setItem("actilogs", "[]");
+                sessionStorage.setItem("thmcolor", "#294172");
                 $('#givename').modal('hide');
                 document.getElementById("headuser").innerText = username;
                 document.getElementById("headroom").innerText = sessiden;
@@ -131,14 +124,12 @@ function makesess() {
     }
 }
 
-function wkeybild()
-{
+function wkeybild() {
     document.getElementById("sessiden").value = randgene();
     toastr.success("<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
 }
 
-function sendpush()
-{
+function sendpush() {
     if (webesock.readyState === 3) {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
@@ -155,8 +146,7 @@ function sendpush()
     }
 }
 
-function recvpush(celliden, username)
-{
+function recvpush(celliden, username) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     celllist[celliden] = {"cellauth": username, "maketime": Date.now()};
     sessionStorage.setItem("celllist", JSON.stringify(celllist));
@@ -165,23 +155,21 @@ function recvpush(celliden, username)
     makelogs(celliden, "/push", username);
 }
 
-function makecell(celliden)
-{
+function makecell(celliden) {
     $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
-        "<div class='content'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
+        "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
         "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div class='eight wide column'>" +
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
         "</div>" + "</div>" + "<div class='eight wide column' style='border-width: 2px; border-radius: 2px;'>" +
-        "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%;' id='otptdata-" + celliden + "'></div>" +
+        "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
 }
 
-function sendpull(celliden)
-{
+function sendpull(celliden) {
     if (webesock.readyState === 3) {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be removed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
@@ -198,8 +186,7 @@ function sendpull(celliden)
     }
 }
 
-function recvpull(celliden, username)
-{
+function recvpull(celliden, username) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (celliden in celllist) {
         delete celllist[celliden];
@@ -212,8 +199,7 @@ function recvpull(celliden, username)
     makelogs(celliden, "/pull", username);
 }
 
-function cellinfo(celliden)
-{
+function cellinfo(celliden) {
     let celljson = JSON.parse(sessionStorage.getItem("celllist"));
     document.getElementById("modeiden").innerText = celliden;
     document.getElementById("modeauth").innerText = celljson[celliden]["cellauth"];
@@ -229,8 +215,7 @@ function marktime() {
     return chektime(hour) + ":" + chektime(mint) + ":" + chektime(secs);
 }
 
-function makelogs(celliden, activity, username)
-{
+function makelogs(celliden, activity, username) {
     let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
     let actiobjc = "";
     if (username === sessionStorage.getItem("username"))    {actiobjc += "You";}
@@ -243,8 +228,7 @@ function makelogs(celliden, activity, username)
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
 
-function viewlogs()
-{
+function viewlogs() {
     $("#actiform").remove();
     let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
     $("#actijuxt").append("<table id='actiform' class='ui very compact table'>" + "<tbody id='actitabl'></tbody>" + "</table>");
@@ -254,8 +238,7 @@ function viewlogs()
     $("#actilogs").modal("show");
 }
 
-function rmovhist()
-{
+function rmovhist() {
     if (sessionStorage.getItem("actilogs") === "[]") {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     } else {

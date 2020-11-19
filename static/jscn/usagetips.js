@@ -101,18 +101,14 @@ function randtips()
 
 function chngcolr(colriden)
 {
-    document.getElementById("colr0001").style.backgroundColor =
-    document.getElementById("colr0002").style.backgroundColor =
-    document.getElementById("colr0003").style.backgroundColor =
-    document.getElementById("colr0004").style.backgroundColor =
-    document.getElementById("colr0005").style.backgroundColor =
-    document.getElementById("colr0006").style.backgroundColor =
-    document.getElementById("colr0007").style.backgroundColor =
-    document.getElementById("colr0008").style.backgroundColor =
-    document.getElementById("colr0009").style.backgroundColor =
-    document.getElementById("colr0010").style.backgroundColor =
-    document.getElementById("colr0011").style.backgroundColor =
-    document.getElementById("colr0012").style.backgroundColor = colriden;
+    $(".cardinal").css("background-color", colriden);
+    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+    // The following line changes the color of the newly added cells to the color selected by the user
+    sessionStorage.setItem("thmcolor", colriden);
+    // The following quickly changes the color of the existing cells to the color selected by the user
+    for (indx in celllist) {
+        $("#colrcell-" + indx).css("background-color", colriden);
+    }
     toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Theme changed</strong><br/>" + colrjson[colriden] + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     $("#colrmode").modal("hide");
 }
