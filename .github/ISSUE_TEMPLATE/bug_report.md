@@ -2,16 +2,16 @@
 name: 🐛 Bug Report
 about: Report an issue to help us improve
 title: ''
-labels: 'kind/bug'
+labels: 'bug/error'
 assignees: ''
 ---
 **Description**
-<!-- A brief description of the issue. -->
+<!-- A brief description of the bug/error. -->
 
 **Expected Behavior**
 <!-- A brief description of what you expected to happen. -->
 
-**Screenshots**
+**Screenshot**<p>&nbsp;</p>
 <!-- Add screenshots, if applicable, to help explain your problem. -->
 
 **Enviroment:**
@@ -25,5 +25,6 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
+---
 [Optional] **Additional Context**
-<!-- Add any other context about the problem here. -->
+<!-- Add any other context about the problem here to help solve the bug. -->

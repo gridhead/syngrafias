@@ -1,10 +1,17 @@
+
+---
+
 **Description**
 
 This PR fixes #
 
-**Notes for Reviewers**
+**Have you read the [Contributing Guidelines](https://github.com/t0xic0der/syngrafias/blob/master/CONTRIBUTING.md) before opening this PR**<p>&nbsp;</p>
 
- 
+**Notes for Reviewers**<p>&nbsp;</p>
+
+---
+**Screenshot for changes made**<p>&nbsp;</p>
+
 
 <!--
 Thank you for contributing to Syngrafias! 
