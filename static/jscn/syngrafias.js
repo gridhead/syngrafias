@@ -158,15 +158,35 @@ function recvpush(celliden, username) {
 function makecell(celliden) {
     $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
+        "<button onclick='toggleCell(\""+celliden+"\")'>toggle</button>"+
         "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
-        "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div class='eight wide column'>" +
+        "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div id='txtar-" + celliden + "' class='eight wide column'>" +
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
-        "</div>" + "</div>" + "<div class='eight wide column' style='border-width: 2px; border-radius: 2px;'>" +
+        "</div>" + "</div>" + "<div id='op-" + celliden + "' class='eight wide column' style='border-width: 2px; border-radius: 2px;'>" +
         "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
+}
+
+function toggleCell(celliden) {
+    let ta = document.getElementById("txtar-"+celliden);
+    let op = document.getElementById("op-"+celliden);
+
+    if (ta.classList.value === "eight wide column" && op.classList.value === "eight wide column") {
+        document.getElementById("txtar-"+celliden).classList.value = "sixteen wide column";
+        document.getElementById("op-"+celliden).style.display = "none";
+    } else if (ta.classList.value === "sixteen wide column" && op.classList.value === "eight wide column") {
+        document.getElementById("op-"+celliden).style.display = "block";
+        document.getElementById("op-"+celliden).classList.value = "sixteen wide column";
+        document.getElementById("txtar-"+celliden).style.display = "none";
+    } else if (op.classList.value === "sixteen wide column" && op.classList.value === "sixteen wide column") {
+        document.getElementById("op-"+celliden).style.display = "block";
+        document.getElementById("txtar-"+celliden).style.display = "block";
+        document.getElementById("op-"+celliden).classList.value = "eight wide column";
+        document.getElementById("txtar-"+celliden).classList.value = "eight wide column";
+    } 
 }
 
 function sendpull(celliden) {
