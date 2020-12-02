@@ -76,11 +76,6 @@ def servenow(netpdata="127.0.0.1", syncport="9696"):
         sys.exit()
 
 
-@click.command()
-@click.option("-c", "--syncport", "syncport", help="Set the port value for WebSockets [0-65536]", required=True)
-@click.option("-6", "--ipprotv6", "netprotc", flag_value="ipprotv6", help="Start the server on an IPv6 address", required=True)
-@click.option("-4", "--ipprotv4", "netprotc", flag_value="ipprotv4", help="Start the server on an IPv4 address", required=True)
-@click.version_option(version="01082020", prog_name="Syngrafias WebSockets by t0xic0der")
 def mainfunc(syncport, netprotc):
     print(" > [" + str(time.ctime()) + "] [HOLAUSER] Starting Syngrafias...")
     netpdata = ""
@@ -91,7 +86,3 @@ def mainfunc(syncport, netprotc):
         print(" > [" + str(time.ctime()) + "] [HOLAUSER] IP version : 4")
         netpdata = "0.0.0.0"
     servenow(netpdata, syncport)
-
-
-if __name__ == "__main__":
-    mainfunc()
