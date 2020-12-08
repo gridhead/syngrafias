@@ -15,7 +15,7 @@ import webesock
 
 def main(servport, sockport, netprotc):
     # Additional Thread
-    server_thread = Process(target=webesock.mainfunc, args=(servport, netprotc))
+    server_thread = Process(target=webesock.mainfunc, args=(sockport, netprotc))
     server_thread.start()
 
     # Main Thread
