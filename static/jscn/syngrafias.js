@@ -353,7 +353,11 @@ function cellinfo(celliden) {
     document.getElementById("modetime").innerText = celljson[celliden]["maketime"];
     document.getElementById("modework").innerText = sessionStorage.getItem("sessiden");
     document.getElementById("islocked").innerText = celljson[celliden].lockstat.islocked;
-    document.getElementById("lockedby").innerText = celljson[celliden].lockstat.lockedby;
+    if (celljson[celliden].lockstat.lockedby === null) {
+        document.getElementById("lockedby").innerText = "None";
+    } else {
+        document.getElementById("lockedby").innerText = celljson[celliden].lockstat.lockedby;
+    }
     if (celljson[celliden].lockstat.islocked === false) {
         document.getElementById("lockbutn").innerHTML = "<span style='color: orange;'><i class='ui lock icon'></i></span>";
         document.getElementById("lockbutn").setAttribute("onclick", "sendlock('" + celliden + "')");
