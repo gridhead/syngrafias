@@ -121,13 +121,14 @@ function randtips()
 function chngcolr(colriden)
 {
     $(".cardinal").css("background-color", colriden);
-    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    // The following line changes the color of the newly added cells to the color selected by the user
-    sessionStorage.setItem("thmcolor", colriden);
-    // The following quickly changes the color of the existing cells to the color selected by the user
-    for (indx in celllist) {
-        $("#colrcell-" + indx).css("background-color", colriden);
-    }
-    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Theme changed</strong><br/>" + colrjson[colriden] + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'>" + "<strong>Theme changed</strong>" +
+        "<br/>" + colrjson[colriden] + "</span>",
+        "",
+        {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     $("#colrmode").modal("hide");
 }
