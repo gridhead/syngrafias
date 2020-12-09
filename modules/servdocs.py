@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 ##########################################################################
 *
@@ -21,14 +19,13 @@
 ##########################################################################
 """
 
-
-import click
 import json
 import time
 from flask import Flask, render_template, request, jsonify
 
 
-servchat = Flask(__name__)
+storedir = "../storage"
+servchat = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 
 @servchat.route("/")
@@ -57,11 +54,11 @@ def savedocs():
             "maketime": time.ctime(curttime),
             "document": json.loads(document),
         }
-        with open("static/docs/"+filename, "w") as jsonfile:
+        with open(storedir+"/"+filename, "w") as jsonfile:
             json.dump(docsdict, jsonfile)
         return jsonify(result=filename)
     except:
-        return jsonify(result="fail")
+        return jsonify(result="savefail")
 
 
 def colabnow(netpdata, servport):

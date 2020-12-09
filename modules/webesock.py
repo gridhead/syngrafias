@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 ##########################################################################
 *
@@ -22,7 +20,6 @@
 """
 
 import asyncio
-import click
 import json
 import sys
 import time
