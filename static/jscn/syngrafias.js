@@ -133,37 +133,52 @@ function wkeybild() {
 
 function sendpush() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celliden = randgene();
         let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-        celllist[celliden] = {"cellauth": sessionStorage.getItem("username"), "maketime": Date.now()};
+        celllist[celliden] = {
+            "cellauth": sessionStorage.getItem("username"),
+            "maketime": Date.now(),
+            "lockstat": {
+                "islocked": false,
+                "lockedby": null
+            }
+        };
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         makecell(celliden);
         let writings = JSON.stringify({"taskcomm": "/push", "celliden": celliden});
         webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/push", sessionStorage.getItem("username"));
     }
 }
 
 function recvpush(celliden, username) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    celllist[celliden] = {"cellauth": username, "maketime": Date.now()};
+    celllist[celliden] = {
+        "cellauth": username,
+        "maketime": Date.now(),
+        "lockstat": {
+            "islocked": false,
+            "lockedby": null
+        }
+    };
     sessionStorage.setItem("celllist", JSON.stringify(celllist));
     makecell(celliden);
-    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>₹" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was received<br/>₹" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     makelogs(celliden, "/push", username);
 }
 
 function makecell(celliden) {
     $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
-        "<button onclick='toggleCell(\""+celliden+"\")'>toggle</button>"+
-        "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
+        "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" +
+        "<div class='ui icon tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
-        "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
+        "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" +
+        "<i class='inverted circular eye link icon' onclick='toggleCell(\""+celliden+"\")'></i>" + "</div>" +
         "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div id='txtar-" + celliden + "' class='eight wide column'>" +
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
@@ -192,18 +207,28 @@ function toggleCell(celliden) {
 
 function sendpull(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be removed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be removed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-        delete celllist[celliden];
-        sessionStorage.setItem("celllist", JSON.stringify(celllist));
-        document.getElementById("cardiden-"+celliden).remove();
-        $("#infomode").modal("hide");
-        let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-        makelogs(celliden, "/pull", sessionStorage.getItem("username"));
+        if (celliden in celllist) {
+            if (celllist[celliden].lockstat.islocked === false) {
+                delete celllist[celliden];
+                sessionStorage.setItem("celllist", JSON.stringify(celllist));
+                document.getElementById("cardiden-"+celliden).remove();
+                $("#infomode").modal("hide");
+                let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
+                webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                makelogs(celliden, "/pull", sessionStorage.getItem("username"));
+            } else {
+                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Unlock cell before removing<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                $("#infomode").modal("hide");
+            }
+        } else {
+            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            $("#infomode").modal("hide");
+        }
     }
 }
 
@@ -213,11 +238,11 @@ function recvpull(celliden, username) {
         delete celllist[celliden];
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         document.getElementById("cardiden-"+celliden).remove();
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        makelogs(celliden, "/pull", username);
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
-    makelogs(celliden, "/pull", username);
 }
 
 function cellinfo(celliden) {
@@ -226,6 +251,15 @@ function cellinfo(celliden) {
     document.getElementById("modeauth").innerText = celljson[celliden]["cellauth"];
     document.getElementById("modetime").innerText = celljson[celliden]["maketime"];
     document.getElementById("modework").innerText = sessionStorage.getItem("sessiden");
+    document.getElementById("islocked").innerText = celljson[celliden].lockstat.islocked;
+    document.getElementById("lockedby").innerText = celljson[celliden].lockstat.lockedby;
+    if (celljson[celliden].lockstat.islocked === false) {
+        document.getElementById("lockbutn").innerHTML = "<span style='color: orange;'><i class='ui lock icon'></i></span>";
+        document.getElementById("lockbutn").setAttribute("onclick", "sendlock('" + celliden + "')");
+    } else {
+        document.getElementById("lockbutn").innerHTML = "<span style='color: green;'><i class='ui lock open icon'></i></span>";
+        document.getElementById("lockbutn").setAttribute("onclick", "sendunlk('" + celliden + "')");
+    }
     document.getElementById("rmovbutn").setAttribute("onclick", "sendpull('" + celliden + "')");
     $("#infomode").modal("show");
 }
@@ -245,6 +279,7 @@ function makelogs(celliden, activity, username) {
     else if (activity === "/pull")                               {actiobjc += " removed a cell";}
     else if (activity === "/note")                               {actiobjc += " wrote to a cell";}
     else if (activity === "/ttle")                               {actiobjc += " renamed a cell";}
+    else if (activity === "/lock")                               {actiobjc += " locked a cell";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc, "celliden": celliden};
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
