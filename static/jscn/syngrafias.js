@@ -1,4 +1,5 @@
-/*************************************************************************
+/*
+**************************************************************************
 *
 *   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
@@ -15,7 +16,62 @@
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
-*************************************************************************/
+**************************************************************************
+*/
+
+function savedocs() {
+    let dateobjc = new Date();
+    let epochstr = dateobjc.getTime();
+    document.getElementById("savename").value = sessionStorage.getItem("username") + "_" + sessionStorage.getItem("sessiden") + "_"  + epochstr;
+    $('#savedocs').modal("show");
+}
+
+function makesave() {
+    let docsname = document.getElementById("savename").value.trim();
+    let celllist = JSON.parse(sessionStorage.getItem("celllist"));
+    if (docsname !== "") {
+        if (JSON.stringify(celllist) === "{}") {
+            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>There are no cells to save<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            $("#savedocs").modal("hide");
+        } else {
+            let timeobjc = new Date;
+            let epochstr = timeobjc.getTime();
+            let savedict = {
+                "username": sessionStorage.getItem("username"),
+                "sessiden": sessionStorage.getItem("sessiden"),
+                "timestmp": epochstr,
+                "cellcoll": {}
+            };
+            for (let indx in celllist) {
+                savedict["cellcoll"][indx] = {
+                    "metadata": celllist[indx],
+                    "contents": {
+                        "cellname": document.getElementById("cellname-" + indx).value,
+                        "textdata": document.getElementById("textdata-" + indx).value
+                    }
+                }
+            }
+            let printstr = JSON.stringify(savedict);
+            $.getJSON($SCRIPT_ROOT + "/savedocs/", {
+                filename: docsname,
+                document: printstr
+            }, function (data) {
+                console.log(data.result);
+                if (data.result === "savefail") {
+                    toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                    $("#savedocs").modal("hide");
+                } else {
+                    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                    window.open($SCRIPT_ROOT + "/storage/" + data.result, "_blank");
+                    $("#savedocs").modal("hide");
+                }
+            });
+        }
+    } else {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#savedocs").modal("hide");
+    }
+}
 
 function autoconv(celliden) {
     let textdata = document.getElementById("textdata-" + celliden).value;
