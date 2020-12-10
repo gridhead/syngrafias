@@ -359,10 +359,10 @@ function cellinfo(celliden) {
         document.getElementById("lockedby").innerText = celljson[celliden].lockstat.lockedby;
     }
     if (celljson[celliden].lockstat.islocked === false) {
-        document.getElementById("lockbutn").innerHTML = "<span style='color: orange;'><i class='ui lock icon'></i></span>";
+        document.getElementById("lockbutn").innerHTML = "<span style='color: orange;'><i class='ui lock icon' style='margin: 0px;'></i></span>";
         document.getElementById("lockbutn").setAttribute("onclick", "sendlock('" + celliden + "')");
     } else {
-        document.getElementById("lockbutn").innerHTML = "<span style='color: green;'><i class='ui lock open icon'></i></span>";
+        document.getElementById("lockbutn").innerHTML = "<span style='color: green;'><i class='ui lock open icon' style='margin: 0px;'></i></span>";
         document.getElementById("lockbutn").setAttribute("onclick", "sendunlk('" + celliden + "')");
     }
     document.getElementById("rmovbutn").setAttribute("onclick", "sendpull('" + celliden + "')");
