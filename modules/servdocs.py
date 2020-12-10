@@ -48,7 +48,7 @@ def getsaved(filename):
 def savedocs():
     try:
         timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
-        filename = request.args.get("filename", "0", type=str) + timehash + ".swd"
+        filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".swd"
         document = request.args.get("document", "0", type=str)
         docsdict = json.loads(document)
         with open(storedir + "/" + filename, "w") as jsonfile:
