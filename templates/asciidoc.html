@@ -47,7 +47,7 @@
                 <div class="menu">
                     <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
                     <a class="item" onclick=""><i class="file icon"></i>Open document</a>
-                    <a class="item" onclick=""><i class="save icon"></i>Save document</a>
+                    <a class="item" onclick="savedocs();"><i class="save icon"></i>Save document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick=""><i class="wheelchair icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
@@ -66,7 +66,8 @@
             <span id="tipscont">Keep clicking on this panel to read more tips or click on the close icon on the top right corner to close this.</span><br/>
         </div>
         <div id="domelist"></div>
-        <script>
+        <script type="text/javascript">
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
             console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
             webesock.onmessage = function (event)
@@ -144,6 +145,21 @@
                 </div>
                 <div class="ui mini button textbase" onclick="location.reload();">
                     <span style="color: red;">Reset</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="savedocs">
+            <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Save document</div>
+            <div class="content" style="padding: 2.5%;">
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Enter the name of the document with which you wish to save the contents of the workspace as.</p>
+                <div class="ui small input" style="width: 100%;"><input type="text" placeholder="Document name" id="savename" class="textbase"></div>
+            </div>
+            <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button textbase" onclick="$('#savedocs').modal('hide');">
+                    <span style="color: green;"><i class="ui reply icon" style="margin: 0px;"></i></span>
+                </div>
+                <div class="ui mini button textbase" onclick="makesave();">
+                    <span style="color: red;"><i class="ui download icon" style="margin: 0px;"></i></span>
                 </div>
             </div>
         </div>
