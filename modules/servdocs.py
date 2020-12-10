@@ -1,34 +1,31 @@
-#!/usr/bin/env python
-
 """
 ##########################################################################
-*
-* -*- coding: utf-8 -*-
 *
 *   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
-*   This copyrighted material is made available to anyone wishing to use,
-*   modify, copy, or redistribute it subject to the terms and conditions
-*   of the GNU General Public License v.2, or (at your option) any later
-*   version.  This program is distributed in the hope that it will be
-*   useful, but WITHOUT ANY WARRANTY expressed or implied, including the
-*   implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-*   PURPOSE.  See the GNU General Public License for more details.  You
-*   should have received a copy of the GNU General Public License along
-*   with this program; if not, write to the Free Software Foundation,
-*   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
 ##########################################################################
 """
 
-
-import click
 import json
 import time
 from flask import Flask, render_template, request, jsonify
 
 
-servchat = Flask(__name__)
+storedir = "../storage"
+servchat = Flask(__name__, template_folder="../templates", static_folder="../static")
 
 
 @servchat.route("/")
@@ -57,11 +54,11 @@ def savedocs():
             "maketime": time.ctime(curttime),
             "document": json.loads(document),
         }
-        with open("static/docs/"+filename, "w") as jsonfile:
+        with open(storedir+"/"+filename, "w") as jsonfile:
             json.dump(docsdict, jsonfile)
         return jsonify(result=filename)
     except:
-        return jsonify(result="fail")
+        return jsonify(result="savefail")
 
 
 def colabnow(netpdata, servport):

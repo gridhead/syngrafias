@@ -1,19 +1,19 @@
 /*************************************************************************
 *
-* -*- coding: utf-8 -*-
-*
 *   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
-*   This copyrighted material is made available to anyone wishing to use,
-*   modify, copy, or redistribute it subject to the terms and conditions
-*   of the GNU General Public License v.2, or (at your option) any later
-*   version.  This program is distributed in the hope that it will be
-*   useful, but WITHOUT ANY WARRANTY expressed or implied, including the
-*   implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-*   PURPOSE.  See the GNU General Public License for more details.  You
-*   should have received a copy of the GNU General Public License along
-*   with this program; if not, write to the Free Software Foundation,
-*   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
 *************************************************************************/
 
@@ -26,8 +26,10 @@ function autoconv(celliden) {
 }
 
 function chektime(chekqant) {
-    if (chekqant < 10)  return "0" + chekqant;
-    else                return chekqant;
+    if (chekqant < 10)
+        return "0" + chekqant;
+    else
+        return chekqant;
 }
 
 function timeqant() {
@@ -168,6 +170,7 @@ function makecell(celliden) {
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
         "</div>" + "</div>" + "<div id='op-" + celliden + "' class='' style='border-width: 2px; border-radius: 2px;'>" +
+
         "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
     
@@ -201,6 +204,24 @@ function toggleCell(celliden) {
         document.getElementById("op-"+celliden).style.width = "calc(50% - "+(gutterSize/2)+"px)";
         document.getElementById("op-"+celliden).style.display = "block";
         gt.style.display = "block";
+    } 
+}
+
+function toggleCell(celliden) {
+    let ta = document.getElementById("txtar-"+celliden);
+    let op = document.getElementById("op-"+celliden);
+    if (ta.classList.value === "eight wide column" && op.classList.value === "eight wide column") {
+        document.getElementById("txtar-"+celliden).classList.value = "sixteen wide column";
+        document.getElementById("op-"+celliden).style.display = "none";
+    } else if (ta.classList.value === "sixteen wide column" && op.classList.value === "eight wide column") {
+        document.getElementById("op-"+celliden).style.display = "block";
+        document.getElementById("op-"+celliden).classList.value = "sixteen wide column";
+        document.getElementById("txtar-"+celliden).style.display = "none";
+    } else if (op.classList.value === "sixteen wide column" && op.classList.value === "sixteen wide column") {
+        document.getElementById("op-"+celliden).style.display = "block";
+        document.getElementById("txtar-"+celliden).style.display = "block";
+        document.getElementById("op-"+celliden).classList.value = "eight wide column";
+        document.getElementById("txtar-"+celliden).classList.value = "eight wide column";
     } 
 }
 
