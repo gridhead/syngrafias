@@ -66,7 +66,6 @@
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content text-center" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
                 <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
-                    <div class="ui label monotext" id="docuiden">00000000</div>
                     <input type="text" class="textbase" placeholder="Enter the document name here">
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
@@ -136,7 +135,8 @@
                             sessionStorage.setItem("username", username);
                             sessionStorage.setItem("sessiden", sessiden);
                             $('#givename').modal('hide');
-                            document.getElementById("docuiden").innerText = sessiden;
+                            document.getElementById("headroom").innerText = sessiden;
+                            document.getElementById("headuser").innerText = username;
                         }
                         else
                         {
