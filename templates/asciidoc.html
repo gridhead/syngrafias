@@ -88,7 +88,7 @@
                 }
             }
         </script>
-        <div class="ui basic modal" id="givename">
+        <form onsubmit="return false;" class="ui basic modal" id="givename">
             <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
             <div class="content">
                 <p style="text-align: center; font-size: 15px;" class="textbase">Please provide your username and workspace identity if you are joining an existing workspace. If you are not, simply enter your username and click on BUILD to generate yourself a new workspace identity to start.</p>
@@ -99,9 +99,9 @@
             </div>
             <div class="actions" style="text-align: center;">
                 <div class="ui tiny inverted button monotext cardinal" onclick="wkeybild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
-                <div class="ui tiny inverted button monotext cardinal" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</div>
+                <button type="submit" class="ui tiny inverted button monotext cardinal" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
             </div>
-        </div>
+        </form>
         <div class="ui basic modal" id="sockfail">
             <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Connection failed</div>
             <div class="content">
