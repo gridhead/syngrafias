@@ -207,24 +207,6 @@ function toggleCell(celliden) {
     } 
 }
 
-function toggleCell(celliden) {
-    let ta = document.getElementById("txtar-"+celliden);
-    let op = document.getElementById("op-"+celliden);
-    if (ta.classList.value === "eight wide column" && op.classList.value === "eight wide column") {
-        document.getElementById("txtar-"+celliden).classList.value = "sixteen wide column";
-        document.getElementById("op-"+celliden).style.display = "none";
-    } else if (ta.classList.value === "sixteen wide column" && op.classList.value === "eight wide column") {
-        document.getElementById("op-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).classList.value = "sixteen wide column";
-        document.getElementById("txtar-"+celliden).style.display = "none";
-    } else if (op.classList.value === "sixteen wide column" && op.classList.value === "sixteen wide column") {
-        document.getElementById("op-"+celliden).style.display = "block";
-        document.getElementById("txtar-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).classList.value = "eight wide column";
-        document.getElementById("txtar-"+celliden).classList.value = "eight wide column";
-    } 
-}
-
 function sendpull(celliden) {
     if (webesock.readyState === 3) {
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be removed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
