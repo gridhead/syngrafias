@@ -1,28 +1,25 @@
-#!/usr/bin/env python
-
 """
 ##########################################################################
 *
-* -*- coding: utf-8 -*-
-*
 *   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
-*   This copyrighted material is made available to anyone wishing to use,
-*   modify, copy, or redistribute it subject to the terms and conditions
-*   of the GNU General Public License v.2, or (at your option) any later
-*   version.  This program is distributed in the hope that it will be
-*   useful, but WITHOUT ANY WARRANTY expressed or implied, including the
-*   implied warranties of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-*   PURPOSE.  See the GNU General Public License for more details.  You
-*   should have received a copy of the GNU General Public License along
-*   with this program; if not, write to the Free Software Foundation,
-*   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
 ##########################################################################
 """
 
 import asyncio
-import click
 import json
 import sys
 import time
@@ -76,11 +73,6 @@ def servenow(netpdata="127.0.0.1", syncport="9696"):
         sys.exit()
 
 
-@click.command()
-@click.option("-c", "--syncport", "syncport", help="Set the port value for WebSockets [0-65536]", required=True)
-@click.option("-6", "--ipprotv6", "netprotc", flag_value="ipprotv6", help="Start the server on an IPv6 address", required=True)
-@click.option("-4", "--ipprotv4", "netprotc", flag_value="ipprotv4", help="Start the server on an IPv4 address", required=True)
-@click.version_option(version="01082020", prog_name="Syngrafias WebSockets by t0xic0der")
 def mainfunc(syncport, netprotc):
     print(" > [" + str(time.ctime()) + "] [HOLAUSER] Starting Syngrafias...")
     netpdata = ""
@@ -91,7 +83,3 @@ def mainfunc(syncport, netprotc):
         print(" > [" + str(time.ctime()) + "] [HOLAUSER] IP version : 4")
         netpdata = "0.0.0.0"
     servenow(netpdata, syncport)
-
-
-if __name__ == "__main__":
-    mainfunc()
