@@ -20,9 +20,11 @@
 var gutterSize = 10;            // For Split.js
 
 function autoconv(celliden) {
-    let textdata = document.getElementById("textdata-" + celliden).value;
+    let textareaElement = document.getElementById("textdata-" + celliden);
+    let textdata = textareaElement.value;
     let htmldata = Asciidoctor().convert(textdata);
     document.getElementById("otptdata-" + celliden).innerHTML = htmldata;
+    textareaElement.style.height = '100%';
 }
 
 function chektime(chekqant) {
@@ -166,11 +168,10 @@ function makecell(celliden) {
         "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
-        "<br/><br/>" + "<div class='description'>" + "<div class='' style='display: flex;'>" + "<div id='txtar-" + celliden + "' class='default' style='height: 100%;'>" +
-        "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
+        "<br/><br/>" + "<div class='description'>" + "<div class='' style='display: flex;'>" + "<div id='txtar-" + celliden + "' class='default'>" +
+        "<div class='ui tiny form field' style='height: 100%;'>" + "<textarea rows='' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
         "</div>" + "</div>" + "<div id='op-" + celliden + "' class='' style='border-width: 2px; border-radius: 2px;'>" +
-
         "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
     
@@ -187,42 +188,25 @@ function toggleCell(celliden) {
     let gt = ta.nextElementSibling;
 
     if (ta.classList.value === "default") {
-        document.getElementById("txtar-"+celliden).classList.value = "open";
-        document.getElementById("txtar-"+celliden).style.width = "100%";
-        document.getElementById("op-"+celliden).style.display = "none";
+        ta.classList.value = "open";
+        ta.style.width = "100%";
+        op.style.display = "none";
         gt.style.display = "none";
     } else if (ta.classList.value === "open") {
-        document.getElementById("txtar-"+celliden).classList.value = "close";
-        document.getElementById("txtar-"+celliden).style.display = "none";
-        document.getElementById("op-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).style.width = "100%";
+        ta.classList.value = "close";
+        ta.style.display = "none";
+        op.style.display = "block";
+        op.style.width = "100%";
         gt.style.display = "none";
     } else if (ta.classList.value === "close") {
-        document.getElementById("txtar-"+celliden).classList.value = "default";
-        document.getElementById("txtar-"+celliden).style.width = "calc(50% - "+(gutterSize/2)+"px)";
-        document.getElementById("txtar-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).style.width = "calc(50% - "+(gutterSize/2)+"px)";
-        document.getElementById("op-"+celliden).style.display = "block";
+        ta.classList.value = "default";
+        ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+        ta.style.display = "block";
+        op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+        op.style.display = "block";
         gt.style.display = "block";
     } 
-}
-
-function toggleCell(celliden) {
-    let ta = document.getElementById("txtar-"+celliden);
-    let op = document.getElementById("op-"+celliden);
-    if (ta.classList.value === "eight wide column" && op.classList.value === "eight wide column") {
-        document.getElementById("txtar-"+celliden).classList.value = "sixteen wide column";
-        document.getElementById("op-"+celliden).style.display = "none";
-    } else if (ta.classList.value === "sixteen wide column" && op.classList.value === "eight wide column") {
-        document.getElementById("op-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).classList.value = "sixteen wide column";
-        document.getElementById("txtar-"+celliden).style.display = "none";
-    } else if (op.classList.value === "sixteen wide column" && op.classList.value === "sixteen wide column") {
-        document.getElementById("op-"+celliden).style.display = "block";
-        document.getElementById("txtar-"+celliden).style.display = "block";
-        document.getElementById("op-"+celliden).classList.value = "eight wide column";
-        document.getElementById("txtar-"+celliden).classList.value = "eight wide column";
-    } 
+    ta.style.height = '100%';
 }
 
 function sendpull(celliden) {
