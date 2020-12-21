@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
         <script src="{{ url_for('static', filename='jscn/asciidoctor.js') }}"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
+        <script src="{{ url_for('static', filename='jscn/split.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/syngrafias.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/usagetips.js') }}"></script>
@@ -37,6 +38,7 @@
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
             .cardinal {background-color: #294172;}
+            .gutter { cursor: ew-resize; }
         </style>
     </head>
     <body onload="askusdat(); timeqant(); randgene(); sessionStorage.clear();" style="margin-top: 2.85714286em;">
