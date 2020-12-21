@@ -75,6 +75,94 @@ function makesave() {
 
 var gutterSize = 10;            // For Split.js
 
+function opendocs() {
+    document.getElementById("opdocstt").innerText = "Open documents";
+    document.getElementById("opdocsid").innerHTML =
+        "<p class='textbase' style='line-height: 1.25; text-align: justify; font-size: 15px;'>" +
+        "The document that you open must be in the proper Syngrafias Workspace Document format. " +
+        "Also, keep in mind that opening a new document would replace the document that you are " +
+        "currently editing.</p>" +
+        "<p class='textbase' style='line-height: 1.25; text-align: justify; font-size: 15px;'>" +
+        "Browse for the file you want and then select it. Then, click on Open to load up the file. " +
+        "Once the file is parsed, you would be given an option to continue with the loaded document " +
+        "up for editing.</p>" +
+        "<input class='ui small' style='width: 100%; text-align: center;' type='file' id='upldfile'>";
+    document.getElementById("opdocsff").innerHTML =
+        "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
+        "<div class='ui mini button textbase' onclick='loadupld();'><span style='color: red;'>Load</span></div>";
+    document.getElementById('upldfile').value = null;
+    $("#opendocs").modal("setting", "closable", false).modal("show");
+}
+
+function loadupld() {
+    let upldfile = document.getElementById("upldfile").value;
+    if (upldfile === "") {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#opendocs").modal("hide");
+    } else {
+        if (!window.FileReader) {
+            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            $("#opendocs").modal("hide");
+        } else {
+            let textinpt = $("#upldfile").get(0);
+            let readobjc = new FileReader();
+            let textfile = textinpt.files[0];
+            readobjc.readAsText(textfile);
+            $(readobjc).on("load", function (e) {
+                let actifile = e.target.result;
+                if (actifile && actifile.length) {
+                    try {
+                        let docuvain = JSON.parse(actifile);
+                        document.getElementById("opdocstt").innerText = "Contents parsed";
+                        document.getElementById("opdocsid").innerHTML =
+                            "<div class='ui list textbase'>" +
+                            "<div class='item'><div class='header monotext'>Workspace ID</div>" + docuvain["sessiden"] + "</div>" +
+                            "<div class='item'><div class='header monotext'>Saved by</div>" + docuvain["username"] + "</div>" +
+                            "<div class='item'><div class='header monotext'>Last modified</div>" + Date(docuvain["timestmp"]) + "</div>" +
+                            "</div>";
+                        document.getElementById("opdocsff").innerHTML =
+                            "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
+                            "<div class='ui mini button textbase' onclick='parsedoc();'><span style='color: red;'>Continue</span></div>";
+                        sessionStorage.setItem("lodcache", JSON.stringify(docuvain));
+                    } catch (e) {
+                        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                        $("#opendocs").modal("hide");
+                    }
+                }
+            });
+        }
+    }
+}
+
+function parsedoc() {
+    let docuvain = JSON.parse(sessionStorage.getItem("lodcache"));
+    sessionStorage.setItem("lodcache", "");
+    let curtlist = sessionStorage.getItem("celllist");
+    if (curtlist !== "{}") {
+        for (indx in JSON.parse(curtlist)) {
+            document.getElementById("cardiden-" + indx).remove();
+        }
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous cells were removed<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    }
+    let newelist = {};
+    for (indx in docuvain["cellcoll"]) {
+        newelist[indx] = docuvain["cellcoll"][indx]["metadata"];
+        /*
+        UNCOMMENT ONCE THE SPECIAL READ-ONLY CELLS PR IS MERGED
+        THIS WOULD RESET THE LOCK STATE OF ALL THE CELLS!
+        newelist[indx]["lockstat"]["islocked"] = false;
+        newelist[indx]["lockstat"]["lockedby"] = null;
+        */
+        makecell(indx);
+        document.getElementById("cellname-" + indx).value = docuvain["cellcoll"][indx]["contents"]["cellname"];
+        document.getElementById("textdata-" + indx).value = docuvain["cellcoll"][indx]["contents"]["textdata"];
+        autoconv(indx);
+    }
+    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    sessionStorage.setItem("celllist", JSON.stringify(newelist));
+    $("#opendocs").modal("hide");
+}
+
 function autoconv(celliden) {
     let textdata = document.getElementById("textdata-" + celliden).value;
     let htmldata = Asciidoctor().convert(textdata);
@@ -469,7 +557,7 @@ function viewlogs() {
     for (let indx = 0; indx < actilist.length; indx++) {
         $("#actitabl").append("<tr class='textbase'><td style='font-size: 15px;'>" + actilist[indx]["timestmp"] + "</td><td style='font-size: 15px;'>" + actilist[indx]["actiobjc"] + "<br/><strong class='monotext'>₹" + actilist[indx]["celliden"] + "</strong></td></tr>");
     }
-    $("#actilogs").modal("show");
+    $("#actilogs").modal("setting", "closable", false).modal("show");
 }
 
 function rmovhist() {
