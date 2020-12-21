@@ -161,7 +161,7 @@ function makecell(celliden) {
     $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
         "<button onclick='toggleCell(\""+celliden+"\")'>toggle</button>"+
-        "<div id='colrcell-" + celliden + "' class='content' style='background-color: " + sessionStorage.getItem("thmcolor") + ";'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
+        "<div class='content' style='background-color: #f6f8fa;'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
         "<br/><br/>" + "<div class='description'>" + "<div class='ui grid'>" + "<div id='txtar-" + celliden + "' class='eight wide column'>" +
