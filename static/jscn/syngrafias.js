@@ -320,8 +320,7 @@ function recvpush(celliden, username) {
 function makecell(celliden) {
     $("#domelist").append(
         "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
-        "<button onclick='toggleCell(\""+celliden+"\")'>toggle</button>"+
-        "<div class='content' style='background-color: #f6f8fa;'>" + "<div class='ui tiny labeled input' style='width: 100%;'>" +
+        "<div class='content' style='background-color: #f6f8fa; padding: 0px;'>" + "<div class='ui icon tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" +
         "<i class='inverted circular eye link icon' onclick='toggleCell(\""+celliden+"\")'></i>" + "</div>" + "</div>" +
@@ -329,7 +328,6 @@ function makecell(celliden) {
         "<div class='ui tiny form field'>" + "<textarea rows='2' id='textdata-" + celliden +
         "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
         "</div>" + "</div>" + "<div id='op-" + celliden + "' class='' style='border-width: 2px; border-radius: 2px;'>" +
-
         "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'></div>" +
         "</div>" + "</div>" + "</div>" + "</div>" + "</div>");
     
