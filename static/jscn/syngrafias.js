@@ -60,7 +60,7 @@ function loadupld() {
                             "<div class='ui list textbase'>" +
                             "<div class='item'><div class='header monotext'>Workspace ID</div>" + docuvain["sessiden"] + "</div>" +
                             "<div class='item'><div class='header monotext'>Saved by</div>" + docuvain["username"] + "</div>" +
-                            "<div class='item'><div class='header monotext'>Last modified</div>" + docuvain["timestmp"] + "</div>" +
+                            "<div class='item'><div class='header monotext'>Last modified</div>" + Date(docuvain["timestmp"]) + "</div>" +
                             "</div>";
                         document.getElementById("opdocsff").innerHTML =
                             "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
