@@ -19,13 +19,14 @@
 ##########################################################################
 """
 
+from hashlib import sha256
 import json
 import time
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 
 
-storedir = "../storage"
 servchat = Flask(__name__, template_folder="../templates", static_folder="../static")
+storedir = "storage"
 
 
 @servchat.route("/")
@@ -38,23 +39,19 @@ def themable(themcolr):
     return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
 
 
+@servchat.route("/storage/<path:filename>")
+def getsaved(filename):
+    return send_from_directory(servchat.config["CUSTOM_STATIC_PATH"], filename, conditional=True)
+
+
 @servchat.route("/savedocs/")
 def savedocs():
     try:
-        username = request.args.get("username", "0", type=str)
-        workspec = request.args.get("workspec", "0", type=str)
-        docsname = request.args.get("docsname", "0", type=str)
+        timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
+        filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".swd"
         document = request.args.get("document", "0", type=str)
-        curttime = time.time()
-        filename = username + "_" + workspec + "_" + str(curttime) + ".swd"
-        docsdict = {
-            "username": username,
-            "workspec": workspec,
-            "docsname": docsname,
-            "maketime": time.ctime(curttime),
-            "document": json.loads(document),
-        }
-        with open(storedir+"/"+filename, "w") as jsonfile:
+        docsdict = json.loads(document)
+        with open(storedir + "/" + filename, "w") as jsonfile:
             json.dump(docsdict, jsonfile)
         return jsonify(result=filename)
     except:
@@ -63,6 +60,7 @@ def savedocs():
 
 def colabnow(netpdata, servport):
     servchat.config["TEMPLATES_AUTO_RELOAD"] = True
+    servchat.config["CUSTOM_STATIC_PATH"] = "../storage"
     servchat.run(host=netpdata, port=servport)
 
 
