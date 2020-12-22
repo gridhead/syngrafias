@@ -321,7 +321,7 @@ function recvpush(celliden, username) {
 
 function makecell(celliden) {
     $("#domelist").append(
-        "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%;' id='cardiden-" + celliden + "'>" +
+        "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-" + celliden + "'>" +
         "<div class='content' style='background-color: #f6f8fa; padding: 0px;'>" + "<div class='ui icon tiny labeled input' style='width: 100%;'>" +
         "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
         "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" + "</div>" +
