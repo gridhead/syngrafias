@@ -58,7 +58,9 @@
                     <a class="item" onclick="$('#restwarn').modal('show');"><i class="power off icon"></i>Reset workspace</a>
                 </div>
             </div>
-            <div class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span></div>
+            <div class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span>
+                &nbsp; <i title="copy Id" onclick="copyID()" style="cursor: pointer;" class="copy outline icon"></i>
+            </div>
             <div class="right menu">
                 <div class="ui item monotext" id="timehead">00:00:00</div>
             </div>
@@ -66,7 +68,7 @@
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
                 <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
-                    <input type="text" class="textbase" placeholder="Enter the document name here">
+                    <input type="text" class="textbase" id="docname" placeholder="Enter the document name here">
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
@@ -165,6 +167,17 @@
                         }
                     }
                 }
+            }
+
+            function copyID() {
+                const id = document.getElementById("headroom").innerText;
+                var tempIn = document.createElement("input");
+                tempIn.value = id;
+                document.body.appendChild(tempIn);
+                tempIn.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempIn);
+                toastr.success("<span class='textbase'>Workspace id is copied.</span>","",{"positionClass": "toast-bottom-right"})
             }
         </script>
         <div class="ui basic modal" id="givename">
