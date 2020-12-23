@@ -69,6 +69,8 @@ function makesess() {
             toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
         }
     }
+
+    return false;
 }
 webesock.onmessage = function (event)
 {

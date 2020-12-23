@@ -182,7 +182,7 @@
             //     toastr.success("<span class='textbase'>Workspace id is copied.</span>","",{"positionClass": "toast-bottom-right"})
             // }
         </script>
-        <form onsubmit="return false;" class="ui basic modal" id="givename">
+        <form onsubmit="return makesess();" class="ui basic modal" id="givename">
             <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
             <div class="content">
                 <p style="text-align: center; font-size: 15px;" class="textbase">Please provide your username and workspace identity if you are joining an existing workspace. If you are not, simply enter your username and click on BUILD to generate yourself a new workspace identity to start.</p>
@@ -193,7 +193,7 @@
             </div>
             <div class="actions" style="text-align: center;">
                 <div class="ui tiny inverted button monotext cardinal" onclick="wkeybuild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
-                <button type="submit" class="ui tiny inverted button monotext cardinal" onclick="makesess();" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
+                <button type="submit" class="ui tiny inverted button monotext cardinal" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
             </div>
         </form>
     </body>
