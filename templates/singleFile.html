@@ -21,26 +21,15 @@
                 box-sizing: border-box;
                 /* overflow: hidden; */
             }
-            .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
-            .monotext {font-family: 'IBM Plex Mono', monospace !important;}
+            .textbase {
+                font-family: 'IBM Plex Sans',sans-serif !important;
+            }
+            .monotext {
+                font-family: 'IBM Plex Mono', monospace !important;
+            }
         </style>
     </head>
     <body onload="askusdat(); timeqant(); randgene();" style="display: flex; flex-direction: column;">
-        <!-- <div class="ui attached stackable menu inverted" style="background-color: #294172;">
-            <a class="item textbase"><strong>Syngrafias</strong></a>
-            <a class="item"><i class="file icon"></i></a>
-            <a class="item"><i class="save icon"></i></a>
-            <a class="item"><i class="bug icon"></i></a>
-            <a class="item"><i class="wheelchair icon"></i></a>
-            <a class="item"><i class="clock icon"></i></a>
-            <a class="item"><i class="info circle icon"></i></a>
-            <a class="item"><i class="plus circle icon"></i></a>
-            <div class="right menu">
-                <div class="ui item monotext" id="timehead">00:00:00</div>
-                <a class="item"><i class="cog icon"></i></a>
-                <a class="item"><i class="power off icon"></i></a>
-            </div>
-        </div> -->
         <div class="ui tiny attached stackable menu inverted textbase cardinal" style="background-color: #294172;">
             <div class="ui simple dropdown item">
                 <span style="font-weight: bold;">Syngrafias</span>
@@ -68,13 +57,13 @@
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
                 <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
-                    <input type="text" class="textbase" id="docname" placeholder="Enter the document name here">
+                    <input type="text" class="textbase" id="docsname" onkeyup="ttlechng();" placeholder="Enter the document name here">
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
                     <div class="" style="width: 49.75%; margin-right: 0.25%;">
                         <div class="ui tiny form field" style="height: 100%;">
-                            <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
+                            <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); sendnote();"></textarea>
                         </div>
                     </div>
                     <div class="" style="width: 49.75%; margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
@@ -89,98 +78,18 @@
         <script>
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
             console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
-            // function autoconv() {
-            //     let textdata = document.getElementById("textdata").value;
-            //     let htmldata = Asciidoctor().convert(textdata);
-            //     document.getElementById("otptdata").innerHTML = htmldata;
-            // }
-            // function chektime(chekqant)
-            // {
-            //     if (chekqant < 10)  return "0" + chekqant;
-            //     else                return chekqant;
-            // }
-            // function timeqant()
-            // {
-            //     let curtdate = new Date();
-            //     let hour = curtdate.getHours(); let mint = curtdate.getMinutes(); let secs = curtdate.getSeconds();
-            //     hour = chektime(hour); mint = chektime(mint); secs = chektime(secs);
-            //     document.getElementById("timehead").innerHTML = hour + ":" + mint + ":" + secs;
-            //     let time = setTimeout(timeqant, 500);
-            // }
-            // function randgene()
-            // {
-            //     let randstng = "";
-            //     let lent = 8; let list = "0123456789ABCDEF";
-            //     for (let indx = lent; indx > 0; indx--)
-            //     {
-            //         randstng += list[Math.floor(Math.random() * list.length)];
-            //     }
-            //     return randstng;
-            // }
-            // function dispatch()
-            // {
-            //     let contents = document.getElementById("textdata").value;
-            //     let writings = "/note" + " " + contents;
-            //     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-            // }
-            // function askusdat()
-            // {
-            //     $(".ui.basic.modal").modal('setting', 'closable', false).modal("show");
-            // }
-            // function makesess() {
-            //     let username = document.getElementById("username").value;
-            //     let sessiden = document.getElementById("sessiden").value;
-            //     if (username !== "" && sessiden !== "")
-            //     {
-            //         if (!(/\s/.test(username) || /\s/.test(sessiden)))
-            //         {
-            //             if (sessiden.match(/^[A-F0-9]{8}$/) && username.match(/^[a-z0-9]+$/i))
-            //             {
-            //                 sessionStorage.setItem("username", username);
-            //                 sessionStorage.setItem("sessiden", sessiden);
-            //                 $('#givename').modal('hide');
-            //                 document.getElementById("headroom").innerText = sessiden;
-            //                 document.getElementById("headuser").innerText = username;
-            //             }
-            //             else
-            //             {
-            //                 toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
-            //             }
-            //         }
-            //         else
-            //         {
-            //             toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
-            //         }
-            //     }
-            // }
-            // webesock.onmessage = function (event)
-            // {
-            //     console.log(event.data);
-            //     let data = JSON.parse(event.data);
-            //     if (!(data.username === sessionStorage.getItem("username")))
-			//     {
-			// 	    if (data.sessiden === sessionStorage.getItem("sessiden"))
-            //         {
-            //             if (data.textmesg.split(" ")[0] === "/note")
-            //             {
-            //                 let textmesg = data.textmesg.replace("/note", "").trim();
-            //                 document.getElementById("textdata").value = textmesg;
-            //                 autoconv();
-            //             }
-            //         }
-            //     }
-            // }
-
-            // function copyID() {
-            //     const id = document.getElementById("headroom").innerText;
-            //     var tempIn = document.createElement("input");
-            //     tempIn.value = id;
-            //     document.body.appendChild(tempIn);
-            //     tempIn.select();
-            //     document.execCommand("copy");
-            //     document.body.removeChild(tempIn);
-            //     toastr.success("<span class='textbase'>Workspace id is copied.</span>","",{"positionClass": "toast-bottom-right"})
-            // }
+            webesock.onmessage = function (event)
+            {
+                let data = JSON.parse(event.data);
+                if (!(data.username === sessionStorage.getItem("username"))) {
+				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
+                        let textmesg = JSON.parse(data.textmesg);
+                        if (textmesg["taskcomm"] === "/note") {
+                            recvnote(textmesg["contents"], data.username);
+                        }
+                    }
+                }
+            }
         </script>
         <form onsubmit="return makesess();" class="ui basic modal" id="givename">
             <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
