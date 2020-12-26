@@ -98,7 +98,7 @@ function recvttle(contents, ttleauth) {
 }
 
 function askusdat() {
-    $(".ui.basic.modal").modal('setting', 'closable', false).modal("show");
+    $("#givename").modal('setting', 'closable', false).modal("show");
 }
 
 function makesess() {
@@ -131,4 +131,56 @@ function copyID() {
     document.execCommand("copy");
     document.body.removeChild(tempIn);
     toastr.success("<span class='textbase'>Workspace ID is copied.</span>", "", {"positionClass": "toast-bottom-right"})
+}
+
+function onloadexecutables() {
+    askusdat();
+    timeqant();
+    randgene();
+    document.getElementById("textdata").value = "";
+    document.getElementById("docsname").value = "";
+    sessionStorage.clear();
+}
+
+function saveadoc() {
+    let dateobjc = new Date();
+    let epochstr = dateobjc.getTime();
+    document.getElementById("savename").value = sessionStorage.getItem("username") + "_" + sessionStorage.getItem("sessiden") + "_"  + epochstr;
+    $("#saveadoc").modal("show");
+    console.log("LEL");
+}
+
+function makesave() {
+    let filename = document.getElementById("savename").value.trim();
+    if (docsname !== "") {
+        let dateobjc = new Date();
+        let epochstr = dateobjc.getTime();
+        let savedict = {
+            "username": sessionStorage.getItem("username"),
+            "sessiden": sessionStorage.getItem("sessiden"),
+            "timestmp": epochstr,
+            "adocasst": {
+                "docsname": document.getElementById("docsname").value,
+                "textdata": document.getElementById("textdata").value
+            }
+        };
+        let printstr = JSON.stringify(savedict);
+        $.getJSON($SCRIPT_ROOT + "/saveadoc/", {
+            filename: filename,
+            document: printstr
+        }, function (data) {
+            console.log(data.result);
+            if (data.result === "savefail") {
+                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                $("#saveadoc").modal("hide");
+            } else {
+                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                window.open($SCRIPT_ROOT + "/storage/" + data.result, "_blank");
+                $("#saveadoc").modal("hide");
+            }
+        });
+    } else {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#saveadoc").modal("hide");
+    }
 }
