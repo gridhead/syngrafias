@@ -48,8 +48,6 @@ function randgene()
     {
         randstng += list[Math.floor(Math.random() * list.length)];
     }
-    // document.getElementById('sessiden').value = randstng;
-    // toastr.success("<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     return randstng;
 }
 
@@ -67,7 +65,7 @@ function sendnote() {
         let writings = JSON.stringify({"taskcomm": "/note", "contents": contents});
         webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-        //makelogs(celliden, "/note", sessionStorage.getItem("username"));
+        makelogs("/note", sessionStorage.getItem("username"));
     }
 }
 
@@ -75,7 +73,7 @@ function recvnote(contents, noteauth) {
     document.getElementById("textdata").value = contents;
     autoconv();
     toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    //makelogs(celliden, "/note", noteauth);
+    makelogs("/note", noteauth);
 }
 
 function sendttle() {
@@ -87,14 +85,14 @@ function sendttle() {
         let writings = JSON.stringify({"taskcomm": "/ttle", "contents": docsname});
         webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-        //makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
+        makelogs("/ttle", sessionStorage.getItem("username"));
     }
 }
 
 function recvttle(contents, ttleauth) {
     document.getElementById("docsname").value = contents;
     toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    //makelogs(celliden, "/note", noteauth);
+    makelogs("/note", ttleauth);
 }
 
 function askusdat() {
@@ -152,7 +150,6 @@ function saveadoc() {
     let epochstr = dateobjc.getTime();
     document.getElementById("savename").value = sessionStorage.getItem("username") + "_" + sessionStorage.getItem("sessiden") + "_"  + epochstr;
     $("#saveadoc").modal("show");
-    console.log("LEL");
 }
 
 function makesave() {
@@ -261,4 +258,40 @@ function parsedoc() {
     toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous contents were removed<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     $("#opendocs").modal("hide");
+}
+
+function marktime() {
+    let curtdate = new Date();
+    let hour = curtdate.getHours(); let mint = curtdate.getMinutes(); let secs = curtdate.getSeconds();
+    return chektime(hour) + ":" + chektime(mint) + ":" + chektime(secs);
+}
+
+function makelogs(activity, username) {
+    let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
+    let actiobjc = "";
+    if (username === sessionStorage.getItem("username"))    {actiobjc += "<strong>You</strong>";}
+    else                                                         {actiobjc += "<strong>" + username + "</strong>";}
+    if (activity === "/note")                                    {actiobjc += " edited the document";}
+    else if (activity === "/ttle")                               {actiobjc += " renamed the document";}
+    actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc};
+    sessionStorage.setItem("actilogs", JSON.stringify(actilist));
+}
+
+function viewlogs() {
+    $("#actiform").remove();
+    let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
+    $("#actijuxt").append("<table id='actiform' class='ui very compact table'>" + "<tbody id='actitabl'></tbody>" + "</table>");
+    for (let indx = 0; indx < actilist.length; indx++) {
+        $("#actitabl").append("<tr class='textbase'><td style='font-size: 15px;'>" + actilist[indx]["timestmp"] + "</td><td style='font-size: 15px;'>" + actilist[indx]["actiobjc"] + "</td></tr>");
+    }
+    $("#actilogs").modal("setting", "closable", false).modal("show");
+}
+
+function rmovhist() {
+    if (sessionStorage.getItem("actilogs") === "[]") {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    } else {
+        sessionStorage.setItem("actilogs", "[]");
+        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    }
 }

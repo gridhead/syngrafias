@@ -35,9 +35,8 @@
                 <span style="font-weight: bold;">Syngrafias</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
                     <a class="item" onclick="openadoc();"><i class="file icon"></i>Open document</a>
-                    <a class="item" onclick="saveadoc(); console.log('VE');"><i class="save icon"></i>Save document</a>
+                    <a class="item" onclick="saveadoc();"><i class="save icon"></i>Save document</a>
                     <a class="item" href="/"><i class="align justify icon"></i>Cellular document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick=""><i class="wheelchair icon"></i>View support</a>
@@ -193,6 +192,18 @@
         <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
             <div class="ui mini button deny textbase" onclick="$('#colrmode').modal('hide');">
                 <span style="color: green;"><i class='ui reply icon'></i>Back</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="actilogs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Track activities</div>
+        <div id="actijuxt" class="scrolling content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">All activities including cell creation, editing, renaming and removal would show up here - unless you wipe the history clean.</p></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('actilogs').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button deny textbase" onclick="rmovhist();">
+                <span style="color: red;"><i class="ui broom icon"></i>Wipe</span>
             </div>
         </div>
     </div>
