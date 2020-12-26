@@ -57,7 +57,7 @@
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
                 <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
-                    <input type="text" class="textbase" id="docsname" onkeyup="ttlechng();" placeholder="Enter the document name here">
+                    <input type="text" class="textbase" id="docsname" onkeyup="sendttle();" placeholder="Enter the document name here">
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
@@ -86,6 +86,8 @@
                         let textmesg = JSON.parse(data.textmesg);
                         if (textmesg["taskcomm"] === "/note") {
                             recvnote(textmesg["contents"], data.username);
+                        } else if (textmesg["taskcomm"] === "/ttle") {
+                            recvttle(textmesg["contents"], data.username);
                         }
                     }
                 }

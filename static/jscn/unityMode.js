@@ -75,28 +75,26 @@ function recvnote(contents, noteauth) {
     document.getElementById("textdata").value = contents;
     autoconv();
     toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    /*
-    if (celliden in celllist) {
-        document.getElementById("textdata").value = contents;
-        autoconv(celliden);
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell contents</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    }
-    */
     //makelogs(celliden, "/note", noteauth);
 }
 
-/*
-function sendnote() {
-    let contents = document.getElementById("textdata").value;
-    let writings = "/note" + " " + contents;
-    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+function sendttle() {
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Title could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let docsname = document.getElementById("docsname").value;
+        let writings = JSON.stringify({"taskcomm": "/ttle", "contents": docsname});
+        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        //makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
+    }
 }
-*/
 
-function docsname() {
-    let docsname = document.getElementById("docsname").value;
+function recvttle(contents, ttleauth) {
+    document.getElementById("docsname").value = contents;
+    toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    //makelogs(celliden, "/note", noteauth);
 }
 
 function askusdat() {
@@ -132,5 +130,5 @@ function copyID() {
     tempIn.select();
     document.execCommand("copy");
     document.body.removeChild(tempIn);
-    toastr.success("<span class='textbase'>Workspace ID is copied.</span>","",{"positionClass": "toast-bottom-right"})
+    toastr.success("<span class='textbase'>Workspace ID is copied.</span>", "", {"positionClass": "toast-bottom-right"})
 }
