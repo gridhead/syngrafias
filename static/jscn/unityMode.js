@@ -184,3 +184,76 @@ function makesave() {
         $("#saveadoc").modal("hide");
     }
 }
+
+function openadoc() {
+    document.getElementById("opdocstt").innerText = "Open documents";
+    document.getElementById("opdocsid").innerHTML =
+        "<p class='textbase' style='line-height: 1.25; text-align: justify; font-size: 15px;'>" +
+        "The document that you open must be in the proper ASCIIDoctor document format. " +
+        "Also, keep in mind that opening a new document would replace the document that you are " +
+        "currently editing.</p>" +
+        "<p class='textbase' style='line-height: 1.25; text-align: justify; font-size: 15px;'>" +
+        "Browse for the file you want and then select it. Then, click on Open to load up the file. " +
+        "Once the file is parsed, you would be given an option to continue with the loaded document " +
+        "up for editing.</p>" +
+        "<input class='ui small' style='width: 100%; text-align: center;' type='file' id='upldfile'>";
+    document.getElementById("opdocsff").innerHTML =
+        "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
+        "<div class='ui mini button textbase' onclick='loadupld();'><span style='color: red;'>Load</span></div>";
+    document.getElementById('upldfile').value = null;
+    $("#opendocs").modal("setting", "closable", false).modal("show");
+}
+
+function loadupld() {
+    let upldfile = document.getElementById("upldfile").value;
+    if (upldfile === "") {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#opendocs").modal("hide");
+    } else {
+        if (!window.FileReader) {
+            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            $("#opendocs").modal("hide");
+        } else {
+            let textinpt = $("#upldfile").get(0);
+            let readobjc = new FileReader();
+            let textfile = textinpt.files[0];
+            if (textinpt.files[0].size <= 1048576) {
+                readobjc.readAsText(textfile);
+                $(readobjc).on("load", function (e) {
+                    let actifile = e.target.result;
+                    if (actifile && actifile.length) {
+                        try {
+                            let docuvain = actifile;
+                            document.getElementById("docsname").value = "Document loaded successfully!"
+                            //let docuvain = JSON.parse(actifile);
+                            document.getElementById("opdocstt").innerText = "Contents parsed";
+                            document.getElementById("opdocsid").innerHTML =
+                                "<div class='ui list textbase'>" +
+                                "<div class='item'><div class='header monotext'>Load state</div>Load complete</div>" +
+                                "</div>";
+                            document.getElementById("opdocsff").innerHTML =
+                                "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
+                                "<div class='ui mini button textbase' onclick='parsedoc();'><span style='color: red;'>Continue</span></div>";
+                            sessionStorage.setItem("lodcache", JSON.stringify(docuvain));
+                        } catch (e) {
+                            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                            $("#opendocs").modal("hide");
+                        }
+                    }
+                });
+            } else {
+                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Files should be under 1MB<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            }
+        }
+    }
+}
+
+function parsedoc() {
+    let docuvain = JSON.parse(sessionStorage.getItem("lodcache"));
+    sessionStorage.setItem("lodcache", "");
+    document.getElementById("textdata").value = docuvain;
+    autoconv();
+    toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous contents were removed<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    $("#opendocs").modal("hide");
+}

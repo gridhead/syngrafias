@@ -36,7 +36,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
-                    <a class="item" onclick=""><i class="file icon"></i>Open document</a>
+                    <a class="item" onclick="openadoc();"><i class="file icon"></i>Open document</a>
                     <a class="item" onclick="saveadoc(); console.log('VE');"><i class="save icon"></i>Save document</a>
                     <a class="item" href="/"><i class="align justify icon"></i>Cellular document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
@@ -127,5 +127,10 @@
         <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Connection failed</div>
         <div class="content"><p style="text-align: center; font-size: 15px;" class="textbase">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p></div>
         <div class="actions" style="text-align: center;"><div class="ui tiny inverted button monotext cardinal" onclick="location.reload();" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div></div>
+    </div>
+    <div class="ui mini modal" id="opendocs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;" id="opdocstt"></div>
+        <div class="content" style="padding: 2.5%;" id="opdocsid"></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;" id="opdocsff"></div>
     </div>
 </html>
