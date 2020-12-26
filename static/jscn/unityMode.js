@@ -109,15 +109,20 @@ function makesess() {
             if (sessiden.match(/^[A-F0-9]{8}$/) && username.match(/^[a-z0-9]+$/i)) {
                 sessionStorage.setItem("username", username);
                 sessionStorage.setItem("sessiden", sessiden);
+                sessionStorage.setItem("actilogs", "[]");
+                sessionStorage.setItem("thmcolor", "#294172");
                 $('#givename').modal('hide');
                 document.getElementById("headroom").innerText = sessiden;
                 document.getElementById("headuser").innerText = username;
+                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
                 toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
             }
         } else {
             toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
         }
+    } else {
+        toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
     }
     return false;
 }
