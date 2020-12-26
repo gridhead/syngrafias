@@ -326,7 +326,7 @@ function recvpush(celliden, username) {
 
 function makecell(celliden) {
     $("#tabhead").append(`
-        <div class='link item' id='tabiden-${celliden}' data-tab='id-" + celliden + "' onclick='activatetab("${celliden}")'>${celliden}</div>`
+        <div class='link item' id='tabiden-${celliden}' data-tab='id-" + celliden + "' onclick='activatetab("${celliden}")'><span class="monotext">${celliden}</span></div>`
     );
     $("#domelist").append(`
         <div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-${celliden}'>
