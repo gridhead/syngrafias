@@ -325,11 +325,14 @@ function recvpush(celliden, username) {
 }
 
 function makecell(celliden) {
+    $("#tabhead").append(`
+        <div class='link item' id='tabiden-${celliden}' data-tab='id-" + celliden + "' onclick='activatetab("${celliden}")'>${celliden}</div>`
+    );
     $("#domelist").append(`
         <div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-${celliden}'>
             <div class='content' style='background-color: #f6f8fa; padding: 0px;'>
                 <div class='ui icon tiny labeled input' style='width: 100%;'>
-                    <div class='ui label monotext' id='celliden' onclick='cellinfo("${celliden}")'>${celliden}</div>
+                    <button class='ui left attached labelled icon button' id='celliden' onclick='cellinfo("${celliden}")'><i class='info icon'></i></button>
                     <input type='text' class='monotext' id='cellname-${celliden}' onkeyup='sendttle("${celliden}");' placeholder='Enter the cell name here'>
                     <i class='inverted circular eye link icon' onclick='toggleCell("${celliden}")'></i>
                 </div>
@@ -354,6 +357,16 @@ function makecell(celliden) {
         minSize: [150, 150],
         gutterSize: gutterSize
     });
+    activatetab(celliden);
+}
+
+function activatetab(celliden) {
+    if (document.getElementsByClassName("active").length > 0) {
+        document.getElementsByClassName("active link item")[0].classList.value = "link item";
+        document.getElementsByClassName("ui bottom attached active tab segment")[0].classList.value = "ui bottom attached tab segment";
+    }
+    document.getElementById("tabiden-"+celliden).classList.value = "active link item";
+    document.getElementById("cardiden-"+celliden).classList.value = "ui bottom attached active tab segment";
 }
 
 function sendunlk(celliden) {
@@ -494,6 +507,7 @@ function sendpull(celliden) {
             if (celllist[celliden].lockstat.islocked === false) {
                 delete celllist[celliden];
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
+                document.getElementById("tabiden-"+celliden).remove();
                 document.getElementById("cardiden-"+celliden).remove();
                 $("#infomode").modal("hide");
                 let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
@@ -516,6 +530,7 @@ function recvpull(celliden, username) {
     if (celliden in celllist) {
         delete celllist[celliden];
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
+        document.getElementById("tabiden-"+celliden).remove();
         document.getElementById("cardiden-"+celliden).remove();
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/pull", username);

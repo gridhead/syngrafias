@@ -70,7 +70,7 @@
             </span>
             <br/>
         </div>
-        <div id="domelist"></div>
+        <div id="domelist"><div class="ui top attached tabular menu" style="width: 100%; overflow-x: auto; overflow-y: hidden" id="tabhead"><div class="ui link icon item" onclick="sendpush();"><i class="plus icon"></i></div></div></div>
         <script type="text/javascript">
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
