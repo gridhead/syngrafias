@@ -7,8 +7,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
         <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
         <meta charset="UTF-8">
-        <title>Syngrafias</title>
-        <script src="{{ url_for('static', filename='jscn/split.min.js') }}"></script>
+        <title>Unity Mode ADOC</title>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
@@ -23,41 +22,29 @@
                 /* overflow: hidden; */
             }
             .gutter   {cursor: ew-resize;}
-            .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
-            .monotext {font-family: 'IBM Plex Mono', monospace !important;}
+            .textbase {
+                font-family: 'IBM Plex Sans',sans-serif !important;
+            }
+            .monotext {
+                font-family: 'IBM Plex Mono', monospace !important;
+            }
         </style>
     </head>
-    <body onload="askusdat(); timeqant(); randgene();" style="display: flex; flex-direction: column;">
-        <!-- <div class="ui attached stackable menu inverted" style="background-color: #294172;">
-            <a class="item textbase"><strong>Syngrafias</strong></a>
-            <a class="item"><i class="file icon"></i></a>
-            <a class="item"><i class="save icon"></i></a>
-            <a class="item"><i class="bug icon"></i></a>
-            <a class="item"><i class="wheelchair icon"></i></a>
-            <a class="item"><i class="clock icon"></i></a>
-            <a class="item"><i class="info circle icon"></i></a>
-            <a class="item"><i class="plus circle icon"></i></a>
-            <div class="right menu">
-                <div class="ui item monotext" id="timehead">00:00:00</div>
-                <a class="item"><i class="cog icon"></i></a>
-                <a class="item"><i class="power off icon"></i></a>
-            </div>
-        </div> -->
+    <body onload="onloadexecutables();" style="display: flex; flex-direction: column;">
         <div class="ui tiny attached stackable menu inverted textbase cardinal" style="background-color: #294172;">
             <div class="ui simple dropdown item">
                 <span style="font-weight: bold;">Syngrafias</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
-                    <a class="item" onclick=""><i class="file icon"></i>Open document</a>
-                    <a class="item" onclick=""><i class="save icon"></i>Save document</a>
+                    <a class="item" onclick="openadoc();"><i class="file icon"></i>Open document</a>
+                    <a class="item" onclick="saveadoc();"><i class="save icon"></i>Save document</a>
                     <a class="item" href="/"><i class="align justify icon"></i>Cellular document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick=""><i class="wheelchair icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
-                    <a class="item" onclick="$('#colrmode').modal('show');"><i class="cog icon"></i>Change preferences</a>
+                    <a class="item" onclick="$('#colrmode').modal('setting', 'closable', false).modal('show');"><i class="cog icon"></i>Change preferences</a>
                     <a class="item" onclick=""><i class="info circle icon"></i>About the app</a>
-                    <a class="item" onclick="$('#restwarn').modal('show');"><i class="power off icon"></i>Reset workspace</a>
+                    <a class="item" onclick="$('#restwarn').modal('setting', 'closable', false).modal('show');"><i class="power off icon"></i>Reset workspace</a>
                 </div>
             </div>
             <div class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span>
@@ -70,13 +57,13 @@
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
                 <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
-                    <input type="text" class="textbase" id="docname" placeholder="Enter the document name here">
+                    <input type="text" class="textbase" id="docsname" onkeyup="sendttle();" placeholder="Enter the document name here">
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
                     <div id="txt-ar" class="" style="margin-right: 0.25%;">
                         <div class="ui tiny form field" style="height: 100%;">
-                            <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
+                            <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); sendnote();"></textarea>
                         </div>
                     </div>
                     <div id="op-ar" class="" style="margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
@@ -101,117 +88,138 @@
             ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
             op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
         </script>
-        <script src="{{ url_for('static', filename='jscn/unityMode.js') }}"></script>
-
+        <script src="{{ url_for('static', filename='jscn/usagetips.js') }}"></script>
         <script>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
             console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
-            // function autoconv() {
-            //     let textdata = document.getElementById("textdata").value;
-            //     let htmldata = Asciidoctor().convert(textdata);
-            //     document.getElementById("otptdata").innerHTML = htmldata;
-            // }
-            // function chektime(chekqant)
-            // {
-            //     if (chekqant < 10)  return "0" + chekqant;
-            //     else                return chekqant;
-            // }
-            // function timeqant()
-            // {
-            //     let curtdate = new Date();
-            //     let hour = curtdate.getHours(); let mint = curtdate.getMinutes(); let secs = curtdate.getSeconds();
-            //     hour = chektime(hour); mint = chektime(mint); secs = chektime(secs);
-            //     document.getElementById("timehead").innerHTML = hour + ":" + mint + ":" + secs;
-            //     let time = setTimeout(timeqant, 500);
-            // }
-            // function randgene()
-            // {
-            //     let randstng = "";
-            //     let lent = 8; let list = "0123456789ABCDEF";
-            //     for (let indx = lent; indx > 0; indx--)
-            //     {
-            //         randstng += list[Math.floor(Math.random() * list.length)];
-            //     }
-            //     return randstng;
-            // }
-            // function dispatch()
-            // {
-            //     let contents = document.getElementById("textdata").value;
-            //     let writings = "/note" + " " + contents;
-            //     webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
-            // }
-            // function askusdat()
-            // {
-            //     $(".ui.basic.modal").modal('setting', 'closable', false).modal("show");
-            // }
-            // function makesess() {
-            //     let username = document.getElementById("username").value;
-            //     let sessiden = document.getElementById("sessiden").value;
-            //     if (username !== "" && sessiden !== "")
-            //     {
-            //         if (!(/\s/.test(username) || /\s/.test(sessiden)))
-            //         {
-            //             if (sessiden.match(/^[A-F0-9]{8}$/) && username.match(/^[a-z0-9]+$/i))
-            //             {
-            //                 sessionStorage.setItem("username", username);
-            //                 sessionStorage.setItem("sessiden", sessiden);
-            //                 $('#givename').modal('hide');
-            //                 document.getElementById("headroom").innerText = sessiden;
-            //                 document.getElementById("headuser").innerText = username;
-            //             }
-            //             else
-            //             {
-            //                 toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
-            //             }
-            //         }
-            //         else
-            //         {
-            //             toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
-            //         }
-            //     }
-            // }
-            // webesock.onmessage = function (event)
-            // {
-            //     console.log(event.data);
-            //     let data = JSON.parse(event.data);
-            //     if (!(data.username === sessionStorage.getItem("username")))
-			//     {
-			// 	    if (data.sessiden === sessionStorage.getItem("sessiden"))
-            //         {
-            //             if (data.textmesg.split(" ")[0] === "/note")
-            //             {
-            //                 let textmesg = data.textmesg.replace("/note", "").trim();
-            //                 document.getElementById("textdata").value = textmesg;
-            //                 autoconv();
-            //             }
-            //         }
-            //     }
-            // }
-
-            // function copyID() {
-            //     const id = document.getElementById("headroom").innerText;
-            //     var tempIn = document.createElement("input");
-            //     tempIn.value = id;
-            //     document.body.appendChild(tempIn);
-            //     tempIn.select();
-            //     document.execCommand("copy");
-            //     document.body.removeChild(tempIn);
-            //     toastr.success("<span class='textbase'>Workspace id is copied.</span>","",{"positionClass": "toast-bottom-right"})
-            // }
+            webesock.onmessage = function (event)
+            {
+                let data = JSON.parse(event.data);
+                if (!(data.username === sessionStorage.getItem("username"))) {
+				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
+                        let textmesg = JSON.parse(data.textmesg);
+                        if (textmesg["taskcomm"] === "/note") {
+                            recvnote(textmesg["contents"], data.username);
+                        } else if (textmesg["taskcomm"] === "/ttle") {
+                            recvttle(textmesg["contents"], data.username);
+                        }
+                    }
+                }
+            }
         </script>
-        <form onsubmit="return makesess();" class="ui basic modal" id="givename">
-            <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
-            <div class="content">
-                <p style="text-align: center; font-size: 15px;" class="textbase">Please provide your username and workspace identity if you are joining an existing workspace. If you are not, simply enter your username and click on BUILD to generate yourself a new workspace identity to start.</p>
-                <div style="text-align: center;">
-                    <div class="ui tiny input"><input class="monotext" type="text" id="username" placeholder="Username"></div>
-                    <div class="ui tiny input"><input class="monotext" type="text" id="sessiden" placeholder="Workspace identity"></div>
-                </div>
-            </div>
-            <div class="actions" style="text-align: center;">
-                <div class="ui tiny inverted button monotext cardinal" onclick="wkeybuild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
-                <button type="submit" class="ui tiny inverted button monotext cardinal" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
-            </div>
-        </form>
     </body>
+    <div class="ui mini modal" id="saveadoc">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Save document</div>
+        <div class="content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Enter the name of the document with which you wish to save the contents of the workspace as.</p>
+            <div class="ui small input" style="width: 100%;"><input type="text" placeholder="Document name" id="savename" class="textbase"></div>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#saveadoc').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon" style="margin: 0px;"></i></span>
+            </div>
+            <div class="ui mini button textbase" onclick="makesave();">
+                <span style="color: red;"><i class="ui download icon" style="margin: 0px;"></i></span>
+            </div>
+        </div>
+    </div>
+    <form onsubmit="return makesess();" class="ui basic modal" id="givename">
+        <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
+        <div class="content">
+            <p style="text-align: center; font-size: 15px;" class="textbase">Please provide your username and workspace identity if you are joining an existing workspace. If you are not, simply enter your username and click on BUILD to generate yourself a new workspace identity to start.</p>
+            <div style="text-align: center;">
+                <div class="ui tiny input"><input class="monotext" type="text" id="username" placeholder="Username"></div>
+                <div class="ui tiny input"><input class="monotext" type="text" id="sessiden" placeholder="Workspace identity"></div>
+            </div>
+        </div>
+        <div class="actions" style="text-align: center;">
+            <div class="ui tiny inverted button monotext cardinal" onclick="wkeybuild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
+            <button type="submit" class="ui tiny inverted button monotext cardinal" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
+        </div>
+    </form>
+    <div class="ui basic modal" id="sockfail">
+        <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Connection failed</div>
+        <div class="content"><p style="text-align: center; font-size: 15px;" class="textbase">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p></div>
+        <div class="actions" style="text-align: center;"><div class="ui tiny inverted button monotext cardinal" onclick="location.reload();" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div></div>
+    </div>
+    <div class="ui mini modal" id="opendocs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;" id="opdocstt"></div>
+        <div class="content" style="padding: 2.5%;" id="opdocsid"></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;" id="opdocsff"></div>
+    </div>
+    <div class="ui mini modal" id="restwarn">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Reset workspace</div>
+        <div class="content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Any unsaved progress made on the workspace would be lost from your end. Are you sure you wish to reset the workspace?</p>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button textbase" onclick="location.reload();">
+                <span style="color: red;"><i class="ui undo icon"></i>Reset</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="colrmode">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Change preferences</div>
+        <div class="scrolling content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Switch to the theme of your choice. Be sure to save your progress before doing so as this would reload the application and any unsaved changes will be lost.</p>
+            <div class="ui relaxed divided list">
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Discord Purple</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#7289DA');" style="background-color: #7289DA; color: #FFFFFF;">#7289DA</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">AMD Red</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#ED1C24');" style="background-color: #ED1C24; color: #FFFFFF;">#ED1C24</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">t0xic0der Teal</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#008080');" style="background-color: #008080; color: #FFFFFF;">#008080</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Fedora Blue</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#294172');" style="background-color: #294172; color: #FFFFFF;">#294172</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Mahindra Red</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#720000');" style="background-color: #720000; color: #FFFFFF;">#720000</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Spotify Green</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#1DB954');" style="background-color: #1DB954; color: #FFFFFF;">#1DB954</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Mastercard Orange</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#FF5F00');" style="background-color: #FF5F00; color: #FFFFFF;">#FF5F00</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Jio Blue</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#005AAC');" style="background-color: #005AAC; color: #FFFFFF;">#005AAC</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">T-Mobile Pink</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#EA08AE');" style="background-color: #EA08AE; color: #FFFFFF;">#EA08AE</span>
+                </div></div></div>
+            </div>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('#colrmode').modal('hide');">
+                <span style="color: green;"><i class='ui reply icon'></i>Back</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="actilogs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Track activities</div>
+        <div id="actijuxt" class="scrolling content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">All activities including cell creation, editing, renaming and removal would show up here - unless you wipe the history clean.</p></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('actilogs').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button deny textbase" onclick="rmovhist();">
+                <span style="color: red;"><i class="ui broom icon"></i>Wipe</span>
+            </div>
+        </div>
+    </div>
 </html>
