@@ -193,6 +193,5 @@ function helptopc() {
             `
         )
     }
-    //$('#helptopc').modal('setting', 'closable', false).modal('show');
-    $('#helptopc').modal('show');
+    $('#helptopc').modal('setting', 'closable', false).modal('show');
 }
