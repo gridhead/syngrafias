@@ -86,17 +86,53 @@ let tipslist = [
         "body": "These tips appear in a random order so it can be hard going back, but we have a wiki to your rescue."
     }, {
         "head": "Thank you for using Syngrafias",
-        "body": "We appreciate you picking this project over the likes of HackMD, Google Drive and Jupyterlab."
+        "body": "We appreciate you picking this project over the likes of HackMD, Google Docs and Jupyterlab."
     }, {
         "head": "Whoops, that didn't work!",
         "body": "Please let us know about any issues, bugs or suggestions that you have on our issues page."
     }, {
         "head": "Color monotonicity is boring",
         "body": "We agree to that and hence, Syngrafias provides a collection of nine vibrant themes to choose from."
+    },
+]
+
+let helpdocs = [
+    {
+        "head": "Start editing in the presence of all the collaborators",
+        "body": "You would want to begin making changes to the document only after all collaborators have joined. " +
+                "Any change made in their absence (That is if you edit the document before all the collaborators join " +
+                "or continue editing after they leave), those changes would not be made in their copies."
     }, {
-        "head": "",
-        "body": ""
-    }
+        "head": "Do not panic if you see an out-of-sync warning",
+        "body": "You get to see such a warning when a cell is either renamed, edited, locked, unlocked or removed " +
+                "which is unavailable at your end. Follow the earlier instruction to avoid this or a grab a saved " +
+                "copy with updated changes from their end and load it up to continue synchronizing."
+    }, {
+        "head": "Begin and end collaborating at the same state",
+        "body": "Your fellow collaborators can sync only when they open up a copy of the same document at their end " +
+                "too. So be doubly sure to save your work at all the ends before logging out of the workspace because " +
+                "they will be opening up the very same file at their ends when editing again together."
+    }, {
+        "head": "Synchronize only when you are actively connected",
+        "body": "Be sure to stay connected at all the times while making changes to keep them synchronized at all " +
+                "the ends. You would automatically be thrown an error should you get disconnected from the WebSocket " +
+                "server and you would not be able to make any changes until you refresh the page."
+    }, {
+        "head": "Session information bound with your current tab",
+        "body": "Your session details are limited only to your current tab so closing the tab or refreshing the page " +
+                "would automatically log you out from your current workspace. Be sure to log back into the same " +
+                "workspace and open your copy of the file to continue editing collaboratively."
+    }, {
+        "head": "Stay updated even if you are connected or not",
+        "body": "Even if you are not actively collaborating in the edits, you can keep up with the changes made so " +
+                "far by simply staying connected to the workspace while the changes are made (active sync) or by " +
+                "taking a copy from one of the fellow contributors after changes are complete (passive sync)."
+    }, {
+        "head": "Be the only one to edit a cell unintrusively",
+        "body": "Open the cell settings and lock the cell to keep your fellow collaborators from editing a specific " +
+                "cell. You are still open to make your changes and they would still show up at their ends but they " +
+                "would not be able to make any changes or delete the cell as it is now read-only."
+    },
 ]
 
 colrjson = {
@@ -111,15 +147,13 @@ colrjson = {
     "#EA08AE": "T-Mobile Pink"
 }
 
-function randtips()
-{
+function randtips() {
     let tipsobjc = tipslist[Math.floor(Math.random() * 25)];
     document.getElementById("tipshead").innerText = tipsobjc["head"];
     document.getElementById("tipscont").innerText = tipsobjc["body"];
 }
 
-function chngcolr(colriden)
-{
+function chngcolr(colriden) {
     $(".cardinal").css("background-color", colriden);
     toastr.success(
         "<span class='textbase' style='font-size: 15px;'>" + "<strong>Theme changed</strong>" +
@@ -131,4 +165,34 @@ function chngcolr(colriden)
         }
     );
     $("#colrmode").modal("hide");
+}
+
+function helptopc() {
+    $("#tipslist").empty();
+    $("#helpdocs").empty();
+    for (indx in tipslist) {
+        let head = tipslist[indx]["head"];
+        let body = tipslist[indx]["body"];
+        $("#tipslist").append(
+            `
+            <div class="ui tiny message textbase" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%;" onclick="randtips();">
+                <div class="header textbase">${head}</div>
+                <span>${body}</span>
+                <br/>
+            </div>
+            `
+        )
+    }
+    for (indx in helpdocs) {
+        let head = helpdocs[indx]["head"];
+        let body = helpdocs[indx]["body"];
+        $("#helpdocs").append(
+            `
+            <h4 class="ui header textbase">${head}</h4>
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">${body}</p>
+            `
+        )
+    }
+    //$('#helptopc').modal('setting', 'closable', false).modal('show');
+    $('#helptopc').modal('show');
 }
