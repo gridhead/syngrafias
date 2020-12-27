@@ -49,11 +49,11 @@
                 <div class="menu">
                     <a class="item" onclick="opendocs();"><i class="file icon"></i>Open document</a>
                     <a class="item" onclick="savedocs();"><i class="save icon"></i>Save document</a>
-                    <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
-                    <a class="item" onclick=""><i class="wheelchair icon"></i>View support</a>
+                    <a class="item" onclick="window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');"><i class="bug icon"></i>Report issues</a>
+                    <a class="item" onclick="helptopc();"><i class="question circle icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
                     <a class="item" onclick="$('#colrmode').modal('setting', 'closable', false).modal('show');"><i class="cog icon"></i>Change preferences</a>
-                    <a class="item" onclick=""><i class="info circle icon"></i>About the app</a>
+                    <a class="item" onclick="$('#abotmode').modal('setting', 'closable', false).modal('show');"><i class="info circle icon"></i>About the app</a>
                     <a class="item" onclick="$('#restwarn').modal('setting', 'closable', false).modal('show');"><i class="power off icon"></i>Reset workspace</a>
                 </div>
             </div>
@@ -231,6 +231,63 @@
             <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button deny textbase" onclick="$('#colrmode').modal('hide');">
                     <span style="color: green;"><i class='ui reply icon'></i>Back</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui overlay fullscreen modal" id="helptopc">
+            <div class="header textbase cardinal" style="padding: 0.4%; background-color: #294172; color: #ffffff;">Help and Support</div>
+            <div id="actijuxt" class="scrolling content" style="padding: 0.4%;">
+                <div class="ui container">
+                    <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                        Here are the help and support topics that can help you get started with Syngrafias with ease.
+                        Proceed reading till the end of the support page to understand how things work here.
+                    </p>
+                    <h2 class="ui header textbase">Usage tips</h2>
+                    <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                        These are the tips at the top of the screen for your assistance and clicking on the message box
+                        would randomly fetch another usage tip for you. If random is not your way to go (or maybe a lot
+                        of tips are getting shown to you repeatedly) - we have listed all the tips here for you to take
+                        a look into.
+                    </p>
+                    <div id="tipslist"></div>
+                    <h2 class="ui header textbase">Usage instructions</h2>
+                    <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                        These are the instructions that explore the functionality of Syngrafias in a much greater
+                        detail by explaining how things work here and how you can avoid the most common errors and
+                        warnings when synchronizing edits from various workspaces. Be sure to read on till the end to
+                        understand completely.
+                    </p>
+                    <div id="helpdocs"></div>
+                    <br/>
+                </div>
+            </div>
+            <div class="actions cardinal" style="padding: 0.4%; background-color: #294172;">
+                <div class="ui mini button deny textbase" onclick="$('helptopc').modal('hide');">
+                    <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="abotmode">
+            <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">About Syngrafias</div>
+            <div class="content" style="padding: 2.5%;">
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    Thank you for using Syngrafias!
+                </p>
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    Syngrafias is a free and open-source synchronized authorship web-application for seamlessly
+                    collaborating on documents using intuitive cells, born to address the need of a perfect document
+                    editing platform which could be collaborative, synchronous and non-intrusive at the same time. So
+                    we picked the best features of available technologies (like Jupyter Notebook and Google Docs) and
+                    put them together to build this beauty.
+                </p>
+                <a class="textbase" onclick="window.open('https://github.com/t0xic0der/syngrafias/graphs/contributors', '_blank');">Know more about the contributors</a>
+            </div>
+            <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button textbase" onclick="$('#abotmode').modal('hide');">
+                    <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+                </div>
+                <div class="ui mini button textbase" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">
+                    <span style="color: red;"><i class="ui fork icon"></i>Fork</span>
                 </div>
             </div>
         </div>
