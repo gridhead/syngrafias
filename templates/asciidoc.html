@@ -38,17 +38,15 @@
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
             .cardinal {background-color: #294172;}
-            .menuhead {position: fixed; top: 0; z-index: 10; height: 2.85714286em;}
             .gutter   {cursor: ew-resize;}
         </style>
     </head>
-    <body onload="askusdat(); timeqant(); randgene(); sessionStorage.clear();" style="margin-top: 2.85714286em;">
-        <div class="ui tiny attached stackable menu inverted textbase cardinal menuhead" style="background-color: #294172;">
+    <body onload="askusdat(); timeqant(); randgene(); sessionStorage.clear();">
+        <div class="ui tiny attached stackable menu inverted textbase cardinal" style="background-color: #294172;">
             <div class="ui simple dropdown item">
                 <span style="font-weight: bold;">Syngrafias</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
                     <a class="item" onclick="opendocs();"><i class="file icon"></i>Open document</a>
                     <a class="item" onclick="savedocs();"><i class="save icon"></i>Save document</a>
                     <a class="item" onclick=""><i class="bug icon"></i>Report issues</a>
