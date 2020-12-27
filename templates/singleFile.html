@@ -8,6 +8,7 @@
         <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
         <meta charset="UTF-8">
         <title>Syngrafias</title>
+        <script src="{{ url_for('static', filename='jscn/split.min.js') }}"></script>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
@@ -21,6 +22,7 @@
                 box-sizing: border-box;
                 /* overflow: hidden; */
             }
+            .gutter   {cursor: ew-resize;}
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
         </style>
@@ -72,18 +74,33 @@
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
-                    <div class="" style="width: 49.75%; margin-right: 0.25%;">
+                    <div id="txt-ar" class="" style="margin-right: 0.25%;">
                         <div class="ui tiny form field" style="height: 100%;">
                             <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); dispatch();"></textarea>
                         </div>
                     </div>
-                    <div class="" style="width: 49.75%; margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
+                    <div id="op-ar" class="" style="margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
                         <div class="ui form textbase" id="otptdata" style="height: 100%; max-height: 100%; overflow-y: scroll;"></div>
                     </div>
                 </div>
                 <!-- </div> -->
             </div>
         </div>
+        <script>
+
+            var gutterSize = 10;
+
+            Split(['#txt-ar', '#op-ar'], {
+                sizes: [50, 50],
+                minSize: [150, 150],
+                gutterSize: gutterSize
+            });
+            ta = document.getElementById("#txt-ar");
+            op = document.getElementById("#op-ar");
+            console.log(ta);
+            ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+            op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+        </script>
         <script src="{{ url_for('static', filename='jscn/unityMode.js') }}"></script>
 
         <script>
