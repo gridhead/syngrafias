@@ -58,14 +58,16 @@
         </div>
         <div class="" style="flex-grow: 1; overflow: hidden;">
             <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
-                <div class="ui tiny labeled input" style="margin-bottom: .2rem;">
+                <div class="ui icon tiny labeled input" style="margin-bottom: .2rem;">
                     <input type="text" class="textbase" id="docsname" onkeyup="sendttle();" placeholder="Enter the document name here">
+                    <i class='inverted circular eye link icon' onclick='toggleDoc()'></i>
+
                 </div>
                 <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
-                    <div id="txt-ar" class="" style="margin-right: 0.25%;">
+                    <div id="txt-ar" class="default" style="margin-right: 0.25%;">
                         <div class="ui tiny form field" style="height: 100%;">
-                            <textarea style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); sendnote();"></textarea>
+                            <textarea  style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); sendnote();"></textarea>
                         </div>
                     </div>
                     <div id="op-ar" class="" style="margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
@@ -84,8 +86,8 @@
                 minSize: [150, 150],
                 gutterSize: gutterSize
             });
-            ta = document.getElementById("#txt-ar");
-            op = document.getElementById("#op-ar");
+            ta = document.getElementById("txt-ar");
+            op = document.getElementById("op-ar");
             ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
             op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
         </script>

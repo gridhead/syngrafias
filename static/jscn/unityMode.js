@@ -295,3 +295,30 @@ function rmovhist() {
         toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
     }
 }
+
+function toggleDoc() {
+    let ta = document.getElementById("txt-ar");
+    let op = document.getElementById("op-ar");
+    let gt = ta.nextElementSibling;
+    if (ta.classList.value === "default") {
+        ta.classList.value = "open";
+        ta.style.width = "100%";
+        op.style.display = "none";
+        gt.style.display = "none";
+    } else if (ta.classList.value === "open") {
+        ta.classList.value = "close";
+        ta.style.display = "none";
+        op.style.display = "block";
+        op.style.width = "100%";
+        gt.style.display = "none";
+    } else if (ta.classList.value === "close") {
+        ta.classList.value = "default";
+        ta.style.width = "calc(50% - "+(10/2)+"px)";
+        ta.style.display = "block";
+        op.style.width = "calc(50% - "+(10/2)+"px)";
+        op.style.display = "block";
+        gt.style.display = "block";
+    } 
+    ta.style.height = '100%';
+
+}
