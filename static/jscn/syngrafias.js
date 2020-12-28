@@ -1,5 +1,4 @@
-/*
-**************************************************************************
+/*************************************************************************
 *
 *   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
@@ -16,8 +15,7 @@
 *   You should have received a copy of the GNU General Public License
 *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *
-**************************************************************************
-*/
+*************************************************************************/
 
 function savedocs() {
     let dateobjc = new Date();
@@ -113,16 +111,23 @@ function loadupld() {
                 if (actifile && actifile.length) {
                     try {
                         let docuvain = JSON.parse(actifile);
-                        document.getElementById("opdocstt").innerText = "Contents parsed";
-                        document.getElementById("opdocsid").innerHTML =
-                            "<div class='ui list textbase'>" +
-                            "<div class='item'><div class='header monotext'>Workspace ID</div>" + docuvain["sessiden"] + "</div>" +
-                            "<div class='item'><div class='header monotext'>Saved by</div>" + docuvain["username"] + "</div>" +
-                            "<div class='item'><div class='header monotext'>Last modified</div>" + Date(docuvain["timestmp"]) + "</div>" +
-                            "</div>";
-                        document.getElementById("opdocsff").innerHTML =
-                            "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
-                            "<div class='ui mini button textbase' onclick='parsedoc();'><span style='color: red;'>Continue</span></div>";
+                        let sessiden = docuvain["sessiden"];
+                        let username = docuvain["username"];
+                        let datetime = Date(docuvain["timestmp"]);
+                        document.getElementById("opdocstt").innerText = `Contents parsed`;
+                        document.getElementById("opdocsid").innerHTML = `
+                            <div class='ui list textbase'>
+                                <div class='item'><div class='header monotext'>Workspace ID</div>${sessiden}</div>
+                                <div class='item'><div class='header monotext'>Saved by</div>${username}</div>
+                                <div class='item'><div class='header monotext'>Last modified</div>${datetime}</div>
+                            </div>`;
+                        document.getElementById("opdocsff").innerHTML = `
+                            <div class='ui mini button textbase' onclick='$("#opendocs").modal("hide");'>
+                                <span style='color: green;'>Cancel</span>
+                            </div>
+                            <div class='ui mini button textbase' onclick='parsedoc();'>
+                                <span style='color: red;'>Continue</span>
+                            </div>`;
                         sessionStorage.setItem("lodcache", JSON.stringify(docuvain));
                     } catch (e) {
                         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
@@ -320,28 +325,29 @@ function recvpush(celliden, username) {
 }
 
 function makecell(celliden) {
-    $("#domelist").append(
-        "<div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-" + celliden + "'>" +
-            "<div class='content' style='background-color: #f6f8fa; padding: 0px;'>" +
-                "<div class='ui icon tiny labeled input' style='width: 100%;'>" +
-                    "<div class='ui label monotext' id='celliden' onclick='cellinfo(\"" + celliden + "\")'>" + celliden + "</div>" +
-                    "<input type='text' class='monotext' id='cellname-" + celliden + "' onkeyup='sendttle(\"" + celliden + "\");' placeholder='Enter the cell name here'>" +
-                    "<i class='inverted circular eye link icon' onclick='toggleCell(\""+celliden+"\")'></i>" +
-                "</div>" +
-                "<div class='description'>" +
-                    "<div class='' style='display: flex;'>" +
-                        "<div id='txtar-" + celliden + "' class='default'>" +
-                            "<div class='ui tiny form field' style='height: 100%;'>" +
-                                "<textarea rows='' id='textdata-" + celliden + "' class='monotext' onkeyup='autoconv(\"" + celliden + "\"); sendnote(\"" + celliden + "\");'></textarea>" +
-                            "</div>" +
-                        "</div>" +
-                        "<div id='op-" + celliden + "' class='' style='border-width: 2px; border-radius: 2px;'>" +
-                            "<div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-" + celliden + "'>" + "</div>" +
-                        "</div>" +
-                    "</div>" +
-                "</div>" +
-            "</div>" +
-        "</div>"
+    $("#domelist").append(`
+        <div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-${celliden}'>
+            <div class='content' style='background-color: #f6f8fa; padding: 0px;'>
+                <div class='ui icon tiny labeled input' style='width: 100%;'>
+                    <div class='ui label monotext' id='celliden' onclick='cellinfo("${celliden}")'>${celliden}</div>
+                    <input type='text' class='monotext' id='cellname-${celliden}' onkeyup='sendttle("${celliden}");' placeholder='Enter the cell name here'>
+                    <i class='inverted circular eye link icon' onclick='toggleCell("${celliden}")'></i>
+                </div>
+                <div class='description'>
+                    <div class='' style='display: flex;'>
+                        <div id='txtar-${celliden}' class='default'>
+                            <div class='ui tiny form field' style='height: 100%;'>
+                                <textarea rows='' id='textdata-${celliden}' class='monotext' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
+                            </div>
+                        </div>
+                        <div id='op-${celliden}' class='' style='border-width: 2px; border-radius: 2px;'>
+                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-${celliden}'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
     );
     Split([`#txtar-${celliden}`, `#op-${celliden}`], {
         sizes: [50, 50],
@@ -455,7 +461,6 @@ function toggleCell(celliden) {
     let ta = document.getElementById("txtar-"+celliden);
     let op = document.getElementById("op-"+celliden);
     let gt = ta.nextElementSibling;
-
     if (ta.classList.value === "default") {
         ta.classList.value = "open";
         ta.style.width = "100%";
@@ -565,9 +570,27 @@ function makelogs(celliden, activity, username) {
 function viewlogs() {
     $("#actiform").remove();
     let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
-    $("#actijuxt").append("<table id='actiform' class='ui very compact table'>" + "<tbody id='actitabl'></tbody>" + "</table>");
+    $("#actijuxt").append(`
+        <table id='actiform' class='ui very compact table'>
+            <tbody id='actitabl'></tbody>
+        </table>
+    `);
     for (let indx = 0; indx < actilist.length; indx++) {
-        $("#actitabl").append("<tr class='textbase'><td style='font-size: 15px;'>" + actilist[indx]["timestmp"] + "</td><td style='font-size: 15px;'>" + actilist[indx]["actiobjc"] + "<br/><strong class='monotext'>₹" + actilist[indx]["celliden"] + "</strong></td></tr>");
+        let singstmp = actilist[indx]["timestmp"];
+        let actiobjc = actilist[indx]["actiobjc"];
+        let celliden = actilist[indx]["celliden"];
+        $("#actitabl").append(`
+            <tr class='textbase'>
+                <td style='font-size: 15px;'>
+                    ${singstmp}
+                </td>
+                <td style='font-size: 15px;'>
+                    ${actiobjc}
+                    <br/>
+                    <strong class='monotext'>₹${celliden}</strong>
+                </td>
+            </tr>
+        `);
     }
     $("#actilogs").modal("setting", "closable", false).modal("show");
 }
