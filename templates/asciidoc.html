@@ -51,7 +51,7 @@
                     <a class="item" onclick="sendpush();"><i class="plus circle icon"></i>Append cell</a>
                     <a class="item" onclick="opendocs();"><i class="file icon"></i>Open document</a>
                     <a class="item" onclick="savedocs();"><i class="save icon"></i>Save document</a>
-                    <a class="item" href="/single/"><i class="align justify icon"></i>Unity Mode (ADOC)</a>
+                    <a class="item" onclick="$('#swchadoc').modal('setting', 'closable', false).modal('show');"><i class="align justify icon"></i>Unity Mode (ADOC)</a>
                     <a class="item" onclick="window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');"><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick="helptopc();"><i class="question circle icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
@@ -291,6 +291,22 @@
                 </div>
                 <div class="ui mini button textbase" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">
                     <span style="color: red;"><i class="ui fork icon"></i>Fork</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui mini modal" id="swchadoc">
+            <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Unity mode (ADOC)</div>
+            <div class="content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                Switching over to unity mode would result you to lose any unsaved progress made on the workspace from
+                your end. Are you sure you wish to switch now?
+            </p>
+            </div>
+            <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+                <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
+                    <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+                </div>
+                <div class="ui mini button textbase" onclick="location.href = '/single/';">
+                    <span style="color: red;"><i class="ui arrow right icon"></i>Switch</span>
                 </div>
             </div>
         </div>
