@@ -33,6 +33,10 @@ storedir = "storage"
 def asciidoc():
     return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
 
+@servchat.route("/single/")
+def singleDoc():
+    return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
+
 
 @servchat.route("/<themcolr>/")
 def themable(themcolr):
@@ -53,6 +57,23 @@ def savedocs():
         docsdict = json.loads(document)
         with open(storedir + "/" + filename, "w") as jsonfile:
             json.dump(docsdict, jsonfile)
+        return jsonify(result=filename)
+    except:
+        return jsonify(result="savefail")
+
+
+@servchat.route("/saveadoc/")
+def saveadoc():
+    try:
+        timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
+        filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".adoc"
+        document = request.args.get("document", "0", type=str)
+        docsdict = json.loads(document)
+        docsname = docsdict["adocasst"]["docsname"]
+        textdata = docsdict["adocasst"]["textdata"]
+        savedata = "////" + "\n" + docsname + "\n" + "////" + "\n\n" + textdata
+        with open(storedir + "/" + filename, "w") as adocfile:
+            adocfile.write(savedata)
         return jsonify(result=filename)
     except:
         return jsonify(result="savefail")
