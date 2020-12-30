@@ -21,15 +21,14 @@
 <html lang="en">
     <head>
         <script src="{{ url_for('static', filename='jscn/jquery.min.js') }}"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/semantic.min.css') }}"/>
+        <script src="{{ url_for('static', filename='jscn/semantic.min.js') }}"></script>
         <meta charset="UTF-8">
         <title>Syngrafias</title>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
         <script src="{{ url_for('static', filename='jscn/asciidoctor.js') }}"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/syngrafias.css') }}" />
         <script src="{{ url_for('static', filename='jscn/split.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
         <script src="{{ url_for('static', filename='jscn/syngrafias.js') }}"></script>
@@ -169,10 +168,10 @@
             </div>
             <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
                 <div class="ui mini button textbase" onclick="$('#savedocs').modal('hide');">
-                    <span style="color: green;"><i class="ui reply icon" style="margin: 0px;"></i></span>
+                    <span style="color: green;"><i class="ui reply icon"></i>Back</span>
                 </div>
                 <div class="ui mini button textbase" onclick="makesave();">
-                    <span style="color: red;"><i class="ui download icon" style="margin: 0px;"></i></span>
+                    <span style="color: red;"><i class="ui download icon"></i>Save</span>
                 </div>
             </div>
         </div>
@@ -302,7 +301,7 @@
             </p>
             </div>
             <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
-                <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
+                <div class="ui mini button textbase" onclick="$('#swchadoc').modal('hide');">
                     <span style="color: green;"><i class="ui reply icon"></i>Back</span>
                 </div>
                 <div class="ui mini button textbase" onclick="location.href = '/single/';">
