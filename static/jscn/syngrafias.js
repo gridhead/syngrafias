@@ -176,6 +176,18 @@ function autoconv(celliden) {
     textareaElement.style.height = '100%';
 }
 
+
+function copyID() {
+    const id = document.getElementById("headroom").innerText;
+    var tempIn = document.createElement("input");
+    tempIn.value = id;
+    document.body.appendChild(tempIn);
+    tempIn.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempIn);
+    toastr.success("<span class='textbase'>Workspace ID is copied.</span>", "", {"positionClass": "toast-bottom-right"})
+}
+
 function chektime(chekqant) {
     if (chekqant < 10)
         return "0" + chekqant;
@@ -325,23 +337,26 @@ function recvpush(celliden, username) {
 }
 
 function makecell(celliden) {
+    $("#tabhead").append(`
+        <div class='link item' id='tabiden-${celliden}' data-tab='id-${celliden}' onclick='activatetab("${celliden}")'><span class="monotext">${celliden}&nbsp;<i id='close-${celliden}' class='link times icon' style='margin: 0;' onclick='sendpull("${celliden}");')></i></span></div>`
+    );
     $("#domelist").append(`
-        <div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-${celliden}'>
-            <div class='content' style='background-color: #f6f8fa; padding: 0px;'>
+        <div class='ui flextape bottom attached tab segment' id='cardiden-${celliden}' data-tab='id-${celliden}' style='margin: 0;'>
+            <div class='content flextape full-height' style='background-color: #f6f8fa;'>
                 <div class='ui icon tiny labeled input' style='width: 100%;'>
-                    <div class='ui label monotext' id='celliden' onclick='cellinfo("${celliden}")'>${celliden}</div>
+                    <button class='ui left attached labelled icon button' id='celliden' onclick='cellinfo("${celliden}")'><i class='info icon'></i></button>
                     <input type='text' class='monotext' id='cellname-${celliden}' onkeyup='sendttle("${celliden}");' placeholder='Enter the cell name here'>
                     <i class='inverted circular eye link icon' onclick='toggleCell("${celliden}")'></i>
                 </div>
-                <div class='description'>
-                    <div class='' style='display: flex;'>
+                <div class='description flextape full-height'>
+                    <div class='full-height' style='display: flex;'>
                         <div id='txtar-${celliden}' class='default'>
-                            <div class='ui tiny form field' style='height: 100%;'>
-                                <textarea rows='' id='textdata-${celliden}' class='monotext' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
+                            <div class='ui full-height tiny form field'>
+                                <textarea rows='' id='textdata-${celliden}' class='monotext full-height' style='resize: none; overflow-y: scroll;' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
                             </div>
                         </div>
                         <div id='op-${celliden}' class='' style='border-width: 2px; border-radius: 2px;'>
-                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-${celliden}'></div>
+                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF; overflow-y: scroll;' id='otptdata-${celliden}'></div>
                         </div>
                     </div>
                 </div>
@@ -354,6 +369,20 @@ function makecell(celliden) {
         minSize: [150, 150],
         gutterSize: gutterSize
     });
+    activatetab(celliden);
+}
+
+function activatetab(celliden) {
+    if (document.getElementsByClassName("active").length > 0) {
+        document.getElementsByClassName("active link item")[0].classList.value = "link item";
+        document.getElementsByClassName("active link times icon")[0].style.display = "none";
+        document.getElementsByClassName("active link times icon")[0].classList.value = "link times icon";
+        document.getElementsByClassName("ui flextape bottom attached active tab segment")[0].classList.value = "ui flextape bottom attached tab segment";
+    }
+    document.getElementById("tabiden-"+celliden).classList.value = "active link item";
+    document.getElementById("close-"+celliden).style.display = "unset";
+    document.getElementById("close-"+celliden).classList.value = "active link times icon";
+    document.getElementById("cardiden-"+celliden).classList.value = "ui flextape bottom attached active tab segment";
 }
 
 function sendunlk(celliden) {
@@ -494,6 +523,7 @@ function sendpull(celliden) {
             if (celllist[celliden].lockstat.islocked === false) {
                 delete celllist[celliden];
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
+                document.getElementById("tabiden-"+celliden).remove();
                 document.getElementById("cardiden-"+celliden).remove();
                 $("#infomode").modal("hide");
                 let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
@@ -516,6 +546,7 @@ function recvpull(celliden, username) {
     if (celliden in celllist) {
         delete celllist[celliden];
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
+        document.getElementById("tabiden-"+celliden).remove();
         document.getElementById("cardiden-"+celliden).remove();
         toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/pull", username);
