@@ -38,6 +38,8 @@
             .textbase {font-family: 'IBM Plex Sans', sans-serif !important;}
             .monotext {font-family: 'IBM Plex Mono', monospace !important;}
             .cardinal {background-color: #294172;}
+            body, .flextape {display: flex; flex-direction: column; flex-grow: 1; margin: 0; overflow: hidden;}
+            .full-height {height: 100%;}
             .gutter   {cursor: ew-resize;}
         </style>
     </head>
@@ -60,7 +62,7 @@
             <div class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span></div>
             <div class="right menu"><div class="ui item monotext" id="timehead">00:00:00</div></div>
         </div>
-        <div class="ui tiny message textbase" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%;" onclick="randtips();">
+        <div class="ui tiny message textbase" style="margin-left:0.75%; width: 98.5%; margin-right:0.75%; min-height: unset;" onclick="randtips();">
             <div class="header textbase">Usage tip - <span id="tipshead" class="textbase">Welcome to Syngrafias!</span></div>
             <span id="tipscont">
                 Keep clicking on this panel to read more tips or click
@@ -68,7 +70,7 @@
             </span>
             <br/>
         </div>
-        <div id="domelist"><div class="ui top attached tabular menu" style="width: 100%; overflow-x: auto; overflow-y: hidden" id="tabhead"><div class="ui link icon item" onclick="sendpush();"><i class="plus icon"></i></div></div></div>
+        <div id="domelist" class="flextape"><div class="ui top attached tabular menu" style="width: 100%; overflow-x: auto; overflow-y: hidden;" id="tabhead"><div class="ui link icon item" onclick="sendpush();"><i class="plus icon"></i></div></div></div>
         <script type="text/javascript">
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");

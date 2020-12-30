@@ -329,22 +329,22 @@ function makecell(celliden) {
         <div class='link item' id='tabiden-${celliden}' data-tab='id-" + celliden + "' onclick='activatetab("${celliden}")'><span class="monotext">${celliden}</span></div>`
     );
     $("#domelist").append(`
-        <div class='ui card' style='margin-left:0.75%; width: 98.5%; margin-right:0.75%; margin-bottom: 0.75%;' id='cardiden-${celliden}'>
-            <div class='content' style='background-color: #f6f8fa; padding: 0px;'>
+        <div class='ui flextape bottom attached tab segment' id='cardiden-${celliden}' style='margin: 0;'>
+            <div class='content flextape full-height' style='background-color: #f6f8fa;'>
                 <div class='ui icon tiny labeled input' style='width: 100%;'>
                     <button class='ui left attached labelled icon button' id='celliden' onclick='cellinfo("${celliden}")'><i class='info icon'></i></button>
                     <input type='text' class='monotext' id='cellname-${celliden}' onkeyup='sendttle("${celliden}");' placeholder='Enter the cell name here'>
                     <i class='inverted circular eye link icon' onclick='toggleCell("${celliden}")'></i>
                 </div>
-                <div class='description'>
-                    <div class='' style='display: flex;'>
+                <div class='description flextape full-height'>
+                    <div class='full-height' style='display: flex;'>
                         <div id='txtar-${celliden}' class='default'>
-                            <div class='ui tiny form field' style='height: 100%;'>
-                                <textarea rows='' id='textdata-${celliden}' class='monotext' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
+                            <div class='ui full-height tiny form field'>
+                                <textarea rows='' id='textdata-${celliden}' class='monotext full-height' style='resize: none; overflow-y: scroll;' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
                             </div>
                         </div>
                         <div id='op-${celliden}' class='' style='border-width: 2px; border-radius: 2px;'>
-                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-${celliden}'></div>
+                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF; overflow-y: scroll;' id='otptdata-${celliden}'></div>
                         </div>
                     </div>
                 </div>
@@ -363,10 +363,10 @@ function makecell(celliden) {
 function activatetab(celliden) {
     if (document.getElementsByClassName("active").length > 0) {
         document.getElementsByClassName("active link item")[0].classList.value = "link item";
-        document.getElementsByClassName("ui bottom attached active tab segment")[0].classList.value = "ui bottom attached tab segment";
+        document.getElementsByClassName("ui flextape bottom attached active tab segment")[0].classList.value = "ui flextape bottom attached tab segment";
     }
     document.getElementById("tabiden-"+celliden).classList.value = "active link item";
-    document.getElementById("cardiden-"+celliden).classList.value = "ui bottom attached active tab segment";
+    document.getElementById("cardiden-"+celliden).classList.value = "ui flextape bottom attached active tab segment";
 }
 
 function sendunlk(celliden) {
