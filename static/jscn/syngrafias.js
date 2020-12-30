@@ -176,6 +176,18 @@ function autoconv(celliden) {
     textareaElement.style.height = '100%';
 }
 
+
+function copyID() {
+    const id = document.getElementById("headroom").innerText;
+    var tempIn = document.createElement("input");
+    tempIn.value = id;
+    document.body.appendChild(tempIn);
+    tempIn.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempIn);
+    toastr.success("<span class='textbase'>Workspace ID is copied.</span>", "", {"positionClass": "toast-bottom-right"})
+}
+
 function chektime(chekqant) {
     if (chekqant < 10)
         return "0" + chekqant;
