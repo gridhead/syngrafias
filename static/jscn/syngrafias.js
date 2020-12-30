@@ -338,10 +338,10 @@ function recvpush(celliden, username) {
 
 function makecell(celliden) {
     $("#tabhead").append(`
-        <div class='link item' id='tabiden-${celliden}' data-tab='id-" + celliden + "' onclick='activatetab("${celliden}")'><span class="monotext">${celliden}</span></div>`
+        <div class='link item' id='tabiden-${celliden}' data-tab='id-${celliden}' onclick='activatetab("${celliden}")'><span class="monotext">${celliden}&nbsp;<i id='close-${celliden}' class='link times icon' style='margin: 0;' onclick='sendpull("${celliden}");')></i></span></div>`
     );
     $("#domelist").append(`
-        <div class='ui flextape bottom attached tab segment' id='cardiden-${celliden}' style='margin: 0;'>
+        <div class='ui flextape bottom attached tab segment' id='cardiden-${celliden}' data-tab='id-${celliden}' style='margin: 0;'>
             <div class='content flextape full-height' style='background-color: #f6f8fa;'>
                 <div class='ui icon tiny labeled input' style='width: 100%;'>
                     <button class='ui left attached labelled icon button' id='celliden' onclick='cellinfo("${celliden}")'><i class='info icon'></i></button>
@@ -375,9 +375,13 @@ function makecell(celliden) {
 function activatetab(celliden) {
     if (document.getElementsByClassName("active").length > 0) {
         document.getElementsByClassName("active link item")[0].classList.value = "link item";
+        document.getElementsByClassName("active link times icon")[0].style.display = "none";
+        document.getElementsByClassName("active link times icon")[0].classList.value = "link times icon";
         document.getElementsByClassName("ui flextape bottom attached active tab segment")[0].classList.value = "ui flextape bottom attached tab segment";
     }
     document.getElementById("tabiden-"+celliden).classList.value = "active link item";
+    document.getElementById("close-"+celliden).style.display = "unset";
+    document.getElementById("close-"+celliden).classList.value = "active link times icon";
     document.getElementById("cardiden-"+celliden).classList.value = "ui flextape bottom attached active tab segment";
 }
 
