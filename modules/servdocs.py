@@ -33,14 +33,17 @@ storedir = "storage"
 def asciidoc():
     return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
 
+
 @servchat.route("/single/")
 def singleDoc():
     return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
 
 
+'''
 @servchat.route("/<themcolr>/")
 def themable(themcolr):
     return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
+'''
 
 
 @servchat.route("/storage/<path:filename>")

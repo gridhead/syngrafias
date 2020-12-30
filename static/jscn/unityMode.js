@@ -188,7 +188,7 @@ function makesave() {
 }
 
 function openadoc() {
-    document.getElementById("opdocstt").innerText = "Open documents";
+    document.getElementById("opdocstt").innerText = "Open document";
     document.getElementById("opdocsid").innerHTML =
         "<p class='textbase' style='line-height: 1.25; text-align: justify; font-size: 15px;'>" +
         "The document that you open must be in the proper ASCIIDoctor document format. " +
@@ -200,8 +200,8 @@ function openadoc() {
         "up for editing.</p>" +
         "<input class='ui small' style='width: 100%; text-align: center;' type='file' id='upldfile'>";
     document.getElementById("opdocsff").innerHTML =
-        "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'>Cancel</span></div>" +
-        "<div class='ui mini button textbase' onclick='loadupld();'><span style='color: red;'>Load</span></div>";
+        "<div class='ui mini button textbase' onclick=\"$('#opendocs').modal('hide');\"><span style='color: green;'><i class='ui reply icon'></i>Cancel</span></div>" +
+        "<div class='ui mini button textbase' onclick='loadupld();'><span style='color: red;'><i class='ui upload icon'></i>Load</span></div>";
     document.getElementById('upldfile').value = null;
     $("#opendocs").modal("setting", "closable", false).modal("show");
 }
