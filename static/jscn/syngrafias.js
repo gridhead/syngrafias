@@ -480,7 +480,7 @@ function toggleCell(celliden) {
         op.style.display = "block";
         gt.style.display = "block";
     } 
-    ta.style.height = '100%';
+    // ta.style.height = '100%';
 
 }
 
