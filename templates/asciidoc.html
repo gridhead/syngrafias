@@ -71,6 +71,12 @@
             <br/>
         </div>
         <div id="domelist"></div>
+        <div style="text-align: center; margin-bottom: 0.5%;">
+            <button class="ui tiny labeled icon button cardinal monotext" onclick="sendpush();" style="color: #ffffff; background-color: #294172;">
+                <i class="plus icon"></i>
+                Append cell
+            </button>
+        </div>
         <script type="text/javascript">
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
