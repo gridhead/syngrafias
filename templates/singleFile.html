@@ -118,9 +118,9 @@
                 if (!(data.username === sessionStorage.getItem("username"))) {
 				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
                         let textmesg = JSON.parse(data.textmesg);
-                        if (textmesg["taskcomm"] === "/note") {
+                        if (textmesg["taskcomm"] === "/snot") {
                             recvnote(textmesg["contents"], data.username);
-                        } else if (textmesg["taskcomm"] === "/ttle") {
+                        } else if (textmesg["taskcomm"] === "/shed") {
                             recvttle(textmesg["contents"], data.username);
                         }
                     }
@@ -318,7 +318,7 @@
             <div class="ui mini button textbase" onclick="$('#swchcell').modal('hide');">
                 <span style="color: green;"><i class="ui reply icon"></i>Back</span>
             </div>
-            <div class="ui mini button textbase" onclick="location.href = '/';">
+            <div class="ui mini button textbase" onclick="location.href = '/cellular/';">
                 <span style="color: red;"><i class="ui arrow right icon"></i>Switch</span>
             </div>
         </div>
