@@ -179,7 +179,7 @@ function autoconv(celliden) {
     // console.log(ht)
     let opHeight = ht.substr(0, ht.length-2);
     textareaElement.style.height = '10px';
-    textareaElement.style.height = Math.max(opHeight, textareaElement.scrollHeight) + 'px';
+    textareaElement.style.height = Math.max(opHeight, textareaElement.scrollHeight+2) + 'px';
     opContainer.style.flexGrow = '1';
 }
 
