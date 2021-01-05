@@ -172,8 +172,15 @@ function autoconv(celliden) {
     let textareaElement = document.getElementById("textdata-" + celliden);
     let textdata = textareaElement.value;
     let htmldata = Asciidoctor().convert(textdata);
-    document.getElementById("otptdata-" + celliden).innerHTML = htmldata;
-    textareaElement.style.height = '100%';
+    let opContainer = document.getElementById("otptdata-" + celliden);
+    opContainer.innerHTML = htmldata;
+    opContainer.style.flexGrow = '';
+    let ht = window.getComputedStyle(opContainer, null).getPropertyValue("height");
+    // console.log(ht)
+    let opHeight = ht.substr(0, ht.length-2);
+    textareaElement.style.height = '10px';
+    textareaElement.style.height = Math.max(opHeight, textareaElement.scrollHeight) + 'px';
+    opContainer.style.flexGrow = '1';
 }
 
 function chektime(chekqant) {
@@ -337,11 +344,11 @@ function makecell(celliden) {
                     <div class='' style='display: flex;'>
                         <div id='txtar-${celliden}' class='default'>
                             <div class='ui tiny form field' style='height: 100%;'>
-                                <textarea rows='' id='textdata-${celliden}' class='monotext' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
+                                <textarea rows='' id='textdata-${celliden}' style="resize: none; overflow-y: hidden;" class='monotext' onkeyup='autoconv("${celliden}"); sendnote("${celliden}");'></textarea>
                             </div>
                         </div>
-                        <div id='op-${celliden}' class='' style='border-width: 2px; border-radius: 2px;'>
-                            <div class='ui form textbase' style='border: 1px solid #dedede; border-radius: 5px; height: 100%; padding: 1%; background-color: #FFFFFF;' id='otptdata-${celliden}'></div>
+                        <div id='op-${celliden}' class='' style='display: flex; flex-direction: column; border-width: 2px; border-radius: 2px;'>
+                            <div class='ui form textbase' style='flex-grow: 1; border: 1px solid #dedede; border-radius: 5px;  padding: 1%; background-color: #FFFFFF;' id='otptdata-${celliden}'></div>
                         </div>
                     </div>
                 </div>
@@ -477,11 +484,12 @@ function toggleCell(celliden) {
         ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
         ta.style.display = "block";
         op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
-        op.style.display = "block";
+        op.style.display = "flex";
         gt.style.display = "block";
     } 
-    // ta.style.height = '100%';
-
+    let opContainer = document.getElementById("otptdata-" + celliden);
+    opContainer.style.flexGrow = '';
+    opContainer.style.flexGrow = '1';
 }
 
 function sendpull(celliden) {
