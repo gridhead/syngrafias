@@ -1,0 +1,328 @@
+<!--**********************************************************************
+*
+*   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+*
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*
+***********************************************************************-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="{{ url_for('static', filename='jscn/jquery.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/semantic.min.css') }}"/>
+        <script src="{{ url_for('static', filename='jscn/semantic.min.js') }}"></script>
+        <meta charset="UTF-8">
+        <script src="{{ url_for('static', filename='jscn/split.min.js') }}"></script>
+        <title>Unity Mode ADOC</title>
+        <script src="{{ url_for('static', filename='jscn/unityMode.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/asciidoctor.css') }}" />
+        <script src="{{ url_for('static', filename='jscn/asciidoctor.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/toastr.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css3/syngrafias.css') }}" />
+        <script src="{{ url_for('static', filename='jscn/toastr.min.js') }}"></script>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='imgs/datalogo.png') }}" type="image/vnd.microsoft.icon" />
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                /* overflow: hidden; */
+            }
+            .gutter   {cursor: ew-resize;}
+            .textbase {
+                font-family: 'IBM Plex Sans',sans-serif !important;
+            }
+            .monotext {
+                font-family: 'IBM Plex Mono', monospace !important;
+            }
+        </style>
+    </head>
+    <body onload="onloadexecutables();" style="display: flex; flex-direction: column;">
+        <div class="ui tiny attached stackable menu inverted textbase cardinal" style="background-color: #294172;">
+            <div class="ui simple dropdown item">
+                <span style="font-weight: bold;">Syngrafias</span>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item" onclick="openadoc();"><i class="file icon"></i>Open document</a>
+                    <a class="item" onclick="saveadoc();"><i class="save icon"></i>Save document</a>
+                    <a class="item" onclick="$('#swchcell').modal('setting', 'closable', false).modal('show');"><i class="align justify icon"></i>Cellular document</a>
+                    <a class="item" onclick="window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');"><i class="bug icon"></i>Report issues</a>
+                    <a class="item" onclick="helptopc();"><i class="wheelchair icon"></i>View support</a>
+                    <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
+                    <a class="item" onclick="$('#colrmode').modal('setting', 'closable', false).modal('show');"><i class="cog icon"></i>Change preferences</a>
+                    <a class="item" onclick="$('#abotmode').modal('setting', 'closable', false).modal('show');"><i class="info circle icon"></i>About the app</a>
+                    <a class="item" onclick="$('#restwarn').modal('setting', 'closable', false).modal('show');"><i class="power off icon"></i>Reset workspace</a>
+                </div>
+            </div>
+            <div class="item" onclick=""><span id="headuser">username</span>@<span id="headroom" style="font-weight: bold;">roomname</span>
+                &nbsp; <i title="copy Id" onclick="copyID()" style="cursor: pointer;" class="copy outline icon"></i>
+            </div>
+            <div class="right menu">
+                <div class="ui item monotext" id="timehead">00:00:00</div>
+            </div>
+        </div>
+        <div class="" style="flex-grow: 1; overflow: hidden;">
+            <div class="content" style="display:flex; flex-direction: column; height: 100%; padding: .5rem;">
+                <div class="ui icon tiny labeled input" style="margin-bottom: .2rem;">
+                    <input type="text" class="textbase" id="docsname" onkeyup="sendttle();" placeholder="Enter the document name here">
+                    <i class='inverted circular eye link icon' onclick='toggleDoc()'></i>
+
+                </div>
+                <!-- <div class="description" style="border: 1px solid red"> -->
+                <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
+                    <div id="txt-ar" class="default" style="margin-right: 0.25%;">
+                        <div class="ui tiny form field" style="height: 100%;">
+                            <textarea  style="resize: none; height: 100%; max-height: 100%; overflow-y: scroll;"  rows="2" id="textdata" class="monotext" onkeyup="autoconv(); sendnote();"></textarea>
+                        </div>
+                    </div>
+                    <div id="op-ar" class="" style="margin-left: 0.25%; border: 1px solid rgba(34,36,38,.15); border-radius: .28571429rem; padding: .78571429em 0 0 1em;">
+                        <div class="ui form textbase" id="otptdata" style="height: 100%; max-height: 100%; overflow-y: scroll;"></div>
+                    </div>
+                </div>
+                <!-- </div> -->
+            </div>
+        </div>
+        <script>
+
+            var gutterSize = 10;
+
+            Split(['#txt-ar', '#op-ar'], {
+                sizes: [50, 50],
+                minSize: [150, 150],
+                gutterSize: gutterSize
+            });
+            ta = document.getElementById("txt-ar");
+            op = document.getElementById("op-ar");
+            ta.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+            op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
+        </script>
+        <script src="{{ url_for('static', filename='jscn/usagetips.js') }}"></script>
+        <script>
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+            let webesock = new WebSocket("ws://" + document.domain + ":" + {{ sockport }} + "/");
+            console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
+            webesock.onmessage = function (event)
+            {
+                let data = JSON.parse(event.data);
+                if (!(data.username === sessionStorage.getItem("username"))) {
+				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
+                        let textmesg = JSON.parse(data.textmesg);
+                        if (textmesg["taskcomm"] === "/snot") {
+                            recvnote(textmesg["contents"], data.username);
+                        } else if (textmesg["taskcomm"] === "/shed") {
+                            recvttle(textmesg["contents"], data.username);
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+    <div class="ui mini modal" id="saveadoc">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Save document</div>
+        <div class="content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Enter the name of the document with which you wish to save the contents of the workspace as.</p>
+            <div class="ui small input" style="width: 100%;"><input type="text" placeholder="Document name" id="savename" class="textbase"></div>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#saveadoc').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button textbase" onclick="makesave();">
+                <span style="color: red;"><i class="ui download icon"></i>Save</span>
+            </div>
+        </div>
+    </div>
+    <form onsubmit="return makesess();" class="ui basic modal" id="givename">
+        <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Create New Session</div>
+        <div class="content">
+            <p style="text-align: center; font-size: 15px;" class="textbase">Please provide your username and workspace identity if you are joining an existing workspace. If you are not, simply enter your username and click on BUILD to generate yourself a new workspace identity to start.</p>
+            <div style="text-align: center;">
+                <div class="ui tiny input"><input class="monotext" type="text" id="username" placeholder="Username"></div>
+                <div class="ui tiny input"><input class="monotext" type="text" id="sessiden" placeholder="Workspace identity"></div>
+            </div>
+        </div>
+        <div class="actions" style="text-align: center;">
+            <div class="ui tiny inverted button monotext cardinal" onclick="wkeybuild();" style="background-color: #294172;"><i class="refresh icon"></i>Build</div>
+            <button type="submit" class="ui tiny inverted button monotext cardinal" style="background-color: #294172;"><i class="checkmark icon"></i>Login</button>
+        </div>
+    </form>
+    <div class="ui basic modal" id="sockfail">
+        <div class="ui icon header monotext" style="font-size: 20px;"><i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Connection failed</div>
+        <div class="content"><p style="text-align: center; font-size: 15px;" class="textbase">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p></div>
+        <div class="actions" style="text-align: center;"><div class="ui tiny inverted button monotext cardinal" onclick="location.reload();" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div></div>
+    </div>
+    <div class="ui mini modal" id="opendocs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;" id="opdocstt"></div>
+        <div class="content" style="padding: 2.5%;" id="opdocsid"></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;" id="opdocsff"></div>
+    </div>
+    <div class="ui mini modal" id="restwarn">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Reset workspace</div>
+        <div class="content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Any unsaved progress made on the workspace would be lost from your end. Are you sure you wish to reset the workspace?</p>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#restwarn').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button textbase" onclick="location.reload();">
+                <span style="color: red;"><i class="ui undo icon"></i>Reset</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="colrmode">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Change preferences</div>
+        <div class="scrolling content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">Switch to the theme of your choice.</p>
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">If these accent colors are not what you are looking for, feel free to contribute to the project with your custom theme.</p>
+            <div class="ui relaxed divided list">
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Discord Purple</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#7289DA');" style="background-color: #7289DA; color: #FFFFFF;">#7289DA</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">AMD Red</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#ED1C24');" style="background-color: #ED1C24; color: #FFFFFF;">#ED1C24</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">t0xic0der Teal</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#008080');" style="background-color: #008080; color: #FFFFFF;">#008080</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Fedora Blue</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#294172');" style="background-color: #294172; color: #FFFFFF;">#294172</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Mahindra Red</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#720000');" style="background-color: #720000; color: #FFFFFF;">#720000</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Spotify Green</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#1DB954');" style="background-color: #1DB954; color: #FFFFFF;">#1DB954</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Mastercard Orange</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#FF5F00');" style="background-color: #FF5F00; color: #FFFFFF;">#FF5F00</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">Jio Blue</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#005AAC');" style="background-color: #005AAC; color: #FFFFFF;">#005AAC</span>
+                </div></div></div>
+                <div class="item"><div class="content"><div class="header">
+                    <span class="textbase">T-Mobile Pink</span>
+                    <span class="ui float right horizontal label monotext" onclick="chngcolr('#EA08AE');" style="background-color: #EA08AE; color: #FFFFFF;">#EA08AE</span>
+                </div></div></div>
+            </div>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('#colrmode').modal('hide');">
+                <span style="color: green;"><i class='ui reply icon'></i>Back</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="actilogs">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Track activities</div>
+        <div id="actijuxt" class="scrolling content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">All activities including cell creation, editing, renaming and removal would show up here - unless you wipe the history clean.</p></div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('actilogs').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button deny textbase" onclick="rmovhist();">
+                <span style="color: red;"><i class="ui broom icon"></i>Wipe</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui fullscreen modal" id="helptopc">
+        <div class="header textbase cardinal" style="padding: 0.4%; background-color: #294172; color: #ffffff;">Help and Support</div>
+        <div id="actijuxt" class="scrolling content" style="padding: 0.4%;">
+            <div class="ui container">
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    Here are the help and support topics that can help you get started with Syngrafias with ease.
+                    Proceed reading till the end of the support page to understand how things work here.
+                </p>
+                <h2 class="ui header textbase">Quick reference</h2>
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    Here is a couple of quick reference articles that we recommend you to take a look at to quickly
+                    get up to speed with AsciiDoc and its general usage.
+                </p>
+                <ul>
+                    <li><a class="textbase" onclick="window.open('https://powerman.name/doc/asciidoc', '_blank');">Powerman AsciiDoc cheatsheet</a></li>
+                    <li><a class="textbase" onclick="window.open('https://www.writethedocs.org/guide/writing/asciidoc/', '_blank');">WriteTheDocs Introduction to AsciiDoc</a></li>
+                </ul>
+                <h2 class="ui header textbase">Usage tips</h2>
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    These are the tips at the top of the screen for your assistance and clicking on the message box
+                    would randomly fetch another usage tip for you. If random is not your way to go (or maybe a lot
+                    of tips are getting shown to you repeatedly) - we have listed all the tips here for you to take
+                    a look into.
+                </p>
+                <div id="tipslist"></div>
+                <h2 class="ui header textbase">Usage instructions</h2>
+                <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                    These are the instructions that explore the functionality of Syngrafias in a much greater
+                    detail by explaining how things work here and how you can avoid the most common errors and
+                    warnings when synchronizing edits from various workspaces. Be sure to read on till the end to
+                    understand completely.
+                </p>
+                <div id="helpdocs"></div>
+                <br/>
+            </div>
+        </div>
+        <div class="actions cardinal" style="padding: 0.4%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('helptopc').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="abotmode">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">About Syngrafias</div>
+        <div class="content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                Thank you for using Syngrafias!
+            </p>
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                Syngrafias is a free and open-source synchronized authorship web-application for seamlessly
+                collaborating on documents using intuitive cells, born to address the need of a perfect document
+                editing platform which could be collaborative, synchronous and non-intrusive at the same time. So
+                we picked the best features of available technologies (like Jupyter Notebook and Google Docs) and
+                put them together to build this beauty.
+            </p>
+            <a class="textbase" onclick="window.open('https://github.com/t0xic0der/syngrafias/graphs/contributors', '_blank');">Know more about the contributors</a>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#abotmode').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button textbase" onclick="window.open('https://github.com/t0xic0der/syngrafias/', '_blank');">
+                <span style="color: red;"><i class="ui fork icon"></i>Fork</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="swchcell">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">Cellular mode</div>
+        <div class="content" style="padding: 2.5%;"><p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+            Switching over to cellular mode would result you to lose any unsaved progress made on the workspace from
+            your end. Are you sure you wish to switch now?
+        </p>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button textbase" onclick="$('#swchcell').modal('hide');">
+                <span style="color: green;"><i class="ui reply icon"></i>Back</span>
+            </div>
+            <div class="ui mini button textbase" onclick="location.href = '/cellular/';">
+                <span style="color: red;"><i class="ui arrow right icon"></i>Switch</span>
+            </div>
+        </div>
+    </div>
+</html>

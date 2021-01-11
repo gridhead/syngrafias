@@ -1,17 +1,41 @@
-#!/usr/bin/env python
+"""
+##########################################################################
+*
+*   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+*
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*
+##########################################################################
+"""
 
-import asyncio, json, websockets, sys, click, time
+import asyncio
+import json
+import sys
+import time
+import websockets
+
 
 USERS = set()
 
 
-def mesej_event(username, roomiden, textmesg):
-    return json.dumps({"username": username, "roomiden": roomiden, "textmesg": textmesg})
+def mesej_event(username, sessiden, textmesg):
+    return json.dumps({"username": username, "sessiden": sessiden, "textmesg": textmesg})
 
 
-async def notify_mesej(username, roomiden, textmesg):
+async def notify_mesej(username, sessiden, textmesg):
     if USERS:
-        message = mesej_event(username, roomiden, textmesg)
+        message = mesej_event(username, sessiden, textmesg)
         await asyncio.wait([user.send(message) for user in USERS])
 
 
@@ -32,8 +56,8 @@ async def syncmate(websocket, path):
         async for message in websocket:
             data = json.loads(message)
             print(data)
-            print(" > [" + str(time.ctime()) + "] [" + str(data["roomiden"]) + "] User '" + str(data["username"]) + "' made actions.")
-            await notify_mesej(data["username"], data["roomiden"], data["textmesg"])
+            print(" > [" + str(time.ctime()) + "] [" + str(data["sessiden"]) + "] User '" + str(data["username"]) + "' made actions.")
+            await notify_mesej(data["username"], data["sessiden"], data["textmesg"])
     finally:
         await unregister(websocket)
 
@@ -49,11 +73,6 @@ def servenow(netpdata="127.0.0.1", syncport="9696"):
         sys.exit()
 
 
-@click.command()
-@click.option("-c", "--syncport", "syncport", help="Set the port value for WebSockets [0-65536]", required=True)
-@click.option("-6", "--ipprotv6", "netprotc", flag_value="ipprotv6", help="Start the server on an IPv6 address", required=True)
-@click.option("-4", "--ipprotv4", "netprotc", flag_value="ipprotv4", help="Start the server on an IPv4 address", required=True)
-@click.version_option(version="01082020", prog_name="Syngrafias WebSockets by t0xic0der")
 def mainfunc(syncport, netprotc):
     print(" > [" + str(time.ctime()) + "] [HOLAUSER] Starting Syngrafias...")
     netpdata = ""
@@ -64,7 +83,3 @@ def mainfunc(syncport, netprotc):
         print(" > [" + str(time.ctime()) + "] [HOLAUSER] IP version : 4")
         netpdata = "0.0.0.0"
     servenow(netpdata, syncport)
-
-
-if __name__ == "__main__":
-    mainfunc()

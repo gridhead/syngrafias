@@ -1,0 +1,29 @@
+/* Inter - Declaration */
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: normal;
+    src: url("../font/sans-rlar.ttf");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: italic;
+    font-weight: normal;
+    src: url("../font/sans-ital.ttf");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: bold;
+    src: url("../font/sans-bold.ttf");
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: italic;
+    font-weight: bold;
+    src: url("../font/sans-bdit.ttf");
+}
