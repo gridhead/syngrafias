@@ -39,13 +39,6 @@ def singleDoc():
     return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
 
 
-'''
-@servchat.route("/<themcolr>/")
-def themable(themcolr):
-    return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
-'''
-
-
 @servchat.route("/storage/<path:filename>")
 def getsaved(filename):
     return send_from_directory(servchat.config["CUSTOM_STATIC_PATH"], filename, conditional=True)
