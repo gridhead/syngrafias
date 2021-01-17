@@ -54,7 +54,6 @@ function makesave() {
                 filename: docsname,
                 document: printstr
             }, function (data) {
-                console.log(data.result);
                 if (data.result === "savefail") {
                     toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
                     $("#savedocs").modal("hide");
@@ -253,6 +252,16 @@ function askusdat() {
     $("#givename").modal("setting", "closable", false).modal("show");
 }
 
+function identify() {
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let writings = JSON.stringify({"textmesg": "/iden", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
+        webesock.send(writings);
+    }
+}
+
 function makesess() {
     let username = document.getElementById("username").value;
     let sessiden = document.getElementById("sessiden").value;
@@ -263,11 +272,12 @@ function makesess() {
                 sessionStorage.setItem("sessiden", sessiden);
                 sessionStorage.setItem("celllist", "{}");
                 sessionStorage.setItem("actilogs", "[]");
+                sessionStorage.setItem("userlist", "[]");
                 sessionStorage.setItem("thmcolor", "#294172");
                 $('#givename').modal('hide');
+                identify();
                 document.getElementById("headuser").innerText = username;
                 document.getElementById("headroom").innerText = sessiden;
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
                 toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             }
@@ -422,7 +432,6 @@ function sendlock(celliden) {
                 celllist[celliden].lockstat.islocked = true;
                 celllist[celliden].lockstat.lockedby = sessionStorage.getItem("username");
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
-                //console.log("textdata-"+celliden);
                 let writings = JSON.stringify({"taskcomm": "/lock", "celliden": celliden});
                 webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
                 toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
@@ -442,12 +451,10 @@ function sendlock(celliden) {
 
 function recvlock(celliden, username) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    console.log("textdata-"+celliden);
     if (celliden in celllist) {
         celllist[celliden].lockstat.islocked = true;
         celllist[celliden].lockstat.lockedby = username;
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
-        console.log("textdata-"+celliden);
         document.getElementById("textdata-"+celliden).disabled = true;
         document.getElementById("cellname-"+celliden).disabled = true;
         toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
@@ -479,7 +486,7 @@ function toggleCell(celliden) {
         op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
         op.style.display = "block";
         gt.style.display = "block";
-    } 
+    }
     ta.style.height = '100%';
 
 }
@@ -563,6 +570,8 @@ function makelogs(celliden, activity, username) {
     else if (activity === "/note")                               {actiobjc += " wrote to a cell";}
     else if (activity === "/ttle")                               {actiobjc += " renamed a cell";}
     else if (activity === "/lock")                               {actiobjc += " locked a cell";}
+    else if (activity === "/join")                               {actiobjc += " joined the workspace";}
+    else if (activity === "/left")                               {actiobjc += " left the workspace";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc, "celliden": celliden};
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
@@ -593,6 +602,26 @@ function viewlogs() {
         `);
     }
     $("#actilogs").modal("setting", "closable", false).modal("show");
+}
+
+function viewuser() {
+    $("#userform").remove();
+    let userlist = JSON.parse(sessionStorage.getItem("userlist"));
+    $("#userjuxt").append(`
+        <table id='userform' class='ui very compact table'>
+            <tbody id='usertabl'></tbody>
+        </table>
+    `);
+    for (username in userlist) {
+        $("#usertabl").append(`
+            <tr class='textbase'>
+                <td style='font-size: 15px;'>
+                    ${userlist[username]}
+                </td>
+            </tr>
+        `);
+    }
+    $("#actiuser").modal("setting", "closable", false).modal("show");
 }
 
 function rmovhist() {
