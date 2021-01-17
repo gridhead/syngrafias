@@ -126,10 +126,8 @@
         console.log("WebSocket is supposed to be at ws://" + document.domain + ":{{ sockport }}/");
         webesock.onmessage = function (event) {
             let data = JSON.parse(event.data);
-            console.log(data);
             if (data.sessiden === sessionStorage.getItem("sessiden")) {
                 let textmesg = data["textmesg"];
-                console.log(textmesg["taskcomm"]);
                 if (textmesg["taskcomm"] === "uniqfail") {
                     toastr.error(
                         "<span class='textbase' style='font-size: 15px;'><strong>Connection rejected</strong><br/>Same user already exists</span>",
@@ -148,6 +146,8 @@
                         }
                     );
                 } else if (textmesg["taskcomm"] === "wlcmuser") {
+                    sessionStorage.setItem("userlist", JSON.stringify(data["userlist"]));
+                    makelogs("00000000", "/join", data["username"]);
                     toastr.success(
                         "<span class='textbase' style='font-size: 15px;'><strong>Collaborator joined</strong><br/>" + data["username"] + " joined</span>",
                         "", {
@@ -156,6 +156,8 @@
                         }
                     );
                 } else if (textmesg["taskcomm"] === "leftuser") {
+                    sessionStorage.setItem("userlist", JSON.stringify(data["userlist"]));
+                    makelogs("00000000", "/left", data["username"]);
                     toastr.error(
                         "<span class='textbase' style='font-size: 15px;'><strong>Collaborator left</strong><br/>" + data["username"] + " left</span>",
                         "", {

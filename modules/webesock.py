@@ -26,8 +26,6 @@ import time
 import websockets
 
 
-USERS = set()
-
 USERLIST = {}
 
 #Sample pattern for USERLIST
@@ -41,35 +39,10 @@ USERLIST = {
 }
 '''
 
-def mesej_event(username, sessiden, textmesg):
-    return json.dumps({"username": username, "sessiden": sessiden, "textmesg": textmesg})
-
-
-async def notify_mesej(username, sessiden, textmesg):
-    if USERS:
-        message = mesej_event(username, sessiden, textmesg)
-        await asyncio.wait([user.send(message) for user in USERS])
-
-
-async def register(websocket):
-    USERS.add(websocket)
-    print(" > [" + str(time.ctime()) + "] [USERJOIN] User just joined the Syngrafias")
-
-
-async def unregister(websocket):
-    USERS.remove(websocket)
-    dir(websocket)
-    print(" > [" + str(time.ctime()) + "] [USERLEFT] User just left the Syngrafias")
-
-
 async def syncmate(websocket, path):
-    #await register(websocket)
     try:
         async for message in websocket:
             data = json.loads(message)
-            #print(data)
-            print(USERLIST)
-            #print(" > [" + str(time.ctime()) + "] [" + str(data["sessiden"]) + "] User '" + str(data["username"]) + "' made actions.")
             if data["textmesg"] == "/iden":
                 if data["sessiden"] in USERLIST.keys():
                     if data["username"] in USERLIST[data["sessiden"]].keys():
@@ -96,6 +69,7 @@ async def syncmate(websocket, path):
                         wlcmuser = {
                             "username": data["username"],
                             "sessiden": data["sessiden"],
+                            "userlist": list(USERLIST[data["sessiden"]].keys()),
                             "textmesg": {
                                 "taskcomm": "wlcmuser"
                             }
@@ -118,6 +92,7 @@ async def syncmate(websocket, path):
                     wlcmuser = {
                         "username": data["username"],
                         "sessiden": data["sessiden"],
+                        "userlist": list(USERLIST[data["sessiden"]].keys()),
                         "textmesg": {
                             "taskcomm": "wlcmuser"
                         }
@@ -150,6 +125,7 @@ async def syncmate(websocket, path):
             leftuser = {
                 "username": username,
                 "sessiden": sessiden,
+                "userlist": list(USERLIST[sessiden].keys()),
                 "textmesg": {
                     "taskcomm": "leftuser"
                 }

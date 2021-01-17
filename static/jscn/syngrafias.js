@@ -54,7 +54,6 @@ function makesave() {
                 filename: docsname,
                 document: printstr
             }, function (data) {
-                console.log(data.result);
                 if (data.result === "savefail") {
                     toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
                     $("#savedocs").modal("hide");
@@ -433,7 +432,6 @@ function sendlock(celliden) {
                 celllist[celliden].lockstat.islocked = true;
                 celllist[celliden].lockstat.lockedby = sessionStorage.getItem("username");
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
-                //console.log("textdata-"+celliden);
                 let writings = JSON.stringify({"taskcomm": "/lock", "celliden": celliden});
                 webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
                 toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
@@ -453,12 +451,10 @@ function sendlock(celliden) {
 
 function recvlock(celliden, username) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
-    console.log("textdata-"+celliden);
     if (celliden in celllist) {
         celllist[celliden].lockstat.islocked = true;
         celllist[celliden].lockstat.lockedby = username;
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
-        console.log("textdata-"+celliden);
         document.getElementById("textdata-"+celliden).disabled = true;
         document.getElementById("cellname-"+celliden).disabled = true;
         toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
@@ -574,6 +570,8 @@ function makelogs(celliden, activity, username) {
     else if (activity === "/note")                               {actiobjc += " wrote to a cell";}
     else if (activity === "/ttle")                               {actiobjc += " renamed a cell";}
     else if (activity === "/lock")                               {actiobjc += " locked a cell";}
+    else if (activity === "/join")                               {actiobjc += " joined the workspace";}
+    else if (activity === "/left")                               {actiobjc += " left the workspace";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc, "celliden": celliden};
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
@@ -607,24 +605,18 @@ function viewlogs() {
 }
 
 function viewuser() {
-    /* INSTEAD OF CHANGING ON THE EVENT OF USERS JOINING AND LEAVING, LET'S ADD A WAY TO FETCH IT WHEN REQUESTED */
-    $("#actiform").remove();
+    $("#userform").remove();
     let userlist = JSON.parse(sessionStorage.getItem("userlist"));
-    console.log(userlist);
     $("#userjuxt").append(`
-        <table id='actiform' class='ui very compact table'>
+        <table id='userform' class='ui very compact table'>
             <tbody id='usertabl'></tbody>
         </table>
     `);
     for (username in userlist) {
-        console.log(username);
-        let jointime = userlist[username]["jointime"];
         $("#usertabl").append(`
             <tr class='textbase'>
                 <td style='font-size: 15px;'>
-                    ${username}
-                    <br/>
-                    <strong class='monotext'>${jointime}</strong>
+                    ${userlist[username]}
                 </td>
             </tr>
         `);
