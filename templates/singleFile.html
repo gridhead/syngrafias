@@ -78,9 +78,7 @@
                 <div class="ui icon tiny labeled input" style="margin-bottom: .2rem;">
                     <input type="text" class="textbase" id="docsname" onkeyup="sendttle();" placeholder="Enter the document name here">
                     <i class='inverted circular eye link icon' onclick='toggleDoc()'></i>
-
                 </div>
-                <!-- <div class="description" style="border: 1px solid red"> -->
                 <div class="" style="display: flex; flex-grow: 1; overflow: hidden;">
                     <div id="txt-ar" class="default" style="margin-right: 0.25%;">
                         <div class="ui tiny form field" style="height: 100%;">
@@ -91,13 +89,10 @@
                         <div class="ui form textbase" id="otptdata" style="height: 100%; max-height: 100%; overflow-y: scroll;"></div>
                     </div>
                 </div>
-                <!-- </div> -->
             </div>
         </div>
         <script>
-
             var gutterSize = 10;
-
             Split(['#txt-ar', '#op-ar'], {
                 sizes: [50, 50],
                 minSize: [150, 150],
