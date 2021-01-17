@@ -28,6 +28,18 @@ import websockets
 
 USERS = set()
 
+USERLIST = {}
+
+#Sample pattern for USERLIST
+
+'''
+USERLIST = {
+    "DEADCAFE": {
+        "t0xic0der": <websocket-connection-object>,
+        "t0xic0der": <websocket-connection-object>,
+    }
+}
+'''
 
 def mesej_event(username, sessiden, textmesg):
     return json.dumps({"username": username, "sessiden": sessiden, "textmesg": textmesg})
@@ -51,15 +63,99 @@ async def unregister(websocket):
 
 
 async def syncmate(websocket, path):
-    await register(websocket)
+    #await register(websocket)
     try:
         async for message in websocket:
             data = json.loads(message)
-            print(data)
-            print(" > [" + str(time.ctime()) + "] [" + str(data["sessiden"]) + "] User '" + str(data["username"]) + "' made actions.")
-            await notify_mesej(data["username"], data["sessiden"], data["textmesg"])
+            #print(data)
+            print(USERLIST)
+            #print(" > [" + str(time.ctime()) + "] [" + str(data["sessiden"]) + "] User '" + str(data["username"]) + "' made actions.")
+            if data["textmesg"] == "/iden":
+                if data["sessiden"] in USERLIST.keys():
+                    if data["username"] in USERLIST[data["sessiden"]].keys():
+                        print(" > [" + str(time.ctime()) + "] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
+                        uniqfail = {
+                            "username": data["username"],
+                            "sessiden": data["sessiden"],
+                            "textmesg": {
+                                "taskcomm": "uniqfail"
+                            }
+                        }
+                        await websocket.send(json.dumps(uniqfail))
+                        await websocket.close()
+                    else:
+                        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+                        USERLIST[data["sessiden"]][data["username"]] = websocket
+                        joindone = {
+                            "username": data["username"],
+                            "sessiden": data["sessiden"],
+                            "textmesg": {
+                                "taskcomm": "joindone"
+                            }
+                        }
+                        wlcmuser = {
+                            "username": data["username"],
+                            "sessiden": data["sessiden"],
+                            "textmesg": {
+                                "taskcomm": "wlcmuser"
+                            }
+                        }
+                        for username in USERLIST[data["sessiden"]].keys():
+                            await USERLIST[data["sessiden"]][username].send(json.dumps(wlcmuser))
+                        await websocket.send(json.dumps(joindone))
+                else:
+                    print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+                    USERLIST[data["sessiden"]] = {
+                        data["username"]: websocket
+                    }
+                    joindone = {
+                        "username": data["username"],
+                        "sessiden": data["sessiden"],
+                        "textmesg": {
+                            "taskcomm": "joindone"
+                        }
+                    }
+                    wlcmuser = {
+                        "username": data["username"],
+                        "sessiden": data["sessiden"],
+                        "textmesg": {
+                            "taskcomm": "wlcmuser"
+                        }
+                    }
+                    for username in USERLIST[data["sessiden"]].keys():
+                        await USERLIST[data["sessiden"]][username].send(json.dumps(wlcmuser))
+                    await websocket.send(json.dumps(joindone))
+            else:
+                if data["sessiden"] in USERLIST.keys():
+                    for username in USERLIST[data["sessiden"]].keys():
+                        if username != data["username"]:
+                            operdata = {
+                                "username": data["username"],
+                                "sessiden": data["sessiden"],
+                                "textmesg": data["textmesg"]
+                            }
+                            print(" > [" + str(time.ctime()) + "] " + data["username"] + " of " + data["sessiden"] + " made actions.")
+                            await USERLIST[data["sessiden"]][username].send(json.dumps(operdata))
     finally:
-        await unregister(websocket)
+        usernmlt, sessidlt = 0, 0
+        for sessiden in USERLIST.keys():
+            for username in USERLIST[sessiden].keys():
+                if USERLIST[sessiden][username] == websocket:
+                    USERLIST[sessiden].pop(username)
+                    print(" > [" + str(time.ctime()) + "] " + username + " left " + sessiden + ".")
+                    usernmlt = username
+                    sessidlt = sessiden
+                    break
+        if usernmlt != 0 and sessidlt != 0:
+            leftuser = {
+                "username": username,
+                "sessiden": sessiden,
+                "textmesg": {
+                    "taskcomm": "leftuser"
+                }
+            }
+            for userindx in USERLIST[sessidlt].keys():
+                await USERLIST[sessidlt][userindx].send(json.dumps(leftuser))
 
 
 def servenow(netpdata="127.0.0.1", syncport="9696"):

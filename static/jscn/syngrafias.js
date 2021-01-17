@@ -253,6 +253,16 @@ function askusdat() {
     $("#givename").modal("setting", "closable", false).modal("show");
 }
 
+function identify() {
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let writings = JSON.stringify({"textmesg": "/iden", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
+        webesock.send(writings);
+    }
+}
+
 function makesess() {
     let username = document.getElementById("username").value;
     let sessiden = document.getElementById("sessiden").value;
@@ -263,11 +273,12 @@ function makesess() {
                 sessionStorage.setItem("sessiden", sessiden);
                 sessionStorage.setItem("celllist", "{}");
                 sessionStorage.setItem("actilogs", "[]");
+                sessionStorage.setItem("userlist", "[]");
                 sessionStorage.setItem("thmcolor", "#294172");
                 $('#givename').modal('hide');
+                identify();
                 document.getElementById("headuser").innerText = username;
                 document.getElementById("headroom").innerText = sessiden;
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
                 toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             }
@@ -479,7 +490,7 @@ function toggleCell(celliden) {
         op.style.width = "calc(50% - "+(gutterSize/2)+"px)";
         op.style.display = "block";
         gt.style.display = "block";
-    } 
+    }
     ta.style.height = '100%';
 
 }
@@ -593,6 +604,32 @@ function viewlogs() {
         `);
     }
     $("#actilogs").modal("setting", "closable", false).modal("show");
+}
+
+function viewuser() {
+    /* INSTEAD OF CHANGING ON THE EVENT OF USERS JOINING AND LEAVING, LET'S ADD A WAY TO FETCH IT WHEN REQUESTED */
+    $("#actiform").remove();
+    let userlist = JSON.parse(sessionStorage.getItem("userlist"));
+    console.log(userlist);
+    $("#userjuxt").append(`
+        <table id='actiform' class='ui very compact table'>
+            <tbody id='usertabl'></tbody>
+        </table>
+    `);
+    for (username in userlist) {
+        console.log(username);
+        let jointime = userlist[username]["jointime"];
+        $("#usertabl").append(`
+            <tr class='textbase'>
+                <td style='font-size: 15px;'>
+                    ${username}
+                    <br/>
+                    <strong class='monotext'>${jointime}</strong>
+                </td>
+            </tr>
+        `);
+    }
+    $("#actiuser").modal("setting", "closable", false).modal("show");
 }
 
 function rmovhist() {
