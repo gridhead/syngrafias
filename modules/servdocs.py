@@ -29,21 +29,14 @@ servchat = Flask(__name__, template_folder="../templates", static_folder="../sta
 storedir = "storage"
 
 
-@servchat.route("/")
+@servchat.route("/cellular/")
 def asciidoc():
     return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
 
 
-@servchat.route("/single/")
+@servchat.route("/")
 def singleDoc():
     return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
-
-
-'''
-@servchat.route("/<themcolr>/")
-def themable(themcolr):
-    return render_template("themable.html", sockport=sockp0rt, servport=servp0rt, themcolr=themcolr)
-'''
 
 
 @servchat.route("/storage/<path:filename>")

@@ -62,10 +62,10 @@ function sendnote() {
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let contents = document.getElementById("textdata").value;
-        let writings = JSON.stringify({"taskcomm": "/note", "contents": contents});
+        let writings = JSON.stringify({"taskcomm": "/snot", "contents": contents});
         webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-        makelogs("/note", sessionStorage.getItem("username"));
+        makelogs("/snot", sessionStorage.getItem("username"));
     }
 }
 
@@ -73,7 +73,7 @@ function recvnote(contents, noteauth) {
     document.getElementById("textdata").value = contents;
     autoconv();
     toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    makelogs("/note", noteauth);
+    makelogs("/snot", noteauth);
 }
 
 function sendttle() {
@@ -82,17 +82,17 @@ function sendttle() {
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let docsname = document.getElementById("docsname").value;
-        let writings = JSON.stringify({"taskcomm": "/ttle", "contents": docsname});
+        let writings = JSON.stringify({"taskcomm": "/shed", "contents": docsname});
         webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-        makelogs("/ttle", sessionStorage.getItem("username"));
+        makelogs("/shed", sessionStorage.getItem("username"));
     }
 }
 
 function recvttle(contents, ttleauth) {
     document.getElementById("docsname").value = contents;
     toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    makelogs("/note", ttleauth);
+    makelogs("/snot", ttleauth);
 }
 
 function askusdat() {
@@ -271,8 +271,8 @@ function makelogs(activity, username) {
     let actiobjc = "";
     if (username === sessionStorage.getItem("username"))    {actiobjc += "<strong>You</strong>";}
     else                                                         {actiobjc += "<strong>" + username + "</strong>";}
-    if (activity === "/note")                                    {actiobjc += " edited the document";}
-    else if (activity === "/ttle")                               {actiobjc += " renamed the document";}
+    if (activity === "/snot")                                    {actiobjc += " edited the document";}
+    else if (activity === "/shed")                               {actiobjc += " renamed the document";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc};
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
