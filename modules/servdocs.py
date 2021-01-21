@@ -34,7 +34,7 @@ def cellular():
     '''
     This function opens up the Cellular Mode page whenever the above URL pattern is invoked.
     '''
-    return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
+    return render_template("cellular.html", sockport=sockp0rt, servport=servp0rt)
 
 
 @servchat.route("/")
