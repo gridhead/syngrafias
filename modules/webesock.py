@@ -1,7 +1,7 @@
 """
 ##########################################################################
 *
-*   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+*   Copyright © 2019-2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -40,6 +40,9 @@ USERLIST = {
 '''
 
 async def convey_username_already_exists_in_session(websocket, data):
+    '''
+    This function conveys that the username already exists in the workspace and declines connection.
+    '''
     print(" > [" + str(time.ctime()) + "] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
     uniqfail = {
         "username": data["username"],
@@ -53,6 +56,9 @@ async def convey_username_already_exists_in_session(websocket, data):
 
 
 async def add_username_to_already_created_session(websocket, data):
+    '''
+    This function adds user to an already existing session.
+    '''
     print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
     USERLIST[data["sessiden"]][data["username"]] = websocket
     joindone = {
@@ -76,6 +82,9 @@ async def add_username_to_already_created_session(websocket, data):
 
 
 async def create_a_session_and_add_username_to_it(websocket, data):
+    '''
+    This function creates a workspace and adds the user to it.
+    '''
     print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
     USERLIST[data["sessiden"]] = {
         data["username"]: websocket
@@ -101,6 +110,11 @@ async def create_a_session_and_add_username_to_it(websocket, data):
 
 
 async def perform_general_workspace_operations(websocket, data):
+    '''
+    This function pushes out general workspace operation request specifically to the workspace - they are intended to
+    go to and not to everyone else - which is far more efficient than client-side acceptance/declination.
+    '''
+    print(" > [" + str(time.ctime()) + "] " + data["username"] + " of " + data["sessiden"] + " made actions.")
     if data["sessiden"] in USERLIST.keys():
         for username in USERLIST[data["sessiden"]].keys():
             if username != data["username"]:
@@ -109,12 +123,14 @@ async def perform_general_workspace_operations(websocket, data):
                     "sessiden": data["sessiden"],
                     "textmesg": data["textmesg"]
                 }
-                print(
-                    " > [" + str(time.ctime()) + "] " + data["username"] + " of " + data["sessiden"] + " made actions.")
                 await USERLIST[data["sessiden"]][username].send(json.dumps(operdata))
 
 
 async def make_informed_removal_from_a_workspace(websocket):
+    '''
+    This function looks up the websocket object throughout the dictionary and informs the workspace about the user's
+    leaving - whenever that happens so that other collaborators can get to know about it.
+    '''
     usernmlt, sessidlt = 0, 0
     for sessiden in USERLIST.keys():
         for username in USERLIST[sessiden].keys():
@@ -137,18 +153,33 @@ async def make_informed_removal_from_a_workspace(websocket):
             await USERLIST[sessidlt][userindx].send(json.dumps(leftuser))
 
 
+async def facilitate_username_addition_in_cellular_mode(websocket, data):
+    '''
+    This function facilitates username addition in cellular mode by the following way
+        - First, it checks if the workspace identity provided exists in the USERLIST.
+            - If it does, it checks if the provided username exists in the workspace of not.
+                - If there exists one, the user trying to attempt connection is informed and connection is declined.
+                - If there is not any, the user is allowed into the workspace and everyone is informed.
+            - If it does not, it creates a new workspace with the given identity and adds the user to it.
+    '''
+    if data["sessiden"] in USERLIST.keys():
+        if data["username"] in USERLIST[data["sessiden"]].keys():
+            await convey_username_already_exists_in_session(websocket, data)
+        else:
+            await add_username_to_already_created_session(websocket, data)
+    else:
+        await create_a_session_and_add_username_to_it(websocket, data)
+
+
 async def syncmate(websocket, path):
+    '''
+    This function asynchronously receives and sends out JSON responses based on requests.
+    '''
     try:
         async for message in websocket:
             data = json.loads(message)
             if data["textmesg"] == "/iden":
-                if data["sessiden"] in USERLIST.keys():
-                    if data["username"] in USERLIST[data["sessiden"]].keys():
-                        await convey_username_already_exists_in_session(websocket, data)
-                    else:
-                        await add_username_to_already_created_session(websocket, data)
-                else:
-                    await create_a_session_and_add_username_to_it(websocket, data)
+                await facilitate_username_addition_in_cellular_mode(websocket, data)
             else:
                 await perform_general_workspace_operations(websocket, data)
     finally:
@@ -156,6 +187,9 @@ async def syncmate(websocket, path):
 
 
 def servenow(netpdata="127.0.0.1", syncport="9696"):
+    '''
+    This function starts the WebSocket server.
+    '''
     try:
         print(" > [" + str(time.ctime()) + "] [HOLAUSER] Syngrafias was started up on 'ws://" + str(netpdata) + ":" + str(syncport) + "/'")
         start_server = websockets.serve(syncmate, netpdata, int(syncport))
@@ -167,6 +201,9 @@ def servenow(netpdata="127.0.0.1", syncport="9696"):
 
 
 def mainfunc(syncport, netprotc):
+    '''
+    This function facilitates the WebSocket server.
+    '''
     print(" > [" + str(time.ctime()) + "] [HOLAUSER] Starting Syngrafias...")
     netpdata = ""
     if netprotc == "ipprotv6":

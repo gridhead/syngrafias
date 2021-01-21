@@ -1,7 +1,7 @@
 """
 ##########################################################################
 *
-*   Copyright © 2019-2020 Akashdeep Dhar <t0xic0der@fedoraproject.org>
+*   Copyright © 2019-2021 Akashdeep Dhar <t0xic0der@fedoraproject.org>
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -30,22 +30,34 @@ storedir = "storage"
 
 
 @servchat.route("/cellular/")
-def asciidoc():
+def cellular():
+    '''
+    This function opens up the Cellular Mode page whenever the above URL pattern is invoked.
+    '''
     return render_template("asciidoc.html", sockport=sockp0rt, servport=servp0rt)
 
 
 @servchat.route("/")
-def singleDoc():
+def singular():
+    '''
+    This function opens up the Unity Mode page whenever the above URL pattern is invoked.
+    '''
     return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
 
 
 @servchat.route("/storage/<path:filename>")
 def getsaved(filename):
+    '''
+    This function returns the file download for the saved file.
+    '''
     return send_from_directory(servchat.config["CUSTOM_STATIC_PATH"], filename, conditional=True)
 
 
 @servchat.route("/savedocs/")
 def savedocs():
+    '''
+    This function saves the file in Syngrafias Workspace Document format and returns the filename as HTTP response.
+    '''
     try:
         timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
         filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".swd"
@@ -60,6 +72,9 @@ def savedocs():
 
 @servchat.route("/saveadoc/")
 def saveadoc():
+    '''
+    This function saves the file in AsciiDoctor format and returns the filename as HTTP response.
+    '''
     try:
         timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
         filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".adoc"
@@ -76,12 +91,18 @@ def saveadoc():
 
 
 def colabnow(netpdata, servport):
+    '''
+    This function starts the HTTP server at the provided host and port number.
+    '''
     servchat.config["TEMPLATES_AUTO_RELOAD"] = True
     servchat.config["CUSTOM_STATIC_PATH"] = "../storage"
     servchat.run(host=netpdata, port=servport)
 
 
 def mainfunc(servport, sockport, netprotc):
+    '''
+    This function facilitates the HTTP server and sets the port number for WebSocket server as a global variable.
+    '''
     global sockp0rt
     sockp0rt = sockport
     global servp0rt
