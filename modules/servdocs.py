@@ -42,7 +42,7 @@ def singular():
     '''
     This function opens up the Unity Mode page whenever the above URL pattern is invoked.
     '''
-    return render_template("singleFile.html", sockport=sockp0rt, servport=servp0rt)
+    return render_template("singular.html", sockport=sockp0rt, servport=servp0rt)
 
 
 @servchat.route("/storage/<path:filename>")
