@@ -61,6 +61,7 @@
                     <a class="item" onclick="window.open('https://github.com/t0xic0der/syngrafias/issues', '_blank');"><i class="bug icon"></i>Report issues</a>
                     <a class="item" onclick="helptopc();"><i class="wheelchair icon"></i>View support</a>
                     <a class="item" onclick="viewlogs();"><i class="clock icon"></i>Track activities</a>
+                    <a class="item" onclick="viewuser();"><i class="user icon"></i>List users</a>
                     <a class="item" onclick="$('#colrmode').modal('setting', 'closable', false).modal('show');"><i class="cog icon"></i>Change preferences</a>
                     <a class="item" onclick="$('#abotmode').modal('setting', 'closable', false).modal('show');"><i class="info circle icon"></i>About the app</a>
                     <a class="item" onclick="$('#restwarn').modal('setting', 'closable', false).modal('show');"><i class="power off icon"></i>Reset workspace</a>
@@ -111,13 +112,51 @@
             webesock.onmessage = function (event)
             {
                 let data = JSON.parse(event.data);
-                if (!(data.username === sessionStorage.getItem("username"))) {
-				    if (data.sessiden === sessionStorage.getItem("sessiden")) {
-                        let textmesg = JSON.parse(data.textmesg);
-                        if (textmesg["taskcomm"] === "/snot") {
-                            recvnote(textmesg["contents"], data.username);
-                        } else if (textmesg["taskcomm"] === "/shed") {
-                            recvttle(textmesg["contents"], data.username);
+                if (data.sessiden === sessionStorage.getItem("sessiden")) {
+                    let textmesg = data["textmesg"];
+                    if (textmesg["taskcomm"] === "uniqfail") {
+                        toastr.error(
+                            "<span class='textbase' style='font-size: 15px;'><strong>Connection rejected</strong><br/>Same user already exists</span>",
+                            "", {
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": "true"
+                            }
+                        );
+                        $("#uniqfail").modal("setting", "closable", false).modal("show");
+                    } else if (textmesg["taskcomm"] === "joindone") {
+                        toastr.success(
+                            "<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>",
+                            "", {
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": "true"
+                            }
+                        );
+                    } else if (textmesg["taskcomm"] === "wlcmuser") {
+                        sessionStorage.setItem("userlist", JSON.stringify(data["userlist"]));
+                        makelogs("/join", data["username"]);
+                        toastr.success(
+                            "<span class='textbase' style='font-size: 15px;'><strong>Collaborator joined</strong><br/>" + data["username"] + " joined</span>",
+                            "", {
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": "true"
+                            }
+                        );
+                    } else if (textmesg["taskcomm"] === "leftuser") {
+                        sessionStorage.setItem("userlist", JSON.stringify(data["userlist"]));
+                        makelogs("/left", data["username"]);
+                        toastr.error(
+                            "<span class='textbase' style='font-size: 15px;'><strong>Collaborator left</strong><br/>" + data["username"] + " left</span>",
+                            "", {
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": "true"
+                            }
+                        );
+                    } else {
+                        let operdata = JSON.parse(data.textmesg);
+                        if (operdata["taskcomm"] === "/snot") {
+                            recvnote(operdata["contents"], data.username);
+                        } else if (operdata["taskcomm"] === "/shed") {
+                            recvttle(operdata["contents"], data.username);
                         }
                     }
                 }
@@ -158,6 +197,22 @@
         <div class="content"><p style="text-align: center; font-size: 15px;" class="textbase">Any changes that you made could not be saved and conveyed as the connection to the WebSocket server could not be established. Please refresh the page and try again.</p></div>
         <div class="actions" style="text-align: center;"><div class="ui tiny inverted button monotext cardinal" onclick="location.reload();" style="background-color: #294172;"><i class="refresh icon"></i>Refresh</div></div>
     </div>
+    <div class="ui basic modal" id="uniqfail">
+        <div class="ui icon header monotext" style="font-size: 20px;">
+            <i class="exclamation triangle icon" style="margin-bottom: 6.25%;"></i>Connection rejected
+        </div>
+        <div class="content">
+            <p style="text-align: center; font-size: 15px;" class="textbase">
+                A connection from your end was rejected by the server as a user with the same username is already
+                connected to the workspace. Please refresh the page and try again.
+            </p>
+        </div>
+        <div class="actions" style="text-align: center;">
+            <div class="ui tiny inverted button monotext cardinal" onclick="location.reload();" style="background-color: #294172;">
+                <i class="refresh icon"></i>Refresh
+            </div>
+        </div>
+    </div>
     <div class="ui mini modal" id="opendocs">
         <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;" id="opdocstt"></div>
         <div class="content" style="padding: 2.5%;" id="opdocsid"></div>
@@ -173,6 +228,23 @@
             </div>
             <div class="ui mini button textbase" onclick="location.reload();">
                 <span style="color: red;"><i class="ui undo icon"></i>Reset</span>
+            </div>
+        </div>
+    </div>
+    <div class="ui mini modal" id="actiuser">
+        <div class="header textbase cardinal" style="padding: 2.5%; background-color: #294172; color: #ffffff;">
+            Collaborators active
+        </div>
+        <div id="userjuxt" class="scrolling content" style="padding: 2.5%;">
+            <p class="textbase" style="line-height: 1.25; text-align: justify; font-size: 15px;">
+                All collaborators who are connected to the workspace would show up here.
+            </p>
+        </div>
+        <div class="actions cardinal" style="padding: 2.5%; background-color: #294172;">
+            <div class="ui mini button deny textbase" onclick="$('actiuser').modal('hide');">
+                <span style="color: green;">
+                    <i class="ui reply icon"></i>Back
+                </span>
             </div>
         </div>
     </div>

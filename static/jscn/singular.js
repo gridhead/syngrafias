@@ -63,7 +63,14 @@ function sendnote() {
     } else {
         let contents = document.getElementById("textdata").value;
         let writings = JSON.stringify({"taskcomm": "/snot", "contents": contents});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        webesock.send(
+            JSON.stringify({
+                username: sessionStorage.getItem("username"),
+                sessiden: sessionStorage.getItem("sessiden"),
+                docsmode: "SINGULAR",
+                textmesg: writings
+            })
+        );
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs("/snot", sessionStorage.getItem("username"));
     }
@@ -83,7 +90,12 @@ function sendttle() {
     } else {
         let docsname = document.getElementById("docsname").value;
         let writings = JSON.stringify({"taskcomm": "/shed", "contents": docsname});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        webesock.send(JSON.stringify({
+            username: sessionStorage.getItem("username"),
+            sessiden: sessionStorage.getItem("sessiden"),
+            docsmode: "SINGULAR",
+            textmesg: writings})
+        );
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs("/shed", sessionStorage.getItem("username"));
     }
@@ -99,6 +111,16 @@ function askusdat() {
     $("#givename").modal('setting', 'closable', false).modal("show");
 }
 
+function identify() {
+    if (webesock.readyState === 3) {
+        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        $("#sockfail").modal("setting", "closable", false).modal("show");
+    } else {
+        let writings = JSON.stringify({"textmesg": "/isin", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
+        webesock.send(writings);
+    }
+}
+
 function makesess() {
     let username = document.getElementById("username").value;
     let sessiden = document.getElementById("sessiden").value;
@@ -108,11 +130,13 @@ function makesess() {
                 sessionStorage.setItem("username", username);
                 sessionStorage.setItem("sessiden", sessiden);
                 sessionStorage.setItem("actilogs", "[]");
+                sessionStorage.setItem("userlist", "[]");
                 sessionStorage.setItem("thmcolor", "#294172");
                 $('#givename').modal('hide');
+                identify();
                 document.getElementById("headroom").innerText = sessiden;
                 document.getElementById("headuser").innerText = username;
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                //toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
                 toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
             }
@@ -273,6 +297,8 @@ function makelogs(activity, username) {
     else                                                         {actiobjc += "<strong>" + username + "</strong>";}
     if (activity === "/snot")                                    {actiobjc += " edited the document";}
     else if (activity === "/shed")                               {actiobjc += " renamed the document";}
+    else if (activity === "/join")                               {actiobjc += " joined the workspace";}
+    else if (activity === "/left")                               {actiobjc += " left the workspace";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc};
     sessionStorage.setItem("actilogs", JSON.stringify(actilist));
 }
@@ -285,6 +311,26 @@ function viewlogs() {
         $("#actitabl").append("<tr class='textbase'><td style='font-size: 15px;'>" + actilist[indx]["timestmp"] + "</td><td style='font-size: 15px;'>" + actilist[indx]["actiobjc"] + "</td></tr>");
     }
     $("#actilogs").modal("setting", "closable", false).modal("show");
+}
+
+function viewuser() {
+    $("#userform").remove();
+    let userlist = JSON.parse(sessionStorage.getItem("userlist"));
+    $("#userjuxt").append(`
+        <table id='userform' class='ui very compact table'>
+            <tbody id='usertabl'></tbody>
+        </table>
+    `);
+    for (username in userlist) {
+        $("#usertabl").append(`
+            <tr class='textbase'>
+                <td style='font-size: 15px;'>
+                    ${userlist[username]}
+                </td>
+            </tr>
+        `);
+    }
+    $("#actiuser").modal("setting", "closable", false).modal("show");
 }
 
 function rmovhist() {
@@ -320,5 +366,4 @@ function toggleDoc() {
         gt.style.display = "block";
     } 
     ta.style.height = '100%';
-
 }

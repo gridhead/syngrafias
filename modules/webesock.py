@@ -124,7 +124,7 @@ class cellular_userjoin():
             await USERLIST["CELLULAR"][data["sessiden"]][username].send(json.dumps(wlcmuser))
         await self.sockobjc.send(json.dumps(joindone))
 
-    async def facilitate_username_addition_in_cellular_mode(self, data):
+    async def facilitate_username_addition(self, data):
         '''
         This function facilitates username addition in cellular mode by the following way
             - First, it checks if the workspace identity provided exists in the USERLIST.
@@ -135,6 +135,97 @@ class cellular_userjoin():
         '''
         if data["sessiden"] in USERLIST["CELLULAR"].keys():
             if data["username"] in USERLIST["CELLULAR"][data["sessiden"]].keys():
+                await self.convey_username_already_exists_in_session(data)
+            else:
+                await self.add_username_to_already_created_session(data)
+        else:
+            await self.create_a_session_and_add_username_to_it(data)
+
+
+class singular_userjoin():
+    def __init__(self, sockobjc):
+        self.sockobjc = sockobjc
+
+    async def convey_username_already_exists_in_session(self, data):
+        '''
+        This function conveys that the username already exists in the workspace and declines connection.
+        '''
+        print(" > [" + str(time.ctime()) + "] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
+        uniqfail = {
+            "username": data["username"],
+            "sessiden": data["sessiden"],
+            "textmesg": {
+                "taskcomm": "uniqfail"
+            }
+        }
+        await self.sockobjc.send(json.dumps(uniqfail))
+        await self.sockobjc.close()
+
+
+    async def add_username_to_already_created_session(self, data):
+        '''
+        This function adds user to an already existing session.
+        '''
+        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        USERLIST["SINGULAR"][data["sessiden"]][data["username"]] = self.sockobjc
+        joindone = {
+            "username": data["username"],
+            "sessiden": data["sessiden"],
+            "textmesg": {
+                "taskcomm": "joindone"
+            }
+        }
+        wlcmuser = {
+            "username": data["username"],
+            "sessiden": data["sessiden"],
+            "userlist": list(USERLIST["SINGULAR"][data["sessiden"]].keys()),
+            "textmesg": {
+                "taskcomm": "wlcmuser"
+            }
+        }
+        for username in USERLIST["SINGULAR"][data["sessiden"]].keys():
+            await USERLIST["SINGULAR"][data["sessiden"]][username].send(json.dumps(wlcmuser))
+        await self.sockobjc.send(json.dumps(joindone))
+
+
+    async def create_a_session_and_add_username_to_it(self, data):
+        '''
+        This function creates a workspace and adds the user to it.
+        '''
+        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        USERLIST["SINGULAR"][data["sessiden"]] = {
+            data["username"]: self.sockobjc
+        }
+        joindone = {
+            "username": data["username"],
+            "sessiden": data["sessiden"],
+            "textmesg": {
+                "taskcomm": "joindone"
+            }
+        }
+        wlcmuser = {
+            "username": data["username"],
+            "sessiden": data["sessiden"],
+            "userlist": list(USERLIST["SINGULAR"][data["sessiden"]].keys()),
+            "textmesg": {
+                "taskcomm": "wlcmuser"
+            }
+        }
+        for username in USERLIST["SINGULAR"][data["sessiden"]].keys():
+            await USERLIST["SINGULAR"][data["sessiden"]][username].send(json.dumps(wlcmuser))
+        await self.sockobjc.send(json.dumps(joindone))
+
+    async def facilitate_username_addition(self, data):
+        '''
+        This function facilitates username addition in singular mode by the following way
+            - First, it checks if the workspace identity provided exists in the USERLIST.
+                - If it does, it checks if the provided username exists in the workspace of not.
+                    - If there exists one, the user trying to attempt connection is informed and connection is declined.
+                    - If there is not any, the user is allowed into the workspace and everyone is informed.
+                - If it does not, it creates a new workspace with the given identity and adds the user to it.
+        '''
+        if data["sessiden"] in USERLIST["SINGULAR"].keys():
+            if data["username"] in USERLIST["SINGULAR"][data["sessiden"]].keys():
                 await self.convey_username_already_exists_in_session(data)
             else:
                 await self.add_username_to_already_created_session(data)
@@ -209,7 +300,9 @@ async def syncmate(sockobjc, path):
         async for message in sockobjc:
             data = json.loads(message)
             if data["textmesg"] == "/iden":
-                await cellular_userjoin(sockobjc).facilitate_username_addition_in_cellular_mode(data)
+                await cellular_userjoin(sockobjc).facilitate_username_addition(data)
+            elif data["textmesg"] == "/isin":
+                await singular_userjoin(sockobjc).facilitate_username_addition(data)
             else:
                 await perform_general_workspace_operations(sockobjc, data)
     finally:
