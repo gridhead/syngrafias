@@ -431,9 +431,24 @@ function makelogs(activity, username) {
 function viewlogs() {
     $("#actiform").remove();
     let actilist = JSON.parse(sessionStorage.getItem("actilogs"));
-    $("#actijuxt").append("<table id='actiform' class='ui very compact table'>" + "<tbody id='actitabl'></tbody>" + "</table>");
+    $("#actijuxt").append(`
+        <table id='actiform' class='ui very compact table'>
+            <tbody id='actitabl'></tbody>
+        </table>
+    `);
     for (let indx = 0; indx < actilist.length; indx++) {
-        $("#actitabl").append("<tr class='textbase'><td style='font-size: 15px;'>" + actilist[indx]["timestmp"] + "</td><td style='font-size: 15px;'>" + actilist[indx]["actiobjc"] + "</td></tr>");
+        let singstmp = actilist[indx]["timestmp"];
+        let actiobjc = actilist[indx]["actiobjc"];
+        $("#actitabl").append(`
+            <tr class='textbase'>
+                <td style='font-size: 15px;'>
+                    ${singstmp}
+                </td>
+                <td style='font-size: 15px;'>
+                    ${actiobjc}
+                </td>
+            </tr>
+        `);
     }
     $("#actilogs").modal("setting", "closable", false).modal("show");
 }
