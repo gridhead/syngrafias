@@ -53,12 +53,24 @@ function randgene()
 
 function wkeybuild() {
     document.getElementById("sessiden").value = randgene();
-    toastr.success("<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
 }
 
 function sendnote() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Contents could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Contents could not be edited</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let contents = document.getElementById("textdata").value;
@@ -71,7 +83,13 @@ function sendnote() {
                 textmesg: writings
             })
         );
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs("/snot", sessionStorage.getItem("username"));
     }
 }
@@ -79,13 +97,25 @@ function sendnote() {
 function recvnote(contents, noteauth) {
     document.getElementById("textdata").value = contents;
     autoconv();
-    toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.info(
+        "<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>(" + noteauth + ")</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     makelogs("/snot", noteauth);
 }
 
 function sendttle() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Title could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Title could not be edited</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let docsname = document.getElementById("docsname").value;
@@ -96,14 +126,26 @@ function sendttle() {
             docsmode: "SINGULAR",
             textmesg: writings})
         );
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs("/shed", sessionStorage.getItem("username"));
     }
 }
 
 function recvttle(contents, ttleauth) {
     document.getElementById("docsname").value = contents;
-    toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.info(
+        "<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>(" + ttleauth + ")</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     makelogs("/snot", ttleauth);
 }
 
@@ -113,7 +155,13 @@ function askusdat() {
 
 function identify() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let writings = JSON.stringify({"textmesg": "/isin", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
@@ -138,13 +186,31 @@ function makesess() {
                 document.getElementById("headuser").innerText = username;
                 //toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Welcome to Syngrafias</strong><br/>Share this workspace identity now</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
             } else {
-                toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
+                toastr.error(
+                    "<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
             }
         } else {
-            toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
+            toastr.error(
+                "<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
         }
     } else {
-        toastr.error("<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>","",{"positionClass": "toast-bottom-right"});
+        toastr.error(
+            "<span class='textbase'>Please rectify your input in either username or workspace key fields before continuing.</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
     return false;
 }
@@ -157,7 +223,13 @@ function copyID() {
     tempIn.select();
     document.execCommand("copy");
     document.body.removeChild(tempIn);
-    toastr.success("<span class='textbase'>Workspace ID is copied.</span>", "", {"positionClass": "toast-bottom-right"})
+    toastr.success(
+        "<span class='textbase'>Workspace ID is copied.</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
 }
 
 function onloadexecutables() {
@@ -197,16 +269,34 @@ function makesave() {
         }, function (data) {
             console.log(data.result);
             if (data.result === "savefail") {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 $("#saveadoc").modal("hide");
             } else {
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.success(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 window.open($SCRIPT_ROOT + "/storage/" + data.result, "_blank");
                 $("#saveadoc").modal("hide");
             }
         });
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#saveadoc").modal("hide");
     }
 }
@@ -233,11 +323,23 @@ function openadoc() {
 function loadupld() {
     let upldfile = document.getElementById("upldfile").value;
     if (upldfile === "") {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#opendocs").modal("hide");
     } else {
         if (!window.FileReader) {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#opendocs").modal("hide");
         } else {
             let textinpt = $("#upldfile").get(0);
@@ -251,7 +353,6 @@ function loadupld() {
                         try {
                             let docuvain = actifile;
                             document.getElementById("docsname").value = "Document loaded successfully!"
-                            //let docuvain = JSON.parse(actifile);
                             document.getElementById("opdocstt").innerText = "Contents parsed";
                             document.getElementById("opdocsid").innerHTML =
                                 "<div class='ui list textbase'>" +
@@ -262,13 +363,25 @@ function loadupld() {
                                 "<div class='ui mini button textbase' onclick='parsedoc();'><span style='color: red;'>Continue</span></div>";
                             sessionStorage.setItem("lodcache", JSON.stringify(docuvain));
                         } catch (e) {
-                            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                            toastr.error(
+                                "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>",
+                                "", {
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": "true"
+                                }
+                            );
                             $("#opendocs").modal("hide");
                         }
                     }
                 });
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Files should be under 1MB<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Files should be under 1MB<br/>" + sessionStorage.getItem("username") + "</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
             }
         }
     }
@@ -279,8 +392,20 @@ function parsedoc() {
     sessionStorage.setItem("lodcache", "");
     document.getElementById("textdata").value = docuvain;
     autoconv();
-    toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous contents were removed<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.error(
+        "<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous contents were removed<br/>" + sessionStorage.getItem("username") + "</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     $("#opendocs").modal("hide");
 }
 
@@ -335,10 +460,22 @@ function viewuser() {
 
 function rmovhist() {
     if (sessionStorage.getItem("actilogs") === "[]") {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     } else {
         sessionStorage.setItem("actilogs", "[]");
-        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success(
+            "<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
 }
 
