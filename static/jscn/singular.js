@@ -74,7 +74,10 @@ function sendnote() {
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let contents = document.getElementById("textdata").value;
-        let writings = JSON.stringify({"taskcomm": "/snot", "contents": contents});
+        let writings = JSON.stringify({
+            "taskcomm": "/snot",
+            "contents": contents
+        });
         webesock.send(
             JSON.stringify({
                 username: sessionStorage.getItem("username"),
@@ -119,7 +122,10 @@ function sendttle() {
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let docsname = document.getElementById("docsname").value;
-        let writings = JSON.stringify({"taskcomm": "/shed", "contents": docsname});
+        let writings = JSON.stringify({
+            "taskcomm": "/shed",
+            "contents": docsname
+        });
         webesock.send(JSON.stringify({
             username: sessionStorage.getItem("username"),
             sessiden: sessionStorage.getItem("sessiden"),
@@ -164,7 +170,11 @@ function identify() {
         );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
-        let writings = JSON.stringify({"textmesg": "/isin", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
+        let writings = JSON.stringify({
+            "textmesg": "/isin",
+            "username": sessionStorage.getItem("username"),
+            "sessiden": sessionStorage.getItem("sessiden")
+        });
         webesock.send(writings);
     }
 }

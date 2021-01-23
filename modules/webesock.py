@@ -59,7 +59,7 @@ class cellular_userjoin():
         '''
         This function conveys that the username already exists in the workspace and declines connection.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [CELLULAR] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
         uniqfail = {
             "username": data["username"],
             "sessiden": data["sessiden"],
@@ -75,7 +75,7 @@ class cellular_userjoin():
         '''
         This function adds user to an already existing session.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [CELLULAR] " + data["username"] + " joined " + data["sessiden"] + ".")
         USERLIST["CELLULAR"][data["sessiden"]][data["username"]] = self.sockobjc
         joindone = {
             "username": data["username"],
@@ -101,7 +101,7 @@ class cellular_userjoin():
         '''
         This function creates a workspace and adds the user to it.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [CELLULAR] " + data["username"] + " joined " + data["sessiden"] + ".")
         USERLIST["CELLULAR"][data["sessiden"]] = {
             data["username"]: self.sockobjc
         }
@@ -150,7 +150,7 @@ class singular_userjoin():
         '''
         This function conveys that the username already exists in the workspace and declines connection.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [SINGULAR] " + data["username"] + " could not connect to " + data["sessiden"] + ".")
         uniqfail = {
             "username": data["username"],
             "sessiden": data["sessiden"],
@@ -166,7 +166,7 @@ class singular_userjoin():
         '''
         This function adds user to an already existing session.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [SINGULAR] " + data["username"] + " joined " + data["sessiden"] + ".")
         USERLIST["SINGULAR"][data["sessiden"]][data["username"]] = self.sockobjc
         joindone = {
             "username": data["username"],
@@ -192,7 +192,7 @@ class singular_userjoin():
         '''
         This function creates a workspace and adds the user to it.
         '''
-        print(" > [" + str(time.ctime()) + "] " + data["username"] + " joined " + data["sessiden"] + ".")
+        print(" > [" + str(time.ctime()) + "] [SINGULAR] " + data["username"] + " joined " + data["sessiden"] + ".")
         USERLIST["SINGULAR"][data["sessiden"]] = {
             data["username"]: self.sockobjc
         }
@@ -244,7 +244,7 @@ async def make_informed_removal_from_a_workspace(sockobjc):
             for username in USERLIST[sesstype][sessiden].keys():
                 if USERLIST[sesstype][sessiden][username] == sockobjc:
                     USERLIST[sesstype][sessiden].pop(username)
-                    print(" > [" + str(time.ctime()) + "] " + username + " left " + sessiden + ".")
+                    print(" > [" + str(time.ctime()) + "] [" + sesstype + "] " + username + " left " + sessiden + ".")
                     usernmlt = username
                     sessidlt = sessiden
                     sesstylt = sesstype
@@ -267,7 +267,7 @@ async def perform_general_workspace_operations(sockobjc, data):
     This function pushes out general workspace operation request specifically to the workspace - they are intended to
     go to and not to everyone else - which is far more efficient than client-side acceptance/declination.
     '''
-    print(" > [" + str(time.ctime()) + "] " + data["username"] + " of " + data["sessiden"] + " made actions.")
+    print(" > [" + str(time.ctime()) + "] [" + data["docsmode"] + "] " + data["username"] + " of " + data["sessiden"] + " made actions.")
     if data["docsmode"] == "CELLULAR":
         CELLULAR = USERLIST["CELLULAR"]
         if data["sessiden"] in CELLULAR.keys():
@@ -298,13 +298,16 @@ async def syncmate(sockobjc, path):
     '''
     try:
         async for message in sockobjc:
-            data = json.loads(message)
-            if data["textmesg"] == "/iden":
-                await cellular_userjoin(sockobjc).facilitate_username_addition(data)
-            elif data["textmesg"] == "/isin":
-                await singular_userjoin(sockobjc).facilitate_username_addition(data)
-            else:
-                await perform_general_workspace_operations(sockobjc, data)
+            try:
+                data = json.loads(message)
+                if data["textmesg"] == "/iden":
+                    await cellular_userjoin(sockobjc).facilitate_username_addition(data)
+                elif data["textmesg"] == "/isin":
+                    await singular_userjoin(sockobjc).facilitate_username_addition(data)
+                else:
+                    await perform_general_workspace_operations(sockobjc, data)
+            except json.decoder.JSONDecodeError:
+                print(" > [" + str(time.ctime()) + "] Malformed JSON received.")
     finally:
         await make_informed_removal_from_a_workspace(sockobjc)
 
