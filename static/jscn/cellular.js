@@ -29,7 +29,13 @@ function makesave() {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (docsname !== "") {
         if (JSON.stringify(celllist) === "{}") {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>There are no cells to save<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>There are no cells to save<br/>" + sessionStorage.getItem("username") + "</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#savedocs").modal("hide");
         } else {
             let timeobjc = new Date;
@@ -55,17 +61,35 @@ function makesave() {
                 document: printstr
             }, function (data) {
                 if (data.result === "savefail") {
-                    toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                    toastr.error(
+                        "<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Internal server error<br/>" + sessionStorage.getItem("username") + "</span>",
+                        "", {
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": "true"
+                        }
+                    );
                     $("#savedocs").modal("hide");
                 } else {
-                    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                    toastr.success(
+                        "<span class='textbase' style='font-size: 15px;'><strong>Save success</strong><br/>Make sure popups are enabled<br/>" + sessionStorage.getItem("username") + "</span>",
+                        "", {
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": "true"
+                        }
+                    );
                     window.open($SCRIPT_ROOT + "/storage/" + data.result, "_blank");
                     $("#savedocs").modal("hide");
                 }
             });
         }
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Save failed</strong><br/>Invalid name entered<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#savedocs").modal("hide");
     }
 }
@@ -94,11 +118,23 @@ function opendocs() {
 function loadupld() {
     let upldfile = document.getElementById("upldfile").value;
     if (upldfile === "") {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>You did not select a file<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#opendocs").modal("hide");
     } else {
         if (!window.FileReader) {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>File reader is unavailable<br/>" + sessionStorage.getItem("username") + "</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#opendocs").modal("hide");
         } else {
             let textinpt = $("#upldfile").get(0);
@@ -129,7 +165,13 @@ function loadupld() {
                             </div>`;
                         sessionStorage.setItem("lodcache", JSON.stringify(docuvain));
                     } catch (e) {
-                        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                        toastr.error(
+                            "<span class='textbase' style='font-size: 15px;'><strong>Load failed</strong><br/>Unrecognizable format<br/>" + sessionStorage.getItem("username") + "</span>",
+                            "", {
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": "true"
+                            }
+                        );
                         $("#opendocs").modal("hide");
                     }
                 }
@@ -146,7 +188,13 @@ function parsedoc() {
         for (indx in JSON.parse(curtlist)) {
             document.getElementById("cardiden-" + indx).remove();
         }
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous cells were removed<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Overwrite complete</strong><br/>Previous cells were removed<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
     let newelist = {};
     for (indx in docuvain["cellcoll"]) {
@@ -162,7 +210,13 @@ function parsedoc() {
         document.getElementById("textdata-" + indx).value = docuvain["cellcoll"][indx]["contents"]["textdata"];
         autoconv(indx);
     }
-    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'><strong>Load complete</strong><br/>New cells are not synced<br/>" + sessionStorage.getItem("username") + "</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     sessionStorage.setItem("celllist", JSON.stringify(newelist));
     $("#opendocs").modal("hide");
 }
@@ -201,11 +255,21 @@ function randgene() {
 
 function sendnote(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be edited</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be edited</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let contents = document.getElementById("textdata-" + celliden).value;
-        let writings = JSON.stringify({"taskcomm": "/note", "celliden": celliden, "contents": contents});
+        let writings = JSON.stringify({
+            "taskcomm": "/note",
+            "celliden": celliden,
+            "contents": contents
+        });
         webesock.send(
             JSON.stringify({
                 username: sessionStorage.getItem("username"),
@@ -214,7 +278,13 @@ function sendnote(celliden) {
                 textmesg: writings
             })
         );
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs(celliden, "/note", sessionStorage.getItem("username"));
     }
 }
@@ -224,20 +294,42 @@ function recvnote(celliden, contents, noteauth) {
     if (celliden in celllist) {
         document.getElementById("textdata-" + celliden).value = contents;
         autoconv(celliden);
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + noteauth + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell contents</strong><br/>₹" + celliden + " (" + noteauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell contents</strong><br/>₹" + celliden + " (" + noteauth + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
     makelogs(celliden, "/note", noteauth);
 }
 
 function sendttle(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be renamed</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>₹" + celliden + " could not be renamed</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let contents = document.getElementById("cellname-"+celliden).value;
-        let writings = JSON.stringify({"taskcomm": "/ttle", "celliden": celliden, "contents": contents});
+        let writings = JSON.stringify({
+            "taskcomm": "/ttle",
+            "celliden": celliden,
+            "contents": contents
+        });
         webesock.send(
             JSON.stringify({
                 username: sessionStorage.getItem("username"),
@@ -246,7 +338,13 @@ function sendttle(celliden) {
                 textmesg: writings
             })
         );
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
     }
 }
@@ -255,9 +353,21 @@ function recvttle(celliden, contents, ttleauth) {
     let celllist = JSON.parse(sessionStorage.getItem("celllist"));
     if (celliden in celllist) {
         document.getElementById("cellname-" + celliden).value = contents;
-        toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.info(
+            "<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell title</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Out-of-sync cell title</strong><br/>₹" + celliden + " (" + ttleauth + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
     makelogs(celliden, "/ttle", ttleauth);
 }
@@ -268,10 +378,20 @@ function askusdat() {
 
 function identify() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>You could not be logged in</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
-        let writings = JSON.stringify({"textmesg": "/iden", "username": sessionStorage.getItem("username"), "sessiden": sessionStorage.getItem("sessiden")});
+        let writings = JSON.stringify({
+            "textmesg": "/iden",
+            "username": sessionStorage.getItem("username"),
+            "sessiden": sessionStorage.getItem("sessiden")
+        });
         webesock.send(writings);
     }
 }
@@ -293,24 +413,71 @@ function makesess() {
                 document.getElementById("headuser").innerText = username;
                 document.getElementById("headroom").innerText = sessiden;
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
             }
         } else {
-            toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
         }
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'>Please rectify your input in either username or workspace identity fields before continuing.</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
+}
+
+function copyID() {
+    const id = document.getElementById("headroom").innerText;
+    var tempIn = document.createElement("input");
+    tempIn.value = id;
+    document.body.appendChild(tempIn);
+    tempIn.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempIn);
+    toastr.success(
+        "<span class='textbase'>Workspace ID is copied.</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
 }
 
 function wkeybild() {
     document.getElementById("sessiden").value = randgene();
-    toastr.success("<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'>A new workspace identity was generated and automatically entered in the form.</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
 }
 
 function sendpush() {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created<br/>" + sessionStorage.getItem("username") + "</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be created<br/>" + sessionStorage.getItem("username") + "</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celliden = randgene();
@@ -325,7 +492,10 @@ function sendpush() {
         };
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         makecell(celliden);
-        let writings = JSON.stringify({"taskcomm": "/push", "celliden": celliden});
+        let writings = JSON.stringify({
+            "taskcomm": "/push",
+            "celliden": celliden
+        });
         webesock.send(
             JSON.stringify({
                 username: sessionStorage.getItem("username"),
@@ -334,7 +504,13 @@ function sendpush() {
                 textmesg: writings
             })
         );
-        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success(
+            "<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs(celliden, "/push", sessionStorage.getItem("username"));
     }
 }
@@ -351,7 +527,13 @@ function recvpush(celliden, username) {
     };
     sessionStorage.setItem("celllist", JSON.stringify(celllist));
     makecell(celliden);
-    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was received<br/>₹" + celliden + "</strong> (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+    toastr.success(
+        "<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was received<br/>₹" + celliden + "</strong> (" + username + ")</span>",
+        "", {
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": "true"
+        }
+    );
     makelogs(celliden, "/push", username);
 }
 
@@ -389,7 +571,13 @@ function makecell(celliden) {
 
 function sendunlk(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celllist = JSON.parse(sessionStorage.getItem("celllist"));
@@ -399,7 +587,10 @@ function sendunlk(celliden) {
                     celllist[celliden].lockstat.islocked = false;
                     celllist[celliden].lockstat.lockedby = null;
                     sessionStorage.setItem("celllist", JSON.stringify(celllist));
-                    let writings = JSON.stringify({"taskcomm": "/unlk", "celliden": celliden});
+                    let writings = JSON.stringify({
+                        "taskcomm": "/unlk",
+                        "celliden": celliden
+                    });
                     webesock.send(
                         JSON.stringify({
                             username: sessionStorage.getItem("username"),
@@ -408,19 +599,43 @@ function sendunlk(celliden) {
                             textmesg: writings
                         })
                     );
-                    toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell unlocked</strong><br/>Unlocking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
-                    makelogs(celliden, "/lock", sessionStorage.getItem("username"));
+                    toastr.success(
+                        "<span class='textbase' style='font-size: 15px;'><strong>Cell unlocked</strong><br/>Unlocking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                        "", {
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": "true"
+                        }
+                    );
+                    makelogs(celliden, "/unlk", sessionStorage.getItem("username"));
                     $("#infomode").modal("hide");
                 } else {
-                    toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell was not locked by you<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                    toastr.error(
+                        "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell was not locked by you<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                        "", {
+                            "positionClass": "toast-bottom-right",
+                            "preventDuplicates": "true"
+                        }
+                    );
                     $("#infomode").modal("hide");
                 }
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell is already unlocked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell is already unlocked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 $("#infomode").modal("hide");
             }
         } else {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#infomode").modal("hide");
         }
     }
@@ -436,22 +651,52 @@ function recvunlk(celliden, username) {
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
                 document.getElementById("textdata-"+celliden).disabled = false;
                 document.getElementById("cellname-"+celliden).disabled = false;
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell unlocked</strong><br/>Unlocking was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.success(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Cell unlocked</strong><br/>Unlocking was received<br/>₹" + celliden + " (" + username + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 makelogs(celliden, "/unlk", username);
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell was not locked by " + username + "<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell was not locked by " + username + "<br/>₹" + celliden + " (" + username + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
             }
         } else {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell is already unlocked<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell is already unlocked<br/>₹" + celliden + " (" + username + ")</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
         }
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Unlocking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
 }
 
 function sendlock(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celllist = JSON.parse(sessionStorage.getItem("celllist"));
@@ -460,7 +705,10 @@ function sendlock(celliden) {
                 celllist[celliden].lockstat.islocked = true;
                 celllist[celliden].lockstat.lockedby = sessionStorage.getItem("username");
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
-                let writings = JSON.stringify({"taskcomm": "/lock", "celliden": celliden});
+                let writings = JSON.stringify({
+                    "taskcomm": "/lock",
+                    "celliden": celliden
+                });
                 webesock.send(
                     JSON.stringify({
                         username: sessionStorage.getItem("username"),
@@ -468,15 +716,33 @@ function sendlock(celliden) {
                         docsmode: "CELLULAR",
                         textmesg: writings})
                 );
-                toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.success(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 makelogs(celliden, "/lock", sessionStorage.getItem("username"));
                 $("#infomode").modal("hide");
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell is already locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell is already locked<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 $("#infomode").modal("hide");
             }
         } else {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#infomode").modal("hide");
         }
     }
@@ -491,9 +757,21 @@ function recvlock(celliden, username) {
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         document.getElementById("textdata-"+celliden).disabled = true;
         document.getElementById("cellname-"+celliden).disabled = true;
-        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success(
+            "<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was received<br/>₹" + celliden + " (" + username + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Locking failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
     makelogs(celliden, "/lock", username);
 }
@@ -527,7 +805,13 @@ function toggleCell(celliden) {
 
 function sendpull(celliden) {
     if (webesock.readyState === 3) {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be removed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Connection failed</strong><br/>Cell could not be removed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         $("#sockfail").modal("setting", "closable", false).modal("show");
     } else {
         let celllist = JSON.parse(sessionStorage.getItem("celllist"));
@@ -537,7 +821,10 @@ function sendpull(celliden) {
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
                 document.getElementById("cardiden-"+celliden).remove();
                 $("#infomode").modal("hide");
-                let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
+                let writings = JSON.stringify({
+                    "taskcomm": "/pull",
+                    "celliden": celliden
+                });
                 webesock.send(
                     JSON.stringify({
                         username: sessionStorage.getItem("username"),
@@ -545,14 +832,32 @@ function sendpull(celliden) {
                         docsmode: "CELLULAR",
                         textmesg: writings})
                 );
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 makelogs(celliden, "/pull", sessionStorage.getItem("username"));
             } else {
-                toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Unlock cell before removing<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+                toastr.error(
+                    "<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Unlock cell before removing<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                    "", {
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": "true"
+                    }
+                );
                 $("#infomode").modal("hide");
             }
         } else {
-            toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+            toastr.error(
+                "<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>",
+                "", {
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": "true"
+                }
+            );
             $("#infomode").modal("hide");
         }
     }
@@ -564,10 +869,22 @@ function recvpull(celliden, username) {
         delete celllist[celliden];
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         document.getElementById("cardiden-"+celliden).remove();
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was received<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was received<br/>₹" + celliden + " (" + username + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
         makelogs(celliden, "/pull", username);
     } else {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Removal failed</strong><br/>Cell does not exist<br/>₹" + celliden + " (" + username + ")</span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
 }
 
@@ -610,6 +927,7 @@ function makelogs(celliden, activity, username) {
     else if (activity === "/note")                               {actiobjc += " wrote to a cell";}
     else if (activity === "/ttle")                               {actiobjc += " renamed a cell";}
     else if (activity === "/lock")                               {actiobjc += " locked a cell";}
+    else if (activity === "/unlk")                               {actiobjc += " unlocked a cell";}
     else if (activity === "/join")                               {actiobjc += " joined the workspace";}
     else if (activity === "/left")                               {actiobjc += " left the workspace";}
     actilist[actilist.length] = {"timestmp": marktime(), "actiobjc": actiobjc, "celliden": celliden};
@@ -666,9 +984,21 @@ function viewuser() {
 
 function rmovhist() {
     if (sessionStorage.getItem("actilogs") === "[]") {
-        toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.error(
+            "<span class='textbase' style='font-size: 15px;'><strong>Activity history is empty</strong></span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     } else {
         sessionStorage.setItem("actilogs", "[]");
-        toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
+        toastr.success(
+            "<span class='textbase' style='font-size: 15px;'><strong>Activity history is cleared</strong></span>",
+            "", {
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": "true"
+            }
+        );
     }
 }
