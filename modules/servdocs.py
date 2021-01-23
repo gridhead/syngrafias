@@ -60,8 +60,8 @@ def savedocs():
     '''
     try:
         timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
-        filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".swd"
-        document = request.args.get("document", "0", type=str)
+        filename = request.args.get("filename", None, type=str) + "_" + timehash + ".swd"
+        document = request.args.get("document", None, type=str)
         docsdict = json.loads(document)
         with open(storedir + "/" + filename, "w") as jsonfile:
             json.dump(docsdict, jsonfile)
@@ -77,8 +77,8 @@ def saveadoc():
     '''
     try:
         timehash = sha256(str(time.time()).encode("UTF-8")).hexdigest()
-        filename = request.args.get("filename", "0", type=str) + "_" + timehash + ".adoc"
-        document = request.args.get("document", "0", type=str)
+        filename = request.args.get("filename", None, type=str) + "_" + timehash + ".adoc"
+        document = request.args.get("document", None, type=str)
         docsdict = json.loads(document)
         docsname = docsdict["adocasst"]["docsname"]
         textdata = docsdict["adocasst"]["textdata"]
