@@ -206,7 +206,14 @@ function sendnote(celliden) {
     } else {
         let contents = document.getElementById("textdata-" + celliden).value;
         let writings = JSON.stringify({"taskcomm": "/note", "celliden": celliden, "contents": contents});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        webesock.send(
+            JSON.stringify({
+                username: sessionStorage.getItem("username"),
+                sessiden: sessionStorage.getItem("sessiden"),
+                docsmode: "CELLULAR",
+                textmesg: writings
+            })
+        );
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Editing in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/note", sessionStorage.getItem("username"));
     }
@@ -231,7 +238,14 @@ function sendttle(celliden) {
     } else {
         let contents = document.getElementById("cellname-"+celliden).value;
         let writings = JSON.stringify({"taskcomm": "/ttle", "celliden": celliden, "contents": contents});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        webesock.send(
+            JSON.stringify({
+                username: sessionStorage.getItem("username"),
+                sessiden: sessionStorage.getItem("sessiden"),
+                docsmode: "CELLULAR",
+                textmesg: writings
+            })
+        );
         toastr.info("<span class='textbase' style='font-size: 15px;'><strong>Renaming in progress</strong><br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/ttle", sessionStorage.getItem("username"));
     }
@@ -312,7 +326,14 @@ function sendpush() {
         sessionStorage.setItem("celllist", JSON.stringify(celllist));
         makecell(celliden);
         let writings = JSON.stringify({"taskcomm": "/push", "celliden": celliden});
-        webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+        webesock.send(
+            JSON.stringify({
+                username: sessionStorage.getItem("username"),
+                sessiden: sessionStorage.getItem("sessiden"),
+                docsmode: "CELLULAR",
+                textmesg: writings
+            })
+        );
         toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell created</strong><br/>Creation was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
         makelogs(celliden, "/push", sessionStorage.getItem("username"));
     }
@@ -379,7 +400,14 @@ function sendunlk(celliden) {
                     celllist[celliden].lockstat.lockedby = null;
                     sessionStorage.setItem("celllist", JSON.stringify(celllist));
                     let writings = JSON.stringify({"taskcomm": "/unlk", "celliden": celliden});
-                    webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+                    webesock.send(
+                        JSON.stringify({
+                            username: sessionStorage.getItem("username"),
+                            sessiden: sessionStorage.getItem("sessiden"),
+                            docsmode: "CELLULAR",
+                            textmesg: writings
+                        })
+                    );
                     toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell unlocked</strong><br/>Unlocking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
                     makelogs(celliden, "/lock", sessionStorage.getItem("username"));
                     $("#infomode").modal("hide");
@@ -433,7 +461,13 @@ function sendlock(celliden) {
                 celllist[celliden].lockstat.lockedby = sessionStorage.getItem("username");
                 sessionStorage.setItem("celllist", JSON.stringify(celllist));
                 let writings = JSON.stringify({"taskcomm": "/lock", "celliden": celliden});
-                webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+                webesock.send(
+                    JSON.stringify({
+                        username: sessionStorage.getItem("username"),
+                        sessiden: sessionStorage.getItem("sessiden"),
+                        docsmode: "CELLULAR",
+                        textmesg: writings})
+                );
                 toastr.success("<span class='textbase' style='font-size: 15px;'><strong>Cell locked</strong><br/>Locking was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
                 makelogs(celliden, "/lock", sessionStorage.getItem("username"));
                 $("#infomode").modal("hide");
@@ -504,7 +538,13 @@ function sendpull(celliden) {
                 document.getElementById("cardiden-"+celliden).remove();
                 $("#infomode").modal("hide");
                 let writings = JSON.stringify({"taskcomm": "/pull", "celliden": celliden});
-                webesock.send(JSON.stringify({username: sessionStorage.getItem("username"), sessiden: sessionStorage.getItem("sessiden"), textmesg: writings}));
+                webesock.send(
+                    JSON.stringify({
+                        username: sessionStorage.getItem("username"),
+                        sessiden: sessionStorage.getItem("sessiden"),
+                        docsmode: "CELLULAR",
+                        textmesg: writings})
+                );
                 toastr.error("<span class='textbase' style='font-size: 15px;'><strong>Cell removed</strong><br/>Removal was conveyed<br/>₹" + celliden + " (" + sessionStorage.getItem("username") + ")</span>","",{"positionClass": "toast-bottom-right", "preventDuplicates": "true"});
                 makelogs(celliden, "/pull", sessionStorage.getItem("username"));
             } else {
