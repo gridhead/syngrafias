@@ -121,3 +121,5 @@ def mainfunc(servport, sockport, netprotc):
             print(" * IP version  : 4")
             netpdata = "0.0.0.0"
         colabnow(netpdata, servport)
+if __name__=='__main__':
+    mainfunc(6969,9696,"ipprotv4")
