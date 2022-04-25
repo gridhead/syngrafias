@@ -339,3 +339,5 @@ def mainfunc(syncport, netprotc):
         print(" > [" + str(time.ctime()) + "] [HOLAUSER] IP version : 4")
         netpdata = "0.0.0.0"
     servenow(netpdata, syncport)
+if __name__=='__main__':
+    mainfunc(9696,"ipprotv4")

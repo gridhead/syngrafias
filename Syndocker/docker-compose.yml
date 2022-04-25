@@ -1,0 +1,12 @@
+version: "3"
+services:
+  webesock:
+    build: ./webesock
+    image: webesock
+    ports:
+      - "9696:9696"
+  servdocs:
+    build: ./servdocs
+    image: servdocs
+    ports:
+      - "6969:6969"
